@@ -7,14 +7,16 @@
     {% block css %} {% endblock %}
 </head>
 <body>
-    <nav>
-        <a href="/readings">Readings</a>
-        <a href="/sensors">Sensors</a>
-        <a href="/reports">Reports</a>
-    </nav>
-    <hr>
     <div id="content">
-        {% block content %} {% endblock %}
+        <nav id="sidebar">
+            <a href="/readings">Readings</a>
+            <a href="/sensors">Sensors</a>
+            <a href="/reports">Reports</a>
+        </nav>
+
+        <div id="page-content">
+            {% block content %} {% endblock %}
+        </div>
     </div>
 
     {% block js %} {% endblock %}

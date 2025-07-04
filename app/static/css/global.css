@@ -2,3 +2,20 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#content {
+    display: flex;
+    flex-direction: row;
+}
+
+#sidebar {
+    background-color: lightblue;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+#page-content {
+    flex: 1;
+    padding: 24px;
+}
