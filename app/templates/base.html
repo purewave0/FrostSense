@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %} - FrostSense</title>
     <link rel="stylesheet" href="/static/css/global.css">
+    {% block css %} {% endblock %}
 </head>
 <body>
     <nav>
-        {# TODO:
-        <a href="{{ url_for('page1.index') }}">Page 1</a>
-        <a href="{{ url_for('page2.index') }}">Page 2</a>
-        <a href="{{ url_for('page3.index') }}">Page 3</a>
-        #}
+        <a href="/readings">Readings</a>
+        <a href="/sensors">Sensors</a>
+        <a href="/reports">Reports</a>
     </nav>
     <hr>
     <div id="content">
         {% block content %} {% endblock %}
     </div>
+
+    {% block js %} {% endblock %}
 </body>
 </html>
