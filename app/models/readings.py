@@ -4,12 +4,14 @@ from app.models.util import utcnow
 
 class Sensor(db.Model):
     __tablename__ = 'Sensor'
+
     MAX_NAME_LENGTH = 64
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
         db.String(MAX_NAME_LENGTH), nullable=False, unique=True,
     )
+    created_on = db.Column(db.DateTime, server_default=utcnow())
     # TODO: secret key tied to the board, so (fake) readings can't just be sent to
     # whatever ID
 
@@ -25,7 +27,7 @@ class Reading(db.Model):
     temperature = db.Column(db.Float, nullable=True)
     created_on = db.Column(db.DateTime, server_default=utcnow())
 
-    def __init__(self, sensor_id, temperature):
+    def __init__(self, sensor_id: int, temperature: float):
         # TODO: don't just default created_on to 'UTCnow'. accept a value too, for when
         # disruptions (power outages, etc.) happen, and readings are stored locally in
         # the board to be mass-sent (along with the time delta) when back online.
