@@ -1,0 +1,14 @@
+#sensors {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+}
+
+.sensor {
+    background-color: coral;
+}
+
+.sensor-name {
+    font-size: 11pt;
+}
