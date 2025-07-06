@@ -34,4 +34,8 @@ def create_app(config_class=Config):
     from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
+    # -- cli --
+    from app.cli import register_commands
+    register_commands(app)
+
     return app
