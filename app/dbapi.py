@@ -6,6 +6,11 @@ from app.models.readings import Sensor, Reading
 
 # TODO: TypedDicts for models?
 
+def _rows_to_dicts(rows):
+    """Convert the given Rows from a SQLAlchemy query into a tuple of dicts."""
+    return tuple(row._asdict() for row in rows)
+
+
 def create_sensor(name: str) -> dict:
     sensor = Sensor(name)
     db.session.add(sensor)
@@ -22,6 +27,18 @@ def create_sensor(name: str) -> dict:
         'created_on': sensor.created_on,
     }
 # TODO: edit sensor, delete sensor
+
+
+def get_sensors() -> tuple[dict]:
+    """Return all sensors."""
+    result = db.session.execute(
+        db.select(
+            Sensor.id,
+            Sensor.name
+        )
+    )
+
+    return _rows_to_dicts(result)
 
 
 def create_reading(sensor_id: int, temperature: float) -> dict:

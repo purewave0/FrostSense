@@ -1,14 +1,18 @@
 from flask import jsonify, request
 
 from app.api import bp
-from app.dbapi import create_sensor, create_reading
+from app.dbapi import (
+    get_sensors,
+    create_sensor,
+    create_reading
+)
 
 
 @bp.route('/sensors', methods=['GET', 'POST'])
 def api_sensors():
     if request.method == 'GET':
-        # TODO
-        return jsonify('TODO')
+        sensors = get_sensors()
+        return jsonify(sensors)
 
     try:
         name = request.json['name']
