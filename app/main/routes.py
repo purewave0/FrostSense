@@ -10,3 +10,7 @@ def index():
 @bp.route('/readings')
 def readings():
     return render_template('main/sections/readings.html')
+
+@bp.route('/sensors')
+def sensors():
+    return render_template('main/sections/sensors.html')
