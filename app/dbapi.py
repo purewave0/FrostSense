@@ -1,4 +1,7 @@
+from collections.abc import Iterable
+
 from flask import current_app
+from sqlalchemy.engine.result import ScalarResult
 
 from app.extensions import db
 from app.models.readings import Sensor, Reading
@@ -10,6 +13,8 @@ def _rows_to_dicts(rows):
     """Convert the given Rows from a SQLAlchemy query into a tuple of dicts."""
     return tuple(row._asdict() for row in rows)
 
+
+# -- sensors --
 
 def create_sensor(name: str) -> dict:
     sensor = Sensor(name)
@@ -41,6 +46,17 @@ def get_sensors() -> tuple[dict]:
     return _rows_to_dicts(result)
 
 
+def get_sensor_ids() -> ScalarResult:
+    """Return all sensor IDs."""
+    result = db.session.execute(
+        db.select(Sensor.id)
+    )
+
+    return result.scalars()
+
+
+# -- readings --
+
 def create_reading(sensor_id: int, temperature: float) -> dict:
     # TODO: created_on parameter
     reading = Reading(sensor_id, temperature)
@@ -59,3 +75,41 @@ def create_reading(sensor_id: int, temperature: float) -> dict:
         'created_on': reading.created_on,
     }
 # TODO: mass creation of readings (when recovering from disruptions)
+
+def get_latest_readings_from_sensor(sensor_id: int, limit: int) -> tuple[dict]:
+    """Get the last N readings from the given sensor. Useful for populating a graph.
+
+    Args:
+        sensor_id: The ID of the Sensor to fetch the readings from.
+        limit: The max number of readings to fetch from the sensor.
+    """
+    result = db.session.execute(
+        db.select(
+            Reading.id,
+            Reading.temperature,
+            Reading.created_on,
+        ).where(
+            Reading.sensor_id == sensor_id
+        ).order_by(
+            Reading.created_on.desc()
+        ).limit(
+            limit
+        )
+    )
+
+    return _rows_to_dicts(result)
+
+
+def get_latest_readings_from_sensors(
+    sensor_ids: Iterable[int], limit: int
+) -> dict[int, tuple]:
+    """Get the last N readings from the given sensors. Useful for populating graphs.
+
+    Args:
+        sensor_ids: The IDs of the Sensors to fetch the readings from.
+        limit: The max number of readings to fetch from each sensor.
+    """
+    return {
+        sensor_id: get_latest_readings_from_sensor(sensor_id, limit)
+        for sensor_id in sensor_ids
+    }

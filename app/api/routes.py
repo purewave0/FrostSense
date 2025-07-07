@@ -2,8 +2,9 @@ from flask import jsonify, request
 
 from app.api import bp
 from app.dbapi import (
-    get_sensors,
+    get_sensors, get_sensor_ids,
     create_sensor,
+    get_latest_readings_from_sensors,
     create_reading
 )
 
@@ -31,12 +32,8 @@ def api_sensors():
     }), 201
 
 
-@bp.route('/readings', methods=['GET', 'POST'])
+@bp.route('/readings', methods=['POST'])
 def api_readings():
-    if request.method == 'GET':
-        # TODO
-        return jsonify('TODO')
-
     try:
         sensor_id = int(request.json['sensor_id'])
         temperature = float(request.json['temperature'])
@@ -52,3 +49,36 @@ def api_readings():
         'temperature': reading['temperature'],
         'created_on': reading['temperature'],
     }), 201
+
+
+def _parse_sensor_ids(raw_sensor_ids: str) -> list[str]:
+    """Parse a comma-separated list of sensor IDs into a list."""
+    parsed = []
+    for raw_sensor_id in raw_sensor_ids.split(','):
+        sensor_id = int(raw_sensor_id)
+        # ignore duplicates
+        if sensor_id not in parsed:
+            parsed.append(sensor_id)
+
+    return parsed
+
+# TODO: extract this to a configurable option in the interface
+_READINGS_LIMIT = 40
+
+@bp.route('/readings/latest')
+def api_latest_readings():
+    raw_sensor_ids = request.args.get('sensor_ids')
+    sensor_ids = None
+    if not raw_sensor_ids:
+        sensor_ids = get_sensor_ids()
+    else:
+        try:
+            sensor_ids = _parse_sensor_ids(raw_sensor_ids)
+            # TODO: verify if each one exists?
+        except (ValueError, TypeError):
+            return jsonify({'error': 'field_error'}), 400
+
+    latest_readings = get_latest_readings_from_sensors(
+        sensor_ids, _READINGS_LIMIT
+    )
+    return jsonify(latest_readings)
