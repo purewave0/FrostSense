@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.extensions import db
 from app.models.util import utcnow
 
@@ -25,14 +27,13 @@ class Reading(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sensor_id = db.Column(db.Integer, db.ForeignKey('Sensor.id'))
     temperature = db.Column(db.Float, nullable=True)
-    created_on = db.Column(db.DateTime, server_default=utcnow())
+    created_on = db.Column(db.DateTime, server_default=utcnow(), nullable=False)
 
-    def __init__(self, sensor_id: int, temperature: float):
-        # TODO: don't just default created_on to 'UTCnow'. accept a value too, for when
-        # disruptions (power outages, etc.) happen, and readings are stored locally in
-        # the board to be mass-sent (along with the time delta) when back online.
+    def __init__(self, sensor_id: int, temperature: float, created_on: datetime | None):
         self.sensor_id = sensor_id
         self.temperature = temperature # TODO: round to 1 decimal place
+        if created_on is not None:
+            self.created_on = created_on
 
     def __repr__(self):
         return (

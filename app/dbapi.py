@@ -74,7 +74,27 @@ def create_reading(sensor_id: int, temperature: float) -> dict:
         'temperature': reading.temperature,
         'created_on': reading.created_on,
     }
-# TODO: mass creation of readings (when recovering from disruptions)
+
+def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
+    """Insert multiple readings from the given sensor.
+
+    Args:
+        sensor_id: The ID of the Sensor the readings belong to.
+        readings: The readings. Each reading is a dict with the following keys:
+            {id: int, temperature: float, created_on: datetime}
+    """
+    # TODO: created_on parameter
+    for reading in readings:
+        db.session.add(
+            Reading(
+                sensor_id, reading['temperature'], reading['created_on']
+            )
+        )
+
+    current_app.logger.info(f'mass-creating readings for sensor_id={sensor_id}')
+
+    db.session.commit()
+
 
 def get_latest_readings_from_sensor(sensor_id: int, limit: int) -> tuple[dict]:
     """Get the last N readings from the given sensor. Useful for populating a graph.
