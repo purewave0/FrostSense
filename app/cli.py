@@ -57,7 +57,7 @@ def register_commands(app):
                 readings.append(
                     {
                         'sensor_id': sensor['id'],
-                        'temperature': randrange(-25, 25),
+                        'temperature': randrange(-25000, 25000)/1000,
                         'created_on': start_time + dt.timedelta(seconds=interval*times),
                     }
                 )
