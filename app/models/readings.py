@@ -29,9 +29,14 @@ class Reading(db.Model):
     temperature = db.Column(db.Float, nullable=True)
     created_on = db.Column(db.DateTime, server_default=utcnow(), nullable=False)
 
-    def __init__(self, sensor_id: int, temperature: float, created_on: datetime | None):
+    def __init__(
+        self,
+        sensor_id: int,
+        temperature: float,
+        created_on: datetime | None = None
+    ):
         self.sensor_id = sensor_id
-        self.temperature = temperature # TODO: round to 1 decimal place
+        self.temperature = temperature
         if created_on is not None:
             self.created_on = created_on
 
