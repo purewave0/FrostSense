@@ -16,7 +16,7 @@ function createSensorReadingsCard(sensor, readings) {
     for (const reading of readings) {
         const readingItem = document.createElement('li');
         readingItem.textContent =
-            `${reading.temperature} °C at ${reading.created_on}`;
+            `${roundTemperature(reading.temperature)} °C at ${reading.created_on}`;
         readingsFragment.append(readingItem);
     }
     readingsDestination.append(readingsFragment);
