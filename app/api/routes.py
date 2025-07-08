@@ -4,7 +4,7 @@ from app.api import bp
 from app.dbapi import (
     get_sensors, get_sensor_ids,
     create_sensor,
-    get_latest_readings_from_sensors,
+    get_latest_readings_from_sensors, get_today_readings_count_from_sensors,
     create_reading
 )
 
@@ -30,6 +30,12 @@ def api_sensors():
         'name': sensor['name'],
         'created_on': sensor['created_on'],
     }), 201
+
+
+@bp.route('/sensors/readings-count/today')
+def api_sensors_today_readings_count():
+    sensor_ids = get_sensor_ids()
+    return get_today_readings_count_from_sensors(sensor_ids)
 
 
 @bp.route('/readings', methods=['POST'])

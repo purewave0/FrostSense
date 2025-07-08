@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from datetime import datetime
 
 from flask import current_app
 from sqlalchemy.engine.result import ScalarResult
@@ -58,11 +59,9 @@ def get_sensor_ids() -> ScalarResult:
 # -- readings --
 
 def create_reading(sensor_id: int, temperature: float) -> dict:
-    # TODO: created_on parameter
     reading = Reading(sensor_id, temperature)
     db.session.add(reading)
     db.session.commit()
-    # TODO: catch error when the sensor doesn't exist
 
     current_app.logger.info(
         f'creating reading sensor_id={sensor_id} temperature={temperature}°C',
@@ -83,7 +82,6 @@ def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
         readings: The readings. Each reading is a dict with the following keys:
             {id: int, temperature: float, created_on: datetime}
     """
-    # TODO: created_on parameter
     for reading in readings:
         db.session.add(
             Reading(
@@ -133,3 +131,32 @@ def get_latest_readings_from_sensors(
         sensor_id: get_latest_readings_from_sensor(sensor_id, limit)
         for sensor_id in sensor_ids
     }
+
+
+def get_today_readings_count_from_sensors(sensor_ids: Iterable[int]) -> dict[int, int]:
+    """Get the amount of readings sent today for each sensor.
+
+    "Today" means since midnight (00:00:00) in the server's time.
+
+    Args:
+        sensor_ids: The IDs of the Sensors to fetch the readings count from.
+    """
+    midnight_today = datetime.utcnow().replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+    result = {}
+    for sensor_id in sensor_ids:
+        count = db.session.execute(
+            db.select(
+                db.func.count()
+            ).select_from(
+                Reading
+            ).where(
+                Reading.created_on > midnight_today,
+                Reading.sensor_id == sensor_id
+            )
+        ).scalar()
+
+        result[sensor_id] = count
+
+    return result
