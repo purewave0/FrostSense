@@ -10,7 +10,10 @@ function createSensorCard(sensor, todayReadingsCount) {
     sensorName.textContent = sensor.name;
 
     const sensorInfo = card.querySelector('.sensor-info');
-    sensorInfo.textContent = `${todayReadingsCount} readings today`;
+    sensorInfo.textContent = `
+        created on ${sensor.created_on};
+        ${todayReadingsCount} readings today
+    `;
 
     return card;
 }

@@ -40,7 +40,8 @@ def get_sensors() -> tuple[dict]:
     result = db.session.execute(
         db.select(
             Sensor.id,
-            Sensor.name
+            Sensor.name,
+            Sensor.created_on,
         )
     )
 
