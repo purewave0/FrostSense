@@ -14,3 +14,7 @@ def readings():
 @bp.route('/sensors')
 def sensors():
     return render_template('main/sections/sensors.html')
+
+@bp.route('/reports')
+def reports():
+    return render_template('main/sections/reports.html')

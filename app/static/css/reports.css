@@ -1,0 +1,42 @@
+input[type="radio"] {
+    margin: 0;
+}
+
+#report-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.columns {
+    display: flex;
+    flex-direction: row;
+    column-gap: 32px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.datetime-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 4px;
+}
+
+.custom-datetime {
+    display: flex;
+    flex-direction: row;
+}
+
+#notes {
+    font-family: inherit;
+    resize: none;
+}
+
+#notes-length {
+    text-align: right;
+    font-size: 10pt;
+}
