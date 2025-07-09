@@ -28,15 +28,32 @@ document.addEventListener('DOMContentLoaded', () => {
         'end': document.getElementById('end-custom-value'),
     }
 
-    // when 'custom' is marked, require the relevant datetime input to be filled
+    // when 'custom' is checked, require the relevant datetime input to be filled
     for (const radio of Object.values(datetimeRadios.start)) {
         radio.addEventListener('change', () => {
-            customDatetimeInputs.start.required = datetimeRadios.start.custom.checked;
+            const isCustom = datetimeRadios.start.custom.checked;
+            if (isCustom) {
+                // TODO: fix the difference in width when enabled/disabled
+                customDatetimeInputs.start.disabled = false;
+                customDatetimeInputs.start.required = true;
+            } else {
+                customDatetimeInputs.start.required = false;
+                customDatetimeInputs.start.value = '';
+                customDatetimeInputs.start.disabled = true;
+            }
         });
     }
     for (const radio of Object.values(datetimeRadios.end)) {
         radio.addEventListener('change', () => {
-            customDatetimeInputs.end.required = datetimeRadios.end.custom.checked;
+            const isCustom = datetimeRadios.end.custom.checked;
+            if (isCustom) {
+                customDatetimeInputs.end.disabled = false;
+                customDatetimeInputs.end.required = true;
+            } else {
+                customDatetimeInputs.end.required = false;
+                customDatetimeInputs.end.value = '';
+                customDatetimeInputs.end.disabled = true;
+            }
         });
     }
 
