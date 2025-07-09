@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // TODO: fix the difference in width when enabled/disabled
                 customDatetimeInputs.start.disabled = false;
                 customDatetimeInputs.start.required = true;
+                customDatetimeInputs.start.max = '';
             } else {
                 customDatetimeInputs.start.required = false;
                 customDatetimeInputs.start.value = '';
@@ -55,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 customDatetimeInputs.end.required = false;
                 customDatetimeInputs.end.value = '';
                 customDatetimeInputs.end.disabled = true;
+                customDatetimeInputs.end.min = '';
             }
         });
     }
@@ -106,16 +108,60 @@ document.addEventListener('DOMContentLoaded', () => {
         return customDatetimeInputs.end.valueAsDate;
     }
 
+    /**
+     * Format the given Date as YYYY-MM-DDTHH:mm, useful for setting min/max values for
+     * <datetime-local> elements.
+     */
+    function formatDateForLocalDatetime(date) {
+        // [YYYY-MM-DDTHH:mm]:ss.fffZ
+        return date.toISOString().slice(0, 16);
+    }
+
+    // TODO: handle the case when either Start or End is "today"
+
+    // ensure Start comes before End, or End comes after Start (whichever is filled
+    // last)
+    customDatetimeInputs.start.addEventListener('change', () => {
+        if (customDatetimeInputs.start.validity.valid) {
+            // End must come AFTER Start (at least 1 minute later)
+            const startDatetime = customDatetimeInputs.start.valueAsDate;
+            const minimumDatetime = new Date(
+                startDatetime.setMinutes(startDatetime.getMinutes() + 1)
+            );
+            customDatetimeInputs.end.min =
+                formatDateForLocalDatetime(minimumDatetime);
+        } else {
+            customDatetimeInputs.end.min = '';
+        }
+    });
+    customDatetimeInputs.end.addEventListener('change', () => {
+        if (customDatetimeInputs.end.validity.valid) {
+            // Start must come BEFORE End (at least 1 minute earlier)
+            const endDatetime = customDatetimeInputs.end.valueAsDate;
+            const maximumDatetime = new Date(
+                endDatetime.setMinutes(
+                    endDatetime.getMinutes() - 1
+                )
+            );
+            customDatetimeInputs.start.max =
+                formatDateForLocalDatetime(maximumDatetime);
+        } else {
+            customDatetimeInputs.start.max = '';
+        }
+    });
+
     const form = document.getElementById('report-form');
-    form.addEventListener('submit', () => {
+    form.addEventListener('submit', (event) => {
         // TODO: cancel submission when the total of readings is 0
 
-        console.log(
+        alert(
             `sensor_id=${Number(sensorsSelect.value)}`
             + `\nformat=${formatSelect.value}`
             + `\nstart=${getRangeStart()}`
             + `\nend=${getRangeEnd()}`
             + `\nnotes=${notes.value.trim() || '(no notes)'}`
         );
+
+        event.preventDefault();
     });
 });
