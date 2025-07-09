@@ -1,3 +1,41 @@
+/**
+ * Format the given Date as YYYY-MM-DDTHH:mm, useful for setting min/max values for
+ * <datetime-local> elements.
+ */
+function formatDateForLocalDatetime(date) {
+    // [YYYY-MM-DDTHH:mm]:ss.fffZ
+    return date.toISOString().slice(0, 16);
+}
+
+/**
+ * Return the given `date` (implicitly in UTC) adjusted to the local timezone.
+ *
+ * So a date of 00:00 UTC would be returned as 00:00 but in the local timezone.
+ */
+function adjustToLocalTimezone(date) {
+    const timezoneOffsetMillis = date.getTimezoneOffset() * 60 * 1000;
+    return new Date(date.getTime() - timezoneOffsetMillis)
+}
+
+/**
+ * Return today @ 00h:01m, 1 minute later than the start of today (00h:00m).
+ */
+function getDateAfterStartOfToday() {
+    const date = new Date();
+    date.setHours(0, 1, 0);  // today @ 00h:01m:00s
+    return date;
+}
+
+/**
+ * Return today @ 23h:58m, 1 minute earlier than the end of today (23h:58m).
+ */
+function getDateBeforeEndOfToday() {
+    const date = new Date();
+    date.setHours(23, 58, 0);  // today @ 23h:58m:00s
+    return date;
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const sensorsSelect = document.getElementById('sensor');
     // TODO: loading
@@ -30,33 +68,84 @@ document.addEventListener('DOMContentLoaded', () => {
         'end': document.getElementById('end-custom-value'),
     }
 
-    // when 'custom' is checked, require the relevant datetime input to be filled
+
+    /**
+     * Set the custom Start local-datetime's max value to be today @ 23:58, 1 minute
+     * earlier than the end of today (23:59)
+     */
+    function setCustomStartMaxBeforeEndOfToday() {
+        // work in the user's timezone, as working in UTC would be quite confusing for
+        // the user. for instance, in UTC-3 our 23:58 of today would be 20:58; our 00:01
+        // of today would be 21:01 of *yesterday*
+        customDatetimeInputs.start.max = formatDateForLocalDatetime(
+            adjustToLocalTimezone(getDateBeforeEndOfToday())
+        );
+    }
+
+    /**
+     * Set the custom End local-datetime's min value to be today @ 00:01, 1 minute
+     * later than the start of today (00:00)
+     */
+    function setCustomEndMinAfterStartOfToday() {
+        customDatetimeInputs.end.min = formatDateForLocalDatetime(
+            adjustToLocalTimezone(getDateAfterStartOfToday())
+        );
+    }
+
+    // set any min/max values depending on the other end; and if 'custom' is checked,
+    // require the relevant datetime input to be filled
     for (const radio of Object.values(datetimeRadios.start)) {
         radio.addEventListener('change', () => {
+            customDatetimeInputs.start.max = '';
             const isCustom = datetimeRadios.start.custom.checked;
             if (isCustom) {
                 // TODO: fix the difference in width when enabled/disabled
                 customDatetimeInputs.start.disabled = false;
                 customDatetimeInputs.start.required = true;
-                customDatetimeInputs.start.max = '';
+
+                const rangeEndsToday = datetimeRadios.end.today.checked;
+                if (rangeEndsToday) {
+                    // End is until the end of today (23:59), so Start must go UP TO
+                    // 23:58
+                    setCustomStartMaxBeforeEndOfToday();
+                }
             } else {
                 customDatetimeInputs.start.required = false;
                 customDatetimeInputs.start.value = '';
                 customDatetimeInputs.start.disabled = true;
+
+                // only set the limit if needed
+                const isCustomEnd = datetimeRadios.end.custom.checked;
+                if (isCustomEnd) {
+                    setCustomEndMinAfterStartOfToday();
+                }
             }
         });
     }
     for (const radio of Object.values(datetimeRadios.end)) {
         radio.addEventListener('change', () => {
+            customDatetimeInputs.end.min = '';
             const isCustom = datetimeRadios.end.custom.checked;
             if (isCustom) {
                 customDatetimeInputs.end.disabled = false;
                 customDatetimeInputs.end.required = true;
+
+                const rangeStartsToday = datetimeRadios.start.today.checked;
+                if (rangeStartsToday) {
+                    // Start is since the start of today (00:00), so End must be AT
+                    // LEAST 00:01.
+                    setCustomEndMinAfterStartOfToday();
+                }
             } else {
                 customDatetimeInputs.end.required = false;
                 customDatetimeInputs.end.value = '';
                 customDatetimeInputs.end.disabled = true;
-                customDatetimeInputs.end.min = '';
+
+                // only set the limit if needed
+                const isCustomStart = datetimeRadios.start.custom.checked;
+                if (isCustomStart) {
+                    setCustomStartMaxBeforeEndOfToday();
+                }
             }
         });
     }
@@ -108,16 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return customDatetimeInputs.end.valueAsDate;
     }
 
-    /**
-     * Format the given Date as YYYY-MM-DDTHH:mm, useful for setting min/max values for
-     * <datetime-local> elements.
-     */
-    function formatDateForLocalDatetime(date) {
-        // [YYYY-MM-DDTHH:mm]:ss.fffZ
-        return date.toISOString().slice(0, 16);
-    }
-
-    // TODO: handle the case when either Start or End is "today"
 
     // ensure Start comes before End, or End comes after Start (whichever is filled
     // last)
