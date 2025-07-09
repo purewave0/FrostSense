@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
             sensorsSelect.disabled = false;
         });
 
+    const formatSelect = document.getElementById('format');
+
     const datetimeRadios = {
         'start': {
             'today': document.getElementById('start-today'),
@@ -61,5 +63,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const notesLengthCount = document.getElementById('notes-current-length');
     notes.addEventListener('input', () => {
         notesLengthCount.textContent = notes.value.trim().length;
+    });
+
+
+    // -- validation --
+
+    /**
+     * Return the start of the time range. Depends on what type of Start is checked.
+     *
+     * @returns {string} "today" if "Start of today" is checked.
+     * @returns {?Date} when "Custom" is checked: the custom datetime if it has been
+     *     filled, otherwise null.
+     */
+    function getRangeStart() {
+        if (datetimeRadios.start.today.checked) {
+            return 'today';
+        }
+
+        if (!customDatetimeInputs.start.validity.valid) {
+            return null;
+        }
+
+        return customDatetimeInputs.start.valueAsDate;
+    }
+
+    /**
+     * Return the end of the time range. Depends on what type of End is checked.
+     *
+     * @returns {string} "today" if "End of today" is checked.
+     * @returns {?Date} when "Custom" is checked: the custom datetime if it has been
+     *     filled, otherwise null.
+     */
+    function getRangeEnd() {
+        if (datetimeRadios.end.today.checked) {
+            return 'today';
+        }
+
+        if (!customDatetimeInputs.end.validity.valid) {
+            return null;
+        }
+
+        return customDatetimeInputs.end.valueAsDate;
+    }
+
+    const form = document.getElementById('report-form');
+    form.addEventListener('submit', () => {
+        // TODO: cancel submission when the total of readings is 0
+
+        console.log(
+            `sensor_id=${Number(sensorsSelect.value)}`
+            + `\nformat=${formatSelect.value}`
+            + `\nstart=${getRangeStart()}`
+            + `\nend=${getRangeEnd()}`
+            + `\nnotes=${notes.value.trim() || '(no notes)'}`
+        );
     });
 });
