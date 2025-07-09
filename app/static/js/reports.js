@@ -124,10 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
     customDatetimeInputs.start.addEventListener('change', () => {
         if (customDatetimeInputs.start.validity.valid) {
             // End must come AFTER Start (at least 1 minute later)
-            const startDatetime = customDatetimeInputs.start.valueAsDate;
-            const minimumDatetime = new Date(
-                startDatetime.setMinutes(startDatetime.getMinutes() + 1)
-            );
+            const minimumDatetime = customDatetimeInputs.start.valueAsDate;
+            minimumDatetime.setMinutes(minimumDatetime.getMinutes() + 1)
+
             customDatetimeInputs.end.min =
                 formatDateForLocalDatetime(minimumDatetime);
         } else {
@@ -137,12 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
     customDatetimeInputs.end.addEventListener('change', () => {
         if (customDatetimeInputs.end.validity.valid) {
             // Start must come BEFORE End (at least 1 minute earlier)
-            const endDatetime = customDatetimeInputs.end.valueAsDate;
-            const maximumDatetime = new Date(
-                endDatetime.setMinutes(
-                    endDatetime.getMinutes() - 1
-                )
-            );
+            const maximumDatetime = customDatetimeInputs.end.valueAsDate;
+            maximumDatetime.setMinutes(maximumDatetime.getMinutes() - 1);
+
             customDatetimeInputs.start.max =
                 formatDateForLocalDatetime(maximumDatetime);
         } else {
