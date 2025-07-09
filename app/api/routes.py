@@ -48,7 +48,7 @@ def api_sensor_readings(sensor_id):
         'id': reading['id'],
         'sensor_id': reading['sensor_id'],
         'temperature': reading['temperature'],
-        'created_on': reading['temperature'],
+        'created_on': reading['created_on'],
     }), 201
 
 
