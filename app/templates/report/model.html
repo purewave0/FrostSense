@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Report model</title>
+    <link rel="stylesheet" href="model.css">
+</head>
+
+<body>
+    <header>
+        <div id="header-info">
+            <div class="header-row">
+                <div class="header-column">
+                    <b>Sensor:</b>
+                    <span>{{ sensor_name }}</span>
+                </div>
+
+                <div class="header-column">
+                    <b>Generated on:</b>
+                    <span>{{ created_on }}</span>
+                </div>
+            </div>
+
+            <div class="header-row">
+                <div class="header-column">
+                    <b>Start:</b>
+                    <span>{{ range_start }}</span>
+                </div>
+
+                <div class="header-column">
+                    <b>End:</b>
+                    <span>{{ range_end }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="header-token">
+            <!-- TODO -->
+            <img id="qr-code" src="{{ token_b64_qr }}">
+            <span>{{ formatted_token }}</span>
+        </div>
+    </header>
+
+
+    <script src="model.js"></script>
+</body>
+
+</html>
