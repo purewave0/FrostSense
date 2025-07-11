@@ -4,7 +4,7 @@ const Api = {
     },
 
     fetchLatestSensorReadings() {
-        return fetch('/api/readings/latest');
+        return fetch('/api/sensors/latest-readings');
     },
 
     fetchTodayReadingsCounts() {

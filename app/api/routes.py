@@ -32,6 +32,25 @@ def api_sensors():
     }), 201
 
 
+@bp.route('/sensors/latest-readings')
+def api_latest_readings():
+    raw_sensor_ids = request.args.get('sensor_ids')
+    sensor_ids = None
+    if not raw_sensor_ids:
+        sensor_ids = get_sensor_ids()
+    else:
+        try:
+            sensor_ids = _parse_sensor_ids(raw_sensor_ids)
+            # TODO: verify if each one exists?
+        except (ValueError, TypeError):
+            return jsonify({'error': 'field_error'}), 400
+
+    latest_readings = get_latest_readings_from_sensors(
+        sensor_ids, _READINGS_LIMIT
+    )
+    return jsonify(latest_readings)
+
+
 # TODO: sensor 'ping' route. requires sensor key too
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
@@ -72,20 +91,3 @@ def _parse_sensor_ids(raw_sensor_ids: str) -> list[str]:
 # TODO: extract this to a configurable option in the interface
 _READINGS_LIMIT = 40
 
-@bp.route('/readings/latest')
-def api_latest_readings():
-    raw_sensor_ids = request.args.get('sensor_ids')
-    sensor_ids = None
-    if not raw_sensor_ids:
-        sensor_ids = get_sensor_ids()
-    else:
-        try:
-            sensor_ids = _parse_sensor_ids(raw_sensor_ids)
-            # TODO: verify if each one exists?
-        except (ValueError, TypeError):
-            return jsonify({'error': 'field_error'}), 400
-
-    latest_readings = get_latest_readings_from_sensors(
-        sensor_ids, _READINGS_LIMIT
-    )
-    return jsonify(latest_readings)
