@@ -78,9 +78,13 @@ def api_sensor_readings(sensor_id):
 
 # TODO: sensor 'ping' route. requires sensor key too
 def _parse_iso_datetime(iso_datetime: str) -> datetime:
-    """Return the given ISO datetime string as a datetime object."""
-    # yyyy-mm-ddThh:mm:ssZ
-    return datetime.strptime(iso_datetime, '%Y-%m-%dT%H:%M:%SZ')
+    """Return the given datetime string as a datetime object.
+
+    Args:
+        iso_datetime: ISO datetime string according to the JavaScript datetime
+            format, 'YYYY-MM-DDThh:mm:ss.sssZ'.
+    """
+    return datetime.strptime(iso_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
 
 @bp.route('/sensors/<int:sensor_id>/readings-count')
 def api_sensor_readings_count(sensor_id):

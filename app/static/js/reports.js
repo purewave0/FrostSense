@@ -3,18 +3,51 @@
  * <datetime-local> elements.
  */
 function formatDateForLocalDatetime(date) {
-    // [YYYY-MM-DDTHH:mm]:ss.fffZ
+    // [YYYY-MM-DDTHH:mm]:ss.sssZ
     return date.toISOString().slice(0, 16);
 }
 
 /**
  * Return the given `date` (implicitly in UTC) adjusted to the local timezone.
  *
- * So a date of 00:00 UTC would be returned as 00:00 but in the local timezone.
+ * So a date of 00:00 UTC, for example, would be returned as 00:00 but in the local
+ * timezone.
+ *
+ * This is the reverse of adjustToUTC.
  */
 function adjustToLocalTimezone(date) {
     const timezoneOffsetMillis = date.getTimezoneOffset() * 60 * 1000;
     return new Date(date.getTime() - timezoneOffsetMillis)
+}
+
+/**
+ * Return the given `date` (in local time) adjusted to UTC.
+ *
+ * So a date of 00:00 UTC-3, for example, would be returned as 00:00 but in UTC.
+ *
+ * This is the reverse of adjustToLocalTimezone.
+ */
+function adjustToUTC(date) {
+    const timezoneOffsetMillis = date.getTimezoneOffset() * 60 * 1000;
+    return new Date(date.getTime() + timezoneOffsetMillis)
+}
+
+/**
+ * Return today @ 00h:00m:00s.000ms.
+ */
+function getStartOfToday() {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);  // today @ 00h:00m:00s.000ms
+    return date;
+}
+
+/**
+ * Return today @ 23h:59m:59s.999ms.
+ */
+function getEndOfToday() {
+    const date = new Date();
+    date.setHours(23, 59, 59, 999);  // today @ 23h:59m:59s.999ms
+    return date;
 }
 
 /**
@@ -31,7 +64,9 @@ function getDateAfterStartOfToday() {
  */
 function getDateBeforeEndOfToday() {
     const date = new Date();
-    date.setHours(23, 58, 0);  // today @ 23h:58m:00s
+    // custom datetimes are limited to minutes, so it's unnecessary to set non-0 values
+    // to seconds and beyond.
+    date.setHours(23, 58, 0, 0);  // today @ 23h:58m:00s.000ms
     return date;
 }
 
@@ -160,41 +195,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // -- validation --
 
     /**
-     * Return the start of the time range. Depends on what type of Start is checked.
+     * Return the start of the time range.
      *
-     * @returns {string} "today" if "Start of today" is checked.
-     * @returns {?Date} when "Custom" is checked: the custom datetime if it has been
-     *     filled, otherwise null.
+     * @returns {?Date} The datetime value in UTC if valid, otherwise null.
      */
     function getRangeStart() {
         if (datetimeRadios.start.today.checked) {
-            return 'today';
+            return getStartOfToday();
         }
 
         if (!customDatetimeInputs.start.validity.valid) {
             return null;
         }
 
-        return customDatetimeInputs.start.valueAsDate;
+        // for user convenience, the custom datetime inputs are in the local timezone;
+        // so adjust them back to UTC
+        return adjustToUTC(
+            customDatetimeInputs.start.valueAsDate
+        );
     }
 
     /**
-     * Return the end of the time range. Depends on what type of End is checked.
+     * Return the end of the time range.
      *
-     * @returns {string} "today" if "End of today" is checked.
-     * @returns {?Date} when "Custom" is checked: the custom datetime if it has been
-     *     filled, otherwise null.
+     * @returns {?Date} The datetime value in UTC if valid, otherwise null.
      */
     function getRangeEnd() {
         if (datetimeRadios.end.today.checked) {
-            return 'today';
+            return getEndOfToday();
         }
 
         if (!customDatetimeInputs.end.validity.valid) {
             return null;
         }
 
-        return customDatetimeInputs.end.valueAsDate;
+        return adjustToUTC(
+            customDatetimeInputs.end.valueAsDate
+        );
     }
 
 
@@ -225,6 +262,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // inputs that filter the readings that will be included in the report
+    const filterInputs = [
+        sensorsSelect,
+        datetimeRadios.start.today,
+        datetimeRadios.start.custom,
+        datetimeRadios.end.today,
+        datetimeRadios.end.custom,
+        customDatetimeInputs.start,
+        customDatetimeInputs.end,
+    ];
+
     const form = document.getElementById('report-form');
     form.addEventListener('submit', (event) => {
         // TODO: cancel submission when the total of readings is 0
@@ -232,11 +280,42 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(
             `sensor_id=${Number(sensorsSelect.value)}`
             + `\nformat=${formatSelect.value}`
-            + `\nstart=${getRangeStart()}`
-            + `\nend=${getRangeEnd()}`
+            + `\nstart=${getRangeStart().toLocaleString()}`
+            + `\nend=${getRangeEnd().toLocaleString()}`
             + `\nnotes=${notes.value.trim() || '(no notes)'}`
         );
 
         event.preventDefault();
     });
+
+    const readingsCountElement = document.getElementById('readings-count');
+    const generateReportButton = document.getElementById('generate');
+
+    let readingsCount = null;
+    for (const filterInput of filterInputs) {
+        filterInput.addEventListener('change', () => {
+            if (!form.checkValidity()) {
+                readingsCountElement.textContent = '…';
+                return;
+            }
+
+            // TODO: loading
+            generateReportButton.disabled = true;
+            readingsCountElement.classList.add('loading');
+
+            readingsCount = Api.fetchSensorReadingsInTimeRange(
+                Number(sensorsSelect.value),
+                getRangeStart().toISOString(),
+                getRangeEnd().toISOString(),
+            ).then(
+                response => response.json()
+            ).then(count => {
+                readingsCount = count;
+                readingsCountElement.textContent = count;
+                readingsCountElement.classList.remove('loading');
+            }).finally(() => {
+                generateReportButton.disabled = false;
+            });
+        });
+    }
 });
