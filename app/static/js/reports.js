@@ -275,7 +275,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.getElementById('report-form');
     form.addEventListener('submit', (event) => {
-        // TODO: cancel submission when the total of readings is 0
+        event.preventDefault();
+
+        if (!readingsCount) {
+            // TODO: move this to an element
+            alert(
+                'No readings within this time period. Please try changing the time'
+                + ' range.'
+            );
+            return;
+        }
 
         alert(
             `sensor_id=${Number(sensorsSelect.value)}`
@@ -284,8 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
             + `\nend=${getRangeEnd().toLocaleString()}`
             + `\nnotes=${notes.value.trim() || '(no notes)'}`
         );
-
-        event.preventDefault();
     });
 
     const readingsCountElement = document.getElementById('readings-count');
