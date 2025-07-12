@@ -95,6 +95,60 @@ def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
     db.session.commit()
 
 
+def get_sensor_readings_in_time_range(
+    sensor_id: int, range_start: datetime, range_end: datetime
+) -> tuple[dict]:
+    """Return the readings in the given time range from the given sensor.
+
+    Args:
+        sensor_id: The ID of the Sensor to fetch the readings from.
+        range_start: The start (inclusive) of the time range.
+        range_end: The end (inclusive) of the time range.
+    """
+    result = db.session.execute(
+        db.select(
+            Reading.id,
+            Reading.temperature,
+            Reading.created_on,
+        ).where(
+            Reading.created_on >= range_start,
+            Reading.created_on <= range_end,
+            Reading.sensor_id == sensor_id
+        ).order_by(
+            Reading.created_on.desc()
+        )
+    )
+
+    return _rows_to_dicts(result)
+
+
+def get_sensor_readings_count_in_time_range(
+    sensor_id: int, range_start: datetime, range_end: datetime
+) -> int:
+    """Return the amount of readings in the given time range from the given sensor.
+
+    Args:
+        sensor_id: The ID of the Sensor to count the readings from.
+        range_start: The start (inclusive) of the time range.
+        range_end: The end (inclusive) of the time range.
+    """
+    result = db.session.execute(
+        db.select(
+            db.func.count()
+        ).select_from(
+            Reading
+        ).where(
+            Reading.created_on >= range_start,
+            Reading.created_on <= range_end,
+            Reading.sensor_id == sensor_id
+        ).order_by(
+            Reading.created_on.desc()
+        )
+    ).scalar()
+
+    return result
+
+
 def get_latest_readings_from_sensor(sensor_id: int, limit: int) -> tuple[dict]:
     """Get the last N readings from the given sensor. Useful for populating a graph.
 

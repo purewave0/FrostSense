@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import jsonify, request
 
 from app.api import bp
@@ -5,6 +7,7 @@ from app.dbapi import (
     get_sensors, get_sensor_ids,
     create_sensor,
     get_latest_readings_from_sensors, get_today_readings_count_from_sensors,
+    get_sensor_readings_count_in_time_range,
     create_reading
 )
 
@@ -32,6 +35,10 @@ def api_sensors():
     }), 201
 
 
+
+# TODO: extract this to a configurable option in the interface
+_READINGS_LIMIT = 40
+
 @bp.route('/sensors/latest-readings')
 def api_latest_readings():
     raw_sensor_ids = request.args.get('sensor_ids')
@@ -51,8 +58,6 @@ def api_latest_readings():
     return jsonify(latest_readings)
 
 
-# TODO: sensor 'ping' route. requires sensor key too
-
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
 def api_sensor_readings(sensor_id):
     try:
@@ -71,6 +76,27 @@ def api_sensor_readings(sensor_id):
     }), 201
 
 
+# TODO: sensor 'ping' route. requires sensor key too
+def _parse_iso_datetime(iso_datetime: str) -> datetime:
+    """Return the given ISO datetime string as a datetime object."""
+    # yyyy-mm-ddThh:mm:ssZ
+    return datetime.strptime(iso_datetime, '%Y-%m-%dT%H:%M:%SZ')
+
+@bp.route('/sensors/<int:sensor_id>/readings-count')
+def api_sensor_readings_count(sensor_id):
+    try:
+        range_start = _parse_iso_datetime(request.args['range_start'])
+        range_end = _parse_iso_datetime(request.args['range_end'])
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'field_error'}), 400
+
+    readings = get_sensor_readings_count_in_time_range(
+        sensor_id, range_start, range_end
+    )
+
+    return jsonify(readings)
+
+
 @bp.route('/sensors/readings-count/today')
 def api_sensors_today_readings_count():
     sensor_ids = get_sensor_ids()
@@ -87,7 +113,3 @@ def _parse_sensor_ids(raw_sensor_ids: str) -> list[str]:
             parsed.append(sensor_id)
 
     return parsed
-
-# TODO: extract this to a configurable option in the interface
-_READINGS_LIMIT = 40
-
