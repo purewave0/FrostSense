@@ -10,6 +10,8 @@ instance/
 .coverage
 htmlcov/
 
+.zed/
+
 dist/
 build/
 *.egg-info/
