@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 from datetime import datetime
+from typing import Any
 
 from flask import current_app
 from sqlalchemy.engine.result import ScalarResult
@@ -35,7 +36,7 @@ def create_sensor(name: str) -> dict:
 # TODO: edit sensor, delete sensor
 
 
-def get_sensors() -> tuple[dict]:
+def get_sensors() -> tuple[dict[str, Any], ...]:
     """Return all sensors."""
     result = db.session.execute(
         db.select(
@@ -97,7 +98,7 @@ def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
 
 def get_sensor_readings_in_time_range(
     sensor_id: int, range_start: datetime, range_end: datetime
-) -> tuple[dict]:
+) -> tuple[dict[str, Any], ...]:
     """Return the readings in the given time range from the given sensor.
 
     Args:
@@ -144,12 +145,14 @@ def get_sensor_readings_count_in_time_range(
         ).order_by(
             Reading.created_on.desc()
         )
-    ).scalar()
+    ).scalar_one()
 
     return result
 
 
-def get_latest_readings_from_sensor(sensor_id: int, limit: int) -> tuple[dict]:
+def get_latest_readings_from_sensor(
+    sensor_id: int, limit: int
+) -> tuple[dict[str, Any], ...]:
     """Get the last N readings from the given sensor. Useful for populating a graph.
 
     Args:
