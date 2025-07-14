@@ -4,9 +4,8 @@ import datetime as dt
 from random import randrange
 
 import click
-from flask import current_app
 
-from app.dbapi import create_sensor, get_sensors, create_reading, create_readings
+from app.dbapi import create_sensor, get_sensors, create_readings
 
 
 def register_commands(app):
