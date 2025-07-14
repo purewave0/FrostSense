@@ -1,0 +1,11 @@
+#gauge-cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.gauge-card {
+    width: fit-content;
+    background-color: lightsteelblue;
+}

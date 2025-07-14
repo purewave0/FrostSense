@@ -6,6 +6,9 @@
 
 {% block js %}
     <script src="/static/js/api.js"></script>
+    <script src="/static/js/lib/raphael.min.js"></script>
+    <script src="/static/js/lib/justgage.min.js"></script>
+    <script src="/static/js/gaugecard.js"></script>
     <script src="/static/js/readings.js"></script>
 {% endblock %}
 
@@ -13,5 +16,5 @@
 
 {% block content %}
     <h2>readings</h2>
-    <div id="sensor-readings"></div>
+    <div id="gauge-cards"></div>
 {% endblock %}
