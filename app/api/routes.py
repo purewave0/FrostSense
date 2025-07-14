@@ -104,7 +104,9 @@ def api_sensor_readings_count(sensor_id):
 @bp.route('/sensors/readings-count/today')
 def api_sensors_today_readings_count():
     sensor_ids = get_sensor_ids()
-    return get_today_readings_count_from_sensors(sensor_ids)
+    return jsonify(
+        get_today_readings_count_from_sensors(sensor_ids)
+    )
 
 
 def _parse_sensor_ids(raw_sensor_ids: str) -> list[str]:
