@@ -12,6 +12,7 @@ class GraphCard {
             this.#card.querySelector('.graph'),
             [],  // empty data
             {
+                interactionModel: {}, // disable zooming, etc.
                 // we'll pass the labels once the data is set
                 valueRange: [-30, 30],
                 axes: {
