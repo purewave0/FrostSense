@@ -204,7 +204,7 @@ def get_sensor_latest_readings(
         ).where(
             Reading.sensor_id == sensor_id
         ).order_by(
-            Reading.created_on.desc()
+            Reading.created_on.asc()
         ).limit(
             limit
         )
