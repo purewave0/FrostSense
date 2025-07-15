@@ -30,6 +30,7 @@ class GaugeCard {
     static #prepareCard(card, sensorId, sensorName) {
         card.dataset.sensorId = sensorId;
         card.className = 'gauge-card';
+        // TODO: datetime (of the current reading)
         card.innerHTML = `
             <h2 class='sensor-name'></h2>
             <div class='gauge'></div>
@@ -48,6 +49,7 @@ class GaugeCard {
         return this.#card;
     }
 
+    // TODO: change to setReading(reading)
     setTemperature(temperature) {
         this.#gauge.refresh(temperature);
     }
