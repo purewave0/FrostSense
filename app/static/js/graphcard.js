@@ -86,8 +86,4 @@ class GraphCard {
     getCardElement() {
         return this.#card;
     }
-
-    setTemperature(temperature) {
-        this.#graph.refresh(temperature);
-    }
 }
