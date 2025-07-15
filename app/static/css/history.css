@@ -9,3 +9,8 @@
     width: fit-content;
     background-color: lightgreen;
 }
+
+.dygraph-legend {
+    padding: 8px;
+    border-radius: 4px;
+}

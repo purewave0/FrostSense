@@ -10,9 +10,20 @@ class GraphCard {
         this.#card = element;
         this.#graph = new Dygraph(
             this.#card.querySelector('.graph'),
-            [],
+            [],  // empty data
             {
-                labels: ['Time', 'Temperature']
+                // we'll pass the labels once the data is set
+                valueRange: [-30, 30],
+                axes: {
+                    y: {
+                        valueFormatter(temperature) {
+                            return `${temperature.toFixed(1)} °C`;
+                        },
+                        axisLabelFormatter(temperature) {
+                            return `${temperature.toFixed(0)} °C`;
+                        },
+                    },
+                }
             }
         );
     }
@@ -42,7 +53,10 @@ class GraphCard {
                 return [new Date(reading.created_on), reading.temperature]
             });
         this.#data = formattedReadings;
-        this.#graph.updateOptions({ 'file': formattedReadings });
+        this.#graph.updateOptions({
+            'labels': ['Time', 'Temperature'],
+            'file': formattedReadings
+        });
     }
 
     addReadings(readings) {

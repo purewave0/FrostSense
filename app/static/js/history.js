@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 graphCardsDestination.append(card);
 
                 const graphCard = new GraphCard(card, sensor.id, sensor.name);
-                console.log(sensorReadings);
                 graphCard.setReadings(sensorReadings[sensor.id]);
             }
         });
