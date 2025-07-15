@@ -1,0 +1,11 @@
+#graph-cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.graph-card {
+    width: fit-content;
+    background-color: lightgreen;
+}
