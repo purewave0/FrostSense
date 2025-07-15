@@ -9,8 +9,8 @@ class GaugeCard {
             id: this.#card.querySelector('.gauge').id,
             // TODO
             value: 0,
-            min: -40,
-            max: 40,
+            min: -30,
+            max: 30,
             textRenderer: (value) => {
                 return `${value.toFixed(1)} °C`;
             },
