@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from app.extensions import db
 from app.models.util import utcnow
 
@@ -9,11 +11,11 @@ class Sensor(db.Model):
 
     MAX_NAME_LENGTH = 64
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(
-        db.String(MAX_NAME_LENGTH), nullable=False, unique=True,
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(
+        db.String(MAX_NAME_LENGTH), unique=True,
     )
-    created_on = db.Column(db.DateTime, server_default=utcnow())
+    created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
     # TODO: secret key tied to the board, so (fake) readings can't just be sent to
     # whatever ID
 
@@ -24,10 +26,10 @@ class Sensor(db.Model):
 class Reading(db.Model):
     __tablename__ = 'Reading'
 
-    id = db.Column(db.Integer, primary_key=True)
-    sensor_id = db.Column(db.Integer, db.ForeignKey('Sensor.id'))
-    temperature = db.Column(db.Float, nullable=True)
-    created_on = db.Column(db.DateTime, server_default=utcnow(), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sensor_id: Mapped[int] = mapped_column(db.ForeignKey('Sensor.id'))
+    temperature: Mapped[float] = mapped_column()
+    created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
 
     def __init__(
         self,
