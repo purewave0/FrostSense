@@ -11,6 +11,10 @@ def index():
 def readings():
     return render_template('main/sections/readings.html')
 
+@bp.route('/history')
+def history():
+    return render_template('main/sections/history.html')
+
 @bp.route('/sensors')
 def sensors():
     return render_template('main/sections/sensors.html')

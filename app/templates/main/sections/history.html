@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/history.css">
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/graphcard.js"></script>
+    <script src="/static/js/history.js"></script>
+{% endblock %}
+
+{% block title %} History {% endblock %}
+
+{% block content %}
+    <h2>history</h2>
+    <div id="gauge-cards"></div>
+{% endblock %}
