@@ -15,6 +15,20 @@ class GraphCard {
                 interactionModel: {}, // disable zooming, etc.
                 // we'll pass the labels once the data is set
                 valueRange: [-30, 30],
+                legendFormatter(data) {
+                    if (data.x == null) {
+                        return '';  // no selection
+                    }
+                    const temperature = data.series[0].y.toFixed(1);
+                    // TODO: shorter format?
+                    const datetime = new Date(data.x).toLocaleString();
+                    return `
+                        <b class="temperature-label">Temperature:</b>
+                        <code>${temperature}</code> °C
+                        <br>
+                        at ${datetime}
+                    `;
+                },
                 axes: {
                     y: {
                         valueFormatter(temperature) {
@@ -51,11 +65,11 @@ class GraphCard {
         // ] for data x and y.
         const formattedReadings =
             readings.map((reading) => {
-                return [new Date(reading.created_on), reading.temperature]
+                return [new Date(reading.created_on), reading.temperature, reading.id]
             });
         this.#data = formattedReadings;
         this.#graph.updateOptions({
-            'labels': ['Time', 'Temperature'],
+            'labels': ['Time', 'Temperature', 'id'],
             'file': formattedReadings
         });
     }
