@@ -3,6 +3,10 @@ const Api = {
         return fetch('/api/sensors');
     },
 
+    fetchLastSensorReadings() {
+        return fetch('/api/sensors/last-readings');
+    },
+
     fetchLatestSensorReadings() {
         return fetch('/api/sensors/latest-readings');
     },
