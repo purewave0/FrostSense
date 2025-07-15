@@ -6,8 +6,8 @@ from app.api import bp
 from app.dbapi import (
     get_sensors, get_sensor_ids,
     create_sensor,
-    get_last_readings_from_sensors,
-    get_latest_readings_from_sensors, get_today_readings_count_from_sensors,
+    get_sensors_last_readings,
+    get_sensors_latest_readings, get_sensors_readings_counts_since_today,
     get_sensor_readings_count_in_time_range,
     create_reading
 )
@@ -40,7 +40,7 @@ def api_sensors():
 def api_last_readings():
     sensor_ids = get_sensor_ids()
 
-    last_readings = get_last_readings_from_sensors(sensor_ids)
+    last_readings = get_sensors_last_readings(sensor_ids)
     return jsonify(last_readings)
 
 
@@ -60,7 +60,7 @@ def api_latest_readings():
         except (ValueError, TypeError):
             return jsonify({'error': 'field_error'}), 400
 
-    latest_readings = get_latest_readings_from_sensors(
+    latest_readings = get_sensors_latest_readings(
         sensor_ids, _READINGS_LIMIT
     )
     return jsonify(latest_readings)
@@ -113,7 +113,7 @@ def api_sensor_readings_count(sensor_id):
 def api_sensors_today_readings_count():
     sensor_ids = get_sensor_ids()
     return jsonify(
-        get_today_readings_count_from_sensors(sensor_ids)
+        get_sensors_readings_counts_since_today(sensor_ids)
     )
 
 

@@ -150,7 +150,7 @@ def get_sensor_readings_count_in_time_range(
     return result
 
 
-def get_last_reading_from_sensor(
+def get_sensor_last_reading(
     sensor_id: int
 ) -> dict[str, Any]:
     """Get the last reading from the given sensor. Useful for gauges.
@@ -173,7 +173,7 @@ def get_last_reading_from_sensor(
     return result._asdict()
 
 
-def get_last_readings_from_sensors(
+def get_sensors_last_readings(
     sensor_ids: Iterable[int]
 ) -> dict[int, dict[str, Any]]:
     """Get the last reading from each given sensor. Useful for gauges.
@@ -182,12 +182,12 @@ def get_last_readings_from_sensors(
         sensor_ids: The IDs of the Sensors to fetch the last readings from.
     """
     return {
-        sensor_id: get_last_reading_from_sensor(sensor_id)
+        sensor_id: get_sensor_last_reading(sensor_id)
         for sensor_id in sensor_ids
     }
 
 
-def get_latest_readings_from_sensor(
+def get_sensor_latest_readings(
     sensor_id: int, limit: int
 ) -> tuple[dict[str, Any], ...]:
     """Get the last N readings from the given sensor. Useful for populating a graph.
@@ -213,7 +213,7 @@ def get_latest_readings_from_sensor(
     return _rows_to_dicts(result)
 
 
-def get_latest_readings_from_sensors(
+def get_sensors_latest_readings(
     sensor_ids: Iterable[int], limit: int
 ) -> dict[int, tuple]:
     """Get the last N readings from each given sensor. Useful for populating graphs.
@@ -223,12 +223,12 @@ def get_latest_readings_from_sensors(
         limit: The max number of readings to fetch from each sensor.
     """
     return {
-        sensor_id: get_latest_readings_from_sensor(sensor_id, limit)
+        sensor_id: get_sensor_latest_readings(sensor_id, limit)
         for sensor_id in sensor_ids
     }
 
 
-def get_today_readings_count_from_sensors(sensor_ids: Iterable[int]) -> dict[int, int]:
+def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[int, int]:
     """Get the amount of readings sent today for each sensor.
 
     "Today" means since midnight (00:00:00) in the server's time.
