@@ -7,13 +7,23 @@ class GaugeCard {
         this.#card = element;
         this.#gauge = new JustGage({
             id: this.#card.querySelector('.gauge').id,
-            // TODO
             value: 0,
             min: -30,
+            minTxt: '-30 °C',
             max: 30,
+            minTxt: '30 °C',
+            gaugeWidthScale: 0.75,
             textRenderer: (value) => {
                 return `${value.toFixed(1)} °C`;
             },
+            startAnimationTime: 500,
+            refreshAnimationTime: 500,
+            pointer: true,
+            pointerOptions: {
+                toplength: 16,
+                bottomlength: 24,
+                bottomwidth: 8,
+            }
         });
     }
 
