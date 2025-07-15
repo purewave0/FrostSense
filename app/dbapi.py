@@ -150,6 +150,43 @@ def get_sensor_readings_count_in_time_range(
     return result
 
 
+def get_last_reading_from_sensor(
+    sensor_id: int
+) -> dict[str, Any]:
+    """Get the last reading from the given sensor. Useful for gauges.
+
+    Args:
+        sensor_id: The ID of the Sensor to fetch the last reading from.
+    """
+    result = db.session.execute(
+        db.select(
+            Reading.id,
+            Reading.temperature,
+            Reading.created_on,
+        ).where(
+            Reading.sensor_id == sensor_id
+        ).order_by(
+            Reading.created_on.desc()
+        ).limit(1)
+    ).one()
+
+    return result._asdict()
+
+
+def get_last_readings_from_sensors(
+    sensor_ids: Iterable[int]
+) -> dict[int, dict[str, Any]]:
+    """Get the last reading from each given sensor. Useful for gauges.
+
+    Args:
+        sensor_ids: The IDs of the Sensors to fetch the last readings from.
+    """
+    return {
+        sensor_id: get_last_reading_from_sensor(sensor_id)
+        for sensor_id in sensor_ids
+    }
+
+
 def get_latest_readings_from_sensor(
     sensor_id: int, limit: int
 ) -> tuple[dict[str, Any], ...]:
@@ -179,7 +216,7 @@ def get_latest_readings_from_sensor(
 def get_latest_readings_from_sensors(
     sensor_ids: Iterable[int], limit: int
 ) -> dict[int, tuple]:
-    """Get the last N readings from the given sensors. Useful for populating graphs.
+    """Get the last N readings from each given sensor. Useful for populating graphs.
 
     Args:
         sensor_ids: The IDs of the Sensors to fetch the readings from.
@@ -199,6 +236,7 @@ def get_today_readings_count_from_sensors(sensor_ids: Iterable[int]) -> dict[int
     Args:
         sensor_ids: The IDs of the Sensors to fetch the readings count from.
     """
+    # TODO: get 'midnight' not in the server's time, but the user's?
     midnight_today = datetime.utcnow().replace(
         hour=0, minute=0, second=0, microsecond=0
     )

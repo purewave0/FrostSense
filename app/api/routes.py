@@ -6,6 +6,7 @@ from app.api import bp
 from app.dbapi import (
     get_sensors, get_sensor_ids,
     create_sensor,
+    get_last_readings_from_sensors,
     get_latest_readings_from_sensors, get_today_readings_count_from_sensors,
     get_sensor_readings_count_in_time_range,
     create_reading
@@ -34,6 +35,13 @@ def api_sensors():
         'created_on': sensor['created_on'],
     }), 201
 
+
+@bp.route('/sensors/last-readings')
+def api_last_readings():
+    sensor_ids = get_sensor_ids()
+
+    last_readings = get_last_readings_from_sensors(sensor_ids)
+    return jsonify(last_readings)
 
 
 # TODO: extract this to a configurable option in the interface
