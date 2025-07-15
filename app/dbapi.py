@@ -204,13 +204,14 @@ def get_sensor_latest_readings(
         ).where(
             Reading.sensor_id == sensor_id
         ).order_by(
-            Reading.created_on.asc()
+            Reading.created_on.desc()
         ).limit(
             limit
         )
     )
 
-    return _rows_to_dicts(result)
+    # reversing so that oldest comes first, newest comes last
+    return _rows_to_dicts(result)[::-1]
 
 
 def get_sensors_latest_readings(
