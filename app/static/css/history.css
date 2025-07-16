@@ -10,6 +10,13 @@
     background-color: lightgreen;
 }
 
+.graph-card .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .dygraph-legend {
     padding: 8px;
     border-radius: 4px;

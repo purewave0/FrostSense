@@ -2,10 +2,18 @@ class GraphCard {
     #card = null;
     #data = [];
     #graph = null;
+    #controls = null;
 
     constructor(element, sensorId, sensorName) {
         GraphCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
+
+        this.#controls = {
+            'previousDayButton': this.#card.querySelector('.button-previous'),
+            'currentDate': this.#card.querySelector('.current-date'),
+            'nextDayButton': this.#card.querySelector('.button-next'),
+        }
+
         this.#graph = new Dygraph(
             this.#card.querySelector('.graph'),
             [],  // empty data
@@ -44,9 +52,21 @@ class GraphCard {
     static #prepareCard(card, sensorId, sensorName) {
         card.dataset.sensorId = sensorId;
         card.className = 'graph-card';
+        // TODO: svg icons for previous/next
         card.innerHTML = `
-            <h2 class='sensor-name'></h2>
-            <div class='graph'></div>
+            <div class="header">
+                <h2 class="sensor-name"></h2>
+                <div class="controls">
+                    <button class="button-previous">
+                        <span>&lt;</span>
+                    </button>
+                    <input class="current-date" type="date">
+                    <button class="button-next">
+                        <span>&gt;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="graph"></div>
         `;
 
         const name = card.querySelector('.sensor-name');
@@ -84,6 +104,10 @@ class GraphCard {
 
     getCardElement() {
         return this.#card;
+    }
+
+    getControls() {
+        return this.#controls;
     }
 
     getReadingsCount() {

@@ -1,11 +1,3 @@
-function getStartOfToday() {
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);  // hours, minutes, seconds, millis
-
-    return start;
-}
-
-
 document.addEventListener('DOMContentLoaded', async () => {
     const graphCardsDestination = document.getElementById('graph-cards');
 
@@ -21,6 +13,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const graphCard = new GraphCard(card, sensor.id, sensor.name);
         graphCards[sensor.id] = graphCard;
+
+        const controls = graphCard.getControls();
+        controls.currentDate.valueAsDate = getStartOfToday();
+        controls.currentDate.max = formatDateForDateInput(getStartOfToday());
+
+        controls.currentDate.addEventListener('change', () => {
+            // the currentDate's value needs to be adjusted for comparison, as it is in
+            // the local timezone whereas getStartOfToday()'s result is in UTC
+            const newDate = adjustToUTC(controls.currentDate.valueAsDate);
+            if (newDate.getTime() === getStartOfToday().getTime()) {
+                controls.nextDayButton.disabled = true;
+            }
+        })
+
+        controls.previousDayButton.addEventListener('click', () => {
+            controls.nextDayButton.disabled = false;
+            const currentDate = controls.currentDate.valueAsDate;
+            currentDate.setDate(currentDate.getDate() - 1);
+            controls.currentDate.valueAsDate = currentDate;
+
+            controls.currentDate.dispatchEvent(new Event('change'));
+        });
+
+        // no readings tomorrow yet, of course
+        controls.nextDayButton.disabled = true;
+        controls.nextDayButton.addEventListener('click', () => {
+            const currentDate = controls.currentDate.valueAsDate;
+            currentDate.setDate(currentDate.getDate() + 1);
+            controls.currentDate.valueAsDate = currentDate;
+
+            controls.currentDate.dispatchEvent(new Event('change'));
+        });
+
         const readings = sensorReadings[sensor.id];
         if (readings.length > 0) {
             graphCard.setReadings(readings);
