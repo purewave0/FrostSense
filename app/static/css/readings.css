@@ -9,3 +9,10 @@
     width: fit-content;
     background-color: lightsteelblue;
 }
+
+.gauge-card .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

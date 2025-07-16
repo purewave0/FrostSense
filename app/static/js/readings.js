@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const gaugeCard = new GaugeCard(card, sensor.id, sensor.name);
         gaugeCards[sensor.id] = gaugeCard;
-        gaugeCard.setTemperature(sensorReadings[sensor.id].temperature);
+        gaugeCard.setReading(sensorReadings[sensor.id]);
     }
 
     // TODO: tiny 'fetching readings' notification
@@ -25,9 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             .then((response) => response.json())
             .then((sensorReadings) => {
                 for (const sensor of sensors) {
-                    gaugeCards[sensor.id].setTemperature(
-                        sensorReadings[sensor.id].temperature
-                    );
+                    gaugeCards[sensor.id].setReading(sensorReadings[sensor.id]);
                 }
             });
     }, UPDATE_INTERVAL);
