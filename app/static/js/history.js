@@ -20,7 +20,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         graphCardsDestination.append(card);
 
         const graphCard = new GraphCard(card, sensor.id, sensor.name);
-        graphCard.setReadings(sensorReadings[sensor.id]);
         graphCards[sensor.id] = graphCard;
+        const readings = sensorReadings[sensor.id];
+        if (readings.length > 0) {
+            graphCard.setReadings(readings);
+        }
     }
+
+    setInterval(() => {
+        const sensorIds = sensors.map((sensor) => sensor.id);
+        const offsetIds = [];
+        for (const sensorId of sensorIds) {
+            const graphCard = graphCards[sensorId];
+            if (graphCard.getReadingsCount() === 0) {
+                offsetIds.push(0);  // there's nothing, so start from the beginning
+            } else {
+                offsetIds.push(graphCard.getLastReadingId());
+            }
+        }
+        Api.fetchSensorReadingsForDay(getStartOfToday(), sensorIds, offsetIds)
+            .then((response) => response.json())
+            .then((sensorReadings) => {
+                for (const sensor of sensors) {
+                    const readings = sensorReadings[sensor.id];
+                    if (readings.length === 0) {
+                        continue;
+                    }
+
+                    graphCards[sensor.id].pushReadings(readings);
+                }
+            });
+    }, UPDATE_INTERVAL);
 });

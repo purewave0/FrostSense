@@ -7,10 +7,20 @@ const Api = {
         return fetch('/api/sensors/last-readings');
     },
 
-    fetchSensorReadingsForDay(startOfDay) {
+    fetchSensorReadingsForDay(startOfDay, sensorIds = null, offsetIds = null) {
+        let queryString = '';
+        if (sensorIds) {
+            queryString += `?sensor_ids=${sensorIds.join(',')}`;
+
+            if (offsetIds) {
+                queryString += `&offset_ids=${offsetIds.join(',')}`;
+            }
+        }
+
         return fetch(
             '/api/sensors/readings/day/'
             + encodeURIComponent(startOfDay.toISOString())
+            + queryString
         );
     },
 

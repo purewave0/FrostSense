@@ -56,28 +56,41 @@ class GraphCard {
         graphElement.id = `graph${sensorId}`;
     }
 
-    setReadings(readings) {
+    static #formatReadings(rawReadings) {
         // the format dygraphs expects is:
         // [
-        //     [x,y], [x,y], [x,y]...
-        // ] for data x and y.
-        const formattedReadings =
-            readings.map((reading) => {
-                return [new Date(reading.created_on), reading.temperature, reading.id]
-            });
-        this.#data = formattedReadings;
-        this.#graph.updateOptions({
-            'labels': ['Time', 'Temperature', 'id'],
-            'file': formattedReadings
+        //     [x,y,z], [x,y,z], [x,y,z]...
+        // ] for data x, y, and z.
+        return rawReadings.map((reading) => {
+            return [new Date(reading.created_on), reading.temperature, reading.id]
         });
     }
 
-    addReadings(readings) {
-        this.#data.push(...readings);
-        this.#graph.updateOptions({ 'file': this.#data });
+    setReadings(readings) {
+        this.#data = GraphCard.#formatReadings(readings)
+        this.#graph.updateOptions({
+            'labels': ['Time', 'Temperature', 'id'],
+            'file': this.#data
+        });
+    }
+
+    pushReadings(readings) {
+        this.#data.push(...GraphCard.#formatReadings(readings));
+        this.#graph.updateOptions({
+            'labels': ['Time', 'Temperature', 'id'],
+            'file': this.#data,
+        });
     }
 
     getCardElement() {
         return this.#card;
+    }
+
+    getReadingsCount() {
+        return this.#data.length;
+    }
+
+    getLastReadingId() {
+        return this.#data.at(-1)[2];
     }
 }

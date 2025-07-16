@@ -30,5 +30,5 @@ document.addEventListener('DOMContentLoaded', async () => {
                     );
                 }
             });
-    }, UPDATE_INTERVAL)
+    }, UPDATE_INTERVAL);
 });
