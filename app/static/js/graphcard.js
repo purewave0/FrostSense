@@ -2,8 +2,6 @@ class GraphCard {
     #card = null;
     #data = [];
     #graph = null;
-    // TODO: make this configurable; or, instead, show readings *per day*?
-    static #MAX_READINGS = 40;
 
     constructor(element, sensorId, sensorName) {
         GraphCard.#prepareCard(element, sensorId, sensorName);
@@ -76,10 +74,6 @@ class GraphCard {
 
     addReadings(readings) {
         this.#data.push(...readings);
-        const excess = this.#data.length - GraphCard.#MAX_READINGS;
-        if (excess > 0) {
-            this.#data.slice(excess);
-        }
         this.#graph.updateOptions({ 'file': this.#data });
     }
 

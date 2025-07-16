@@ -7,8 +7,11 @@ const Api = {
         return fetch('/api/sensors/last-readings');
     },
 
-    fetchLatestSensorReadings() {
-        return fetch('/api/sensors/latest-readings');
+    fetchSensorReadingsForDay(startOfDay) {
+        return fetch(
+            '/api/sensors/readings/day/'
+            + encodeURIComponent(startOfDay.toISOString())
+        );
     },
 
     fetchTodayReadingsCounts() {
