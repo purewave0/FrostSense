@@ -96,43 +96,65 @@ def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
 
 
 def get_sensor_readings_in_time_range(
-    sensor_id: int, range_start: datetime, range_end: datetime
+    sensor_id: int,
+    offset_id: int | None,
+    range_start: datetime,
+    range_end: datetime
 ) -> tuple[dict[str, Any], ...]:
     """Return the readings in the given time range from the given sensor.
 
     Args:
         sensor_id: The ID of the Sensor to fetch the readings from.
+        offset_id: The reading ID to start fetching after.
         range_start: The start (inclusive) of the time range.
         range_end: The end (inclusive) of the time range.
     """
-    result = db.session.execute(
-        db.select(
-            Reading.id,
-            Reading.temperature,
-            Reading.created_on,
-        ).where(
-            Reading.created_on >= range_start,
-            Reading.created_on <= range_end,
-            Reading.sensor_id == sensor_id
-        ).order_by(
-            Reading.created_on.asc()
-        )
+    query =  db.select(
+        Reading.id,
+        Reading.temperature,
+        Reading.created_on,
+    ).where(
+        Reading.created_on >= range_start,
+        Reading.created_on <= range_end,
+        Reading.sensor_id == sensor_id
+    ).order_by(
+        Reading.created_on.asc()
     )
+
+    if offset_id:
+        query = query.where(Reading.id > offset_id)
+
+    result = db.session.execute(query)
 
     return _rows_to_dicts(result)
 
 def get_sensors_readings_in_time_range(
-    sensors_ids: Iterable[int], range_start: datetime, range_end: datetime
+    sensors_ids: Iterable[int],
+    offset_ids: Iterable[int] | None,
+    range_start: datetime,
+    range_end: datetime
 ) -> dict[int, tuple[dict[str, Any], ...]]:
     """Return the readings in the given time range for each given sensor.
 
     Args:
         sensor_ids: The IDs of the Sensors to fetch the readings from.
+        offset_ids: The reading IDs to start fetching after, one for each sensor.
         range_start: The start (inclusive) of the time range.
         range_end: The end (inclusive) of the time range.
     """
+
+    if offset_ids:
+        return {
+            sensor_id: get_sensor_readings_in_time_range(
+                sensor_id, offset_id, range_start, range_end
+            )
+            for sensor_id, offset_id in zip(sensors_ids, offset_ids)
+        }
+
     return {
-        sensor_id: get_sensor_readings_in_time_range(sensor_id, range_start, range_end)
+        sensor_id: get_sensor_readings_in_time_range(
+            sensor_id, None, range_start, range_end
+        )
         for sensor_id in sensors_ids
     }
 

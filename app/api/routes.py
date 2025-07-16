@@ -45,20 +45,39 @@ def api_last_readings():
 
 
 @bp.route('/sensors/readings/day/<start_of_day>')
-def api_readings_for_date(start_of_day: str):
+def api_readings_for_day(start_of_day: str):
     try:
         start_datetime = _parse_iso_datetime(start_of_day)
     except (ValueError, TypeError):
         return jsonify({'error': 'field_error'}), 400
 
-    sensor_ids = get_sensor_ids()
+    raw_sensor_ids = request.args.get('sensor_ids')
+    sensor_ids = None
+    offset_ids = None
+    if raw_sensor_ids:
+        try:
+            sensor_ids = _parse_ints(raw_sensor_ids)
+        except (ValueError, TypeError):
+            return jsonify({'error': 'field_error'}), 400
+
+        # we accept offsets only when there are sensor ids, as that's what we link the
+        # offsets to.
+        raw_offset_ids = request.args.get('offset_ids')
+        if raw_offset_ids:
+            try:
+                offset_ids = _parse_ints(raw_offset_ids)
+            except (ValueError, TypeError):
+                return jsonify({'error': 'field_error'}), 400
+    else:
+        sensor_ids = get_sensor_ids()
+
     end_of_day = (
         start_datetime
         + timedelta(hours=23, minutes=59, seconds=59, milliseconds=9999)
     )
 
     readings_for_day = get_sensors_readings_in_time_range(
-        sensor_ids, start_datetime, end_of_day
+        sensor_ids, offset_ids, start_datetime, end_of_day
     )
     return jsonify(readings_for_day)
 
