@@ -1,47 +1,4 @@
 /**
- * Format the given Date as YYYY-MM-DDTHH:mm, useful for setting min/max values for
- * <datetime-local> elements.
- */
-function formatDateForLocalDatetime(date) {
-    // [YYYY-MM-DDTHH:mm]:ss.sssZ
-    return date.toISOString().slice(0, 16);
-}
-
-/**
- * Return the given `date` (implicitly in UTC) adjusted to the local timezone.
- *
- * So a date of 00:00 UTC, for example, would be returned as 00:00 but in the local
- * timezone.
- *
- * This is the reverse of adjustToUTC.
- */
-function adjustToLocalTimezone(date) {
-    const timezoneOffsetMillis = date.getTimezoneOffset() * 60 * 1000;
-    return new Date(date.getTime() - timezoneOffsetMillis)
-}
-
-/**
- * Return the given `date` (in local time) adjusted to UTC.
- *
- * So a date of 00:00 UTC-3, for example, would be returned as 00:00 but in UTC.
- *
- * This is the reverse of adjustToLocalTimezone.
- */
-function adjustToUTC(date) {
-    const timezoneOffsetMillis = date.getTimezoneOffset() * 60 * 1000;
-    return new Date(date.getTime() + timezoneOffsetMillis)
-}
-
-/**
- * Return today @ 00h:00m:00s.000ms.
- */
-function getStartOfToday() {
-    const date = new Date();
-    date.setHours(0, 0, 0, 0);  // today @ 00h:00m:00s.000ms
-    return date;
-}
-
-/**
  * Return today @ 23h:59m:59s.999ms.
  */
 function getEndOfToday() {
@@ -112,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // work in the user's timezone, as working in UTC would be quite confusing for
         // the user. for instance, in UTC-3 our 23:58 of today would be 20:58; our 00:01
         // of today would be 21:01 of *yesterday*
-        customDatetimeInputs.start.max = formatDateForLocalDatetime(
+        customDatetimeInputs.start.max = formatDateForDatetimeInput(
             adjustToLocalTimezone(getDateBeforeEndOfToday())
         );
     }
@@ -122,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * later than the start of today (00:00)
      */
     function setCustomEndMinAfterStartOfToday() {
-        customDatetimeInputs.end.min = formatDateForLocalDatetime(
+        customDatetimeInputs.end.min = formatDateForDatetimeInput(
             adjustToLocalTimezone(getDateAfterStartOfToday())
         );
     }
@@ -244,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             minimumDatetime.setMinutes(minimumDatetime.getMinutes() + 1)
 
             customDatetimeInputs.end.min =
-                formatDateForLocalDatetime(minimumDatetime);
+                formatDateForDatetimeInput(minimumDatetime);
         } else {
             customDatetimeInputs.end.min = '';
         }
@@ -256,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             maximumDatetime.setMinutes(maximumDatetime.getMinutes() - 1);
 
             customDatetimeInputs.start.max =
-                formatDateForLocalDatetime(maximumDatetime);
+                formatDateForDatetimeInput(maximumDatetime);
         } else {
             customDatetimeInputs.start.max = '';
         }
