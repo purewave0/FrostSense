@@ -56,7 +56,7 @@ def api_readings_for_day(start_of_day: str):
     offset_ids = None
     if raw_sensor_ids:
         try:
-            sensor_ids = _parse_ints(raw_sensor_ids)
+            sensor_ids = _parse_ints(raw_sensor_ids, True)
         except (ValueError, TypeError):
             return jsonify({'error': 'field_error'}), 400
 
@@ -133,13 +133,18 @@ def api_sensors_today_readings_count():
     )
 
 
-def _parse_ints(raw_ints: str) -> list[int]:
-    """Parse a comma-separated string of integers into a list of unique ints."""
+def _parse_ints(raw_ints: str, ignore_duplicates: bool = False) -> list[int]:
+    """Parse a comma-separated string of integers into a list of ints.
+
+    Args:
+        raw_ints: The string of ints to parse.
+        unique_only: When True, duplicates are ignored.
+    """
     parsed = []
     for integer in raw_ints.split(','):
         integer = int(integer)
         # ignore duplicates
-        if integer not in parsed:
+        if not ignore_duplicates or integer not in parsed:
             parsed.append(integer)
 
     return parsed
