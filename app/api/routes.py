@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask import jsonify, request
 
@@ -7,8 +7,8 @@ from app.dbapi import (
     get_sensors, get_sensor_ids,
     create_sensor,
     get_sensors_last_readings,
-    get_sensors_latest_readings, get_sensors_readings_counts_since_today,
-    get_sensor_readings_count_in_time_range,
+    get_sensors_readings_counts_since_today,
+    get_sensors_readings_in_time_range, get_sensor_readings_count_in_time_range,
     create_reading
 )
 
@@ -44,26 +44,23 @@ def api_last_readings():
     return jsonify(last_readings)
 
 
-# TODO: extract this to a configurable option in the interface
-_READINGS_LIMIT = 40
+@bp.route('/sensors/readings/day/<start_of_day>')
+def api_readings_for_date(start_of_day: str):
+    try:
+        start_datetime = _parse_iso_datetime(start_of_day)
+    except (ValueError, TypeError):
+        return jsonify({'error': 'field_error'}), 400
 
-@bp.route('/sensors/latest-readings')
-def api_latest_readings():
-    raw_sensor_ids = request.args.get('sensor_ids')
-    sensor_ids = None
-    if not raw_sensor_ids:
-        sensor_ids = get_sensor_ids()
-    else:
-        try:
-            sensor_ids = _parse_sensor_ids(raw_sensor_ids)
-            # TODO: verify if each one exists?
-        except (ValueError, TypeError):
-            return jsonify({'error': 'field_error'}), 400
-
-    latest_readings = get_sensors_latest_readings(
-        sensor_ids, _READINGS_LIMIT
+    sensor_ids = get_sensor_ids()
+    end_of_day = (
+        start_datetime
+        + timedelta(hours=23, minutes=59, seconds=59, milliseconds=9999)
     )
-    return jsonify(latest_readings)
+
+    readings_for_day = get_sensors_readings_in_time_range(
+        sensor_ids, start_datetime, end_of_day
+    )
+    return jsonify(readings_for_day)
 
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
@@ -117,13 +114,13 @@ def api_sensors_today_readings_count():
     )
 
 
-def _parse_sensor_ids(raw_sensor_ids: str) -> list[str]:
-    """Parse a comma-separated list of sensor IDs into a list."""
+def _parse_ints(raw_ints: str) -> list[int]:
+    """Parse a comma-separated string of integers into a list of unique ints."""
     parsed = []
-    for raw_sensor_id in raw_sensor_ids.split(','):
-        sensor_id = int(raw_sensor_id)
+    for integer in raw_ints.split(','):
+        integer = int(integer)
         # ignore duplicates
-        if sensor_id not in parsed:
-            parsed.append(sensor_id)
+        if integer not in parsed:
+            parsed.append(integer)
 
     return parsed

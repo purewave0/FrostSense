@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Any
 
 from flask import current_app
-from sqlalchemy.engine.result import ScalarResult
 
 from app.extensions import db
 from app.models.readings import Sensor, Reading
@@ -49,13 +48,13 @@ def get_sensors() -> tuple[dict[str, Any], ...]:
     return _rows_to_dicts(result)
 
 
-def get_sensor_ids() -> ScalarResult:
+def get_sensor_ids() -> tuple[int]:
     """Return all sensor IDs."""
     result = db.session.execute(
         db.select(Sensor.id)
     )
 
-    return result.scalars()
+    return tuple(result.scalars())
 
 
 # -- readings --
@@ -116,11 +115,26 @@ def get_sensor_readings_in_time_range(
             Reading.created_on <= range_end,
             Reading.sensor_id == sensor_id
         ).order_by(
-            Reading.created_on.desc()
+            Reading.created_on.asc()
         )
     )
 
     return _rows_to_dicts(result)
+
+def get_sensors_readings_in_time_range(
+    sensors_ids: Iterable[int], range_start: datetime, range_end: datetime
+) -> dict[int, tuple[dict[str, Any], ...]]:
+    """Return the readings in the given time range for each given sensor.
+
+    Args:
+        sensor_ids: The IDs of the Sensors to fetch the readings from.
+        range_start: The start (inclusive) of the time range.
+        range_end: The end (inclusive) of the time range.
+    """
+    return {
+        sensor_id: get_sensor_readings_in_time_range(sensor_id, range_start, range_end)
+        for sensor_id in sensors_ids
+    }
 
 
 def get_sensor_readings_count_in_time_range(
@@ -194,6 +208,7 @@ def get_sensor_latest_readings(
 
     Args:
         sensor_id: The ID of the Sensor to fetch the readings from.
+        offset: The reading ID to start fetching after.
         limit: The max number of readings to fetch from the sensor.
     """
     result = db.session.execute(
