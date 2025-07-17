@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             Api.fetchSensorReadingsByDays([sensor.id], [newDate], null)
                 .then((response) => response.json())
                 .then((sensorReadings) => {
-                    console.log(sensorReadings)
-                    console.log(sensorReadings[sensor.id])
                     graphCard.setReadings(sensorReadings[sensor.id]);
                 });
         })

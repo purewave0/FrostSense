@@ -87,9 +87,12 @@ class GraphCard {
     }
 
     setReadings(readings) {
+        const labels = (readings.length > 0)
+            ? ['Time', 'Temperature', 'id']
+            : null;  // prevent "mismatch between number of labels and columns" error
         this.#data = GraphCard.#formatReadings(readings)
         this.#graph.updateOptions({
-            'labels': ['Time', 'Temperature', 'id'],
+            'labels': labels,
             'file': this.#data
         });
     }
