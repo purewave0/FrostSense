@@ -7,6 +7,23 @@ function roundTemperature(temperature) {
 
 
 /**
+ * Format `temperature` as "<temperature> °C", with N decimal digits (default 1)
+ */
+function formatTemperature(temperature, decimalDigits = 1) {
+    return `${temperature.toFixed(decimalDigits)} °C`;
+}
+
+
+/**
+ * Format `temperature` as "<temperature> °C", with N decimal digits (default 1), and
+ * with temperature being in a <span class="temperature"> tag.
+ */
+function formatTemperatureHTML(temperature, decimalDigits = 1) {
+    return `<span class="temperature">${temperature.toFixed(decimalDigits)}</span> °C`;
+}
+
+
+/**
  * Format the given Date as YYYY-MM-DDTHH:mm, useful for setting min/max values for
  * datetime-local input elements.
  */

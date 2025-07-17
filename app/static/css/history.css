@@ -7,7 +7,8 @@
 
 .graph-card {
     width: fit-content;
-    background-color: lightgreen;
+    background-color: whitesmoke;
+    position: relative;
 }
 
 .graph-card .header {
@@ -19,6 +20,22 @@
 
 .graph-card .current-date:invalid {
     background-color: red;
+}
+
+.graph-card .info-text {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    /* put it in the bottom right corner of the graph */
+    bottom: 0;
+    right: 12px;
+    pointer-events: none;
+    font-size: 18pt;
+    opacity: 0.4;
+}
+
+.info-text .temperature {
+    font-family: monospace;
 }
 
 .dygraph-legend {

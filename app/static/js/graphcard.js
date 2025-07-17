@@ -3,12 +3,14 @@ class GraphCard {
     #data = [];
     #graph = null;
     #controls = null;
+    #infoText = null;
     #locales = [];
 
     constructor(element, sensorId, sensorName) {
         this.#locales = getUserLocales();
         GraphCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
+        this.#infoText = this.#card.querySelector('.info-text');
 
         this.#controls = {
             'previousDayButton': this.#card.querySelector('.button-previous'),
@@ -42,10 +44,10 @@ class GraphCard {
                 axes: {
                     y: {
                         valueFormatter(temperature) {
-                            return `${temperature.toFixed(1)} °C`;
+                            return formatTemperature(temperature)
                         },
                         axisLabelFormatter(temperature) {
-                            return `${temperature.toFixed(0)} °C`;
+                            return formatTemperature(temperature, 0);
                         },
                     },
                 }
@@ -71,6 +73,7 @@ class GraphCard {
                 </div>
             </div>
             <div class="graph"></div>
+            <p class="info-text"></p>
         `;
 
         const name = card.querySelector('.sensor-name');
@@ -123,6 +126,10 @@ class GraphCard {
 
     getReadingsCount() {
         return this.#data.length;
+    }
+
+    setInfoTextHTML(html) {
+        this.#infoText.innerHTML = html;
     }
 
     getLastReadingId() {

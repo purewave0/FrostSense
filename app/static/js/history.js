@@ -30,10 +30,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 controls.nextDayButton.disabled = true;
             }
 
-            Api.fetchSensorReadingsByDays([sensor.id], [newDate], null)
+            Api.fetchSensorReadingsByDays([sensor.id], [newDate])
                 .then((response) => response.json())
                 .then((sensorReadings) => {
-                    graphCard.setReadings(sensorReadings[sensor.id]);
+                    const readings = sensorReadings[sensor.id];
+                    graphCard.setReadings(readings);
+                    if (readings.length > 0) {
+                        graphCard.setInfoTextHTML(
+                            formatTemperatureHTML(sensorReadings[sensor.id].at(-1).temperature)
+                        )
+                    } else {
+                        graphCard.setInfoTextHTML('No readings')
+                    }
                 });
         })
 
@@ -57,8 +65,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         const readings = sensorReadings[sensor.id];
+        graphCard.setReadings(readings);
         if (readings.length > 0) {
-            graphCard.setReadings(readings);
+            graphCard.setInfoTextHTML(
+                formatTemperatureHTML(readings.at(-1).temperature)
+            )
+        } else {
+            graphCard.setInfoTextHTML('No readings')
         }
     }
 
@@ -97,6 +110,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
 
                     graphCards[sensorId].pushReadings(readings);
+                    graphCards[sensorId].setInfoTextHTML(
+                        formatTemperatureHTML(readings.at(-1).temperature)
+                    )
                 }
             });
     }, UPDATE_INTERVAL);
