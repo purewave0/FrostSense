@@ -3,9 +3,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const response = await Api.fetchSensors();
     const sensors = await response.json();
+    const sensorIds = sensors.map((sensor) => sensor.id);
 
     const graphCards = {};
-    const readingsResponse = await Api.fetchSensorReadingsForDay(getStartOfToday());
+    // initially, fetching today's readings for all of them
+    const startDates = Array(sensors.length).fill(getStartOfToday());
+    const readingsResponse = await Api.fetchSensorReadingsByDays(sensorIds, startDates);
     const sensorReadings = await readingsResponse.json();
     for (const sensor of sensors) {
         const card = document.createElement('div');
@@ -53,26 +56,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     setInterval(() => {
-        const sensorIds = sensors.map((sensor) => sensor.id);
+        const sensorIdsToUpdate = [];
+        const startDates = [];
         const offsetIds = [];
         for (const sensorId of sensorIds) {
             const graphCard = graphCards[sensorId];
-            if (graphCard.getReadingsCount() === 0) {
-                offsetIds.push(0);  // there's nothing, so start from the beginning
-            } else {
-                offsetIds.push(graphCard.getLastReadingId());
+            const currentDate = adjustToUTC(graphCard.getCurrentDay());
+            const isViewingTodaysReadings =
+                currentDate.getTime() === getStartOfToday().getTime();
+            if (isViewingTodaysReadings) {
+                // only today can new readings be available; past days are already
+                // completed
+                sensorIdsToUpdate.push(sensorId);
+                if (graphCard.getReadingsCount() === 0) {
+                    offsetIds.push(0);  // there's nothing, so start from the beginning
+                } else {
+                    offsetIds.push(graphCard.getLastReadingId());
+                }
+                startDates.push(getStartOfToday());
             }
         }
-        Api.fetchSensorReadingsForDay(getStartOfToday(), sensorIds, offsetIds)
+        if (sensorIdsToUpdate.length === 0) {
+            // none of the sensors are viewing Today's readings
+            return;
+        }
+        Api.fetchSensorReadingsByDays(sensorIdsToUpdate, startDates, offsetIds)
             .then((response) => response.json())
             .then((sensorReadings) => {
-                for (const sensor of sensors) {
-                    const readings = sensorReadings[sensor.id];
+                for (const sensorId in sensorReadings) {
+                    const readings = sensorReadings[sensorId];
                     if (readings.length === 0) {
                         continue;
                     }
 
-                    graphCards[sensor.id].pushReadings(readings);
+                    graphCards[sensorId].pushReadings(readings);
                 }
             });
     }, UPDATE_INTERVAL);

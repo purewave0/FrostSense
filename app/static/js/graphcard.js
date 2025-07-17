@@ -110,6 +110,10 @@ class GraphCard {
         return this.#controls;
     }
 
+    getCurrentDay() {
+        return this.#controls.currentDate.valueAsDate;
+    }
+
     getReadingsCount() {
         return this.#data.length;
     }

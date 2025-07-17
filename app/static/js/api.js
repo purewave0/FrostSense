@@ -7,21 +7,18 @@ const Api = {
         return fetch('/api/sensors/last-readings');
     },
 
-    fetchSensorReadingsForDay(startOfDay, sensorIds = null, offsetIds = null) {
+    fetchSensorReadingsByDays(sensorIds, startDates, offsetIds = null) {
         let queryString = '';
-        if (sensorIds) {
-            queryString += `?sensor_ids=${sensorIds.join(',')}`;
-
-            if (offsetIds) {
-                queryString += `&offset_ids=${offsetIds.join(',')}`;
-            }
+        const encodedISODates = startDates.map(
+            (date) => encodeURIComponent(date.toISOString())
+        );
+        queryString += `?start_dates=${encodedISODates.join(',')}`;
+        queryString += `&sensor_ids=${sensorIds.join(',')}`;
+        if (offsetIds) {
+            queryString += `&offset_ids=${offsetIds.join(',')}`;
         }
 
-        return fetch(
-            '/api/sensors/readings/day/'
-            + encodeURIComponent(startOfDay.toISOString())
-            + queryString
-        );
+        return fetch('/api/sensors/readings' + queryString);
     },
 
     fetchTodayReadingsCounts() {
