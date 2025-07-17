@@ -61,31 +61,41 @@ def register_commands(app):
         all_sensors = get_sensors()
         start_time = dt.datetime.utcnow() - dt.timedelta(seconds=interval*count)
 
-        def get_random_temperature():
-            return randrange(-25000, 25000)/1000
+        def get_random_temperature(previous_temperature):
+            MAX = 25
+            MIN = -25
+            result = previous_temperature + randrange(-2_000, 2_000)/1_000
+            if result > MAX:
+                result = MAX
+            elif result < MIN:
+                result = MIN
+            return result
 
         if continuous:
+            temperatures = [get_random_temperature(0) for _ in all_sensors]
             while True:
-                for sensor in all_sensors:
-                    temperature = get_random_temperature()
+                for index, sensor in enumerate(all_sensors):
                     click.echo(
-                        f'seeding reading={temperature}°C to sensor_id={sensor["id"]}'
+                        f'seeding {temperatures[index]}°C to sensor_id={sensor["id"]}'
                     )
-                    create_reading(sensor['id'], temperature)
+                    create_reading(sensor['id'], temperatures[index])
+                    temperatures[index] = get_random_temperature(temperatures[index])
                 click.echo('waiting 2s...\n')
                 sleep(2)
             return
 
         for sensor in all_sensors:
             readings = []
+            previous_temperature = get_random_temperature(0)
             for times in range(count):
                 readings.append(
                     {
                         'sensor_id': sensor['id'],
-                        'temperature': get_random_temperature(),
+                        'temperature': previous_temperature,
                         'created_on': start_time + dt.timedelta(seconds=interval*times),
                     }
                 )
+                previous_temperature = get_random_temperature(previous_temperature)
 
             create_readings(sensor['id'], readings)
 
