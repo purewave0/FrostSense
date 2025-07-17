@@ -18,6 +18,10 @@ class GaugeCard {
             minTxt: '30 °C',
             gaugeWidthScale: 0.75,
             textRenderer: (value) => {
+                if (value === null) {
+                    // TODO: hide coloured value section (currently, it sits at 0)
+                    return 'N/A';
+                }
                 return `${value.toFixed(1)} °C`;
             },
             startAnimationTime: 500,
@@ -76,6 +80,11 @@ class GaugeCard {
     }
 
     setReading(reading) {
+        if (reading === null) {
+            this.#gauge.refresh(null);
+            this.#datetimeValue.textContent = 'N/A';
+            return;
+        }
         this.#gauge.refresh(reading.temperature);
         this.#datetimeValue.textContent =
             GaugeCard.#formatDate(reading.created_on, this.#locales);
