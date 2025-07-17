@@ -189,7 +189,7 @@ def get_sensor_readings_count_in_time_range(
 
 def get_sensor_last_reading(
     sensor_id: int
-) -> dict[str, Any]:
+) -> dict[str, Any] | None:
     """Get the last reading from the given sensor. Useful for gauges.
 
     Args:
@@ -205,14 +205,17 @@ def get_sensor_last_reading(
         ).order_by(
             Reading.created_on.desc()
         ).limit(1)
-    ).one()
+    ).one_or_none()
+
+    if not result:
+        return None
 
     return result._asdict()
 
 
 def get_sensors_last_readings(
     sensor_ids: Iterable[int]
-) -> dict[int, dict[str, Any]]:
+) -> dict[int, dict[str, Any] | None]:
     """Get the last reading from each given sensor. Useful for gauges.
 
     Args:
