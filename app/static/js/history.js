@@ -21,13 +21,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         controls.currentDate.valueAsDate = getStartOfToday();
         controls.currentDate.max = formatDateForDateInput(getStartOfToday());
 
+        // TODO: cache 2-3 most recently fetched days?
         controls.currentDate.addEventListener('change', () => {
-            // the currentDate's value needs to be adjusted for comparison, as it is in
-            // the local timezone whereas getStartOfToday()'s result is in UTC
+            // the currentDate's value needs to be adjusted, as it is in the local
+            // timezone whereas getStartOfToday()'s result is in UTC
             const newDate = adjustToUTC(controls.currentDate.valueAsDate);
             if (newDate.getTime() === getStartOfToday().getTime()) {
                 controls.nextDayButton.disabled = true;
             }
+
+            Api.fetchSensorReadingsByDays([sensor.id], [newDate], null)
+                .then((response) => response.json())
+                .then((sensorReadings) => {
+                    console.log(sensorReadings)
+                    console.log(sensorReadings[sensor.id])
+                    graphCard.setReadings(sensorReadings[sensor.id]);
+                });
         })
 
         controls.previousDayButton.addEventListener('click', () => {
