@@ -128,34 +128,35 @@ def get_sensor_readings_in_time_range(
 
     return _rows_to_dicts(result)
 
-def get_sensors_readings_in_time_range(
+def get_sensors_readings_in_time_ranges(
     sensors_ids: Iterable[int],
     offset_ids: Iterable[int] | None,
-    range_start: datetime,
-    range_end: datetime
+    time_ranges: Iterable[dict[str, datetime]]
 ) -> dict[int, tuple[dict[str, Any], ...]]:
-    """Return the readings in the given time range for each given sensor.
+    """Return the readings in the given time ranges for each given sensor.
 
     Args:
         sensor_ids: The IDs of the Sensors to fetch the readings from.
         offset_ids: The reading IDs to start fetching after, one for each sensor.
-        range_start: The start (inclusive) of the time range.
-        range_end: The end (inclusive) of the time range.
+        time_ranges: A collection of time ranges, one for each sensor. A time range
+            is a dict in the form of {'start': <datetime>, 'end': <datetime>}, both
+            points inclusive.
     """
 
     if offset_ids:
         return {
             sensor_id: get_sensor_readings_in_time_range(
-                sensor_id, offset_id, range_start, range_end
+                sensor_id, offset_id, time_range['start'], time_range['end']
             )
-            for sensor_id, offset_id in zip(sensors_ids, offset_ids)
+            for sensor_id, offset_id, time_range
+                in zip(sensors_ids, offset_ids, time_ranges)
         }
 
     return {
         sensor_id: get_sensor_readings_in_time_range(
-            sensor_id, None, range_start, range_end
+            sensor_id, None, time_range['start'], time_range['end']
         )
-        for sensor_id in sensors_ids
+        for sensor_id, time_range in zip(sensors_ids, time_ranges)
     }
 
 

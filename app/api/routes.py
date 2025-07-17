@@ -8,7 +8,7 @@ from app.dbapi import (
     create_sensor,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
-    get_sensors_readings_in_time_range, get_sensor_readings_count_in_time_range,
+    get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading
 )
 
@@ -44,40 +44,46 @@ def api_last_readings():
     return jsonify(last_readings)
 
 
-@bp.route('/sensors/readings/day/<start_of_day>')
-def api_readings_for_day(start_of_day: str):
+def _parse_iso_datetimes(iso_datetimes: str) -> list[datetime]:
+    """Return the given comma-separated datetimes string as a list of datetime objects.
+
+    Args:
+        iso_datetimes: comma-separated string of ISO datetime strings, each one in the
+            format of 'YYYY-MM-DDThh:mm:ss.sssZ'.
+    """
+    parsed = []
+    for iso_datetime in iso_datetimes.split(','):
+        parsed.append(_parse_iso_datetime(iso_datetime))
+
+    return parsed
+
+
+@bp.route('/sensors/readings')
+def api_readings_by_days():
     try:
-        start_datetime = _parse_iso_datetime(start_of_day)
+        start_datetimes = _parse_iso_datetimes(request.args['start_dates'])
+        sensor_ids = _parse_ints(request.args['sensor_ids'], True)
     except (ValueError, TypeError):
         return jsonify({'error': 'field_error'}), 400
 
-    raw_sensor_ids = request.args.get('sensor_ids')
-    sensor_ids = None
     offset_ids = None
-    if raw_sensor_ids:
+    raw_offset_ids = request.args.get('offset_ids')
+    if raw_offset_ids:
         try:
-            sensor_ids = _parse_ints(raw_sensor_ids, True)
+            offset_ids = _parse_ints(raw_offset_ids)
         except (ValueError, TypeError):
             return jsonify({'error': 'field_error'}), 400
 
-        # we accept offsets only when there are sensor ids, as that's what we link the
-        # offsets to.
-        raw_offset_ids = request.args.get('offset_ids')
-        if raw_offset_ids:
-            try:
-                offset_ids = _parse_ints(raw_offset_ids)
-            except (ValueError, TypeError):
-                return jsonify({'error': 'field_error'}), 400
-    else:
-        sensor_ids = get_sensor_ids()
+    time_ranges = []
+    for start_of_day in start_datetimes:
+        end_of_day = (
+            start_of_day
+            + timedelta(hours=23, minutes=59, seconds=59, milliseconds=9999)
+        )
+        time_ranges.append({'start': start_of_day, 'end': end_of_day})
 
-    end_of_day = (
-        start_datetime
-        + timedelta(hours=23, minutes=59, seconds=59, milliseconds=9999)
-    )
-
-    readings_for_day = get_sensors_readings_in_time_range(
-        sensor_ids, offset_ids, start_datetime, end_of_day
+    readings_for_day = get_sensors_readings_in_time_ranges(
+        sensor_ids, offset_ids, time_ranges
     )
     return jsonify(readings_for_day)
 
