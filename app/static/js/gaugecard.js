@@ -5,7 +5,7 @@ class GaugeCard {
     #locales = null;
 
     constructor(element, sensorId, sensorName) {
-        this.#locales = GaugeCard.#getUserLocales();
+        this.#locales = getUserLocales();
         GaugeCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
         this.#datetimeValue = element.querySelector('.datetime-value');
@@ -61,24 +61,6 @@ class GaugeCard {
         return this.#card;
     }
 
-    static #getUserLocales() {
-        return navigator.languages;
-    }
-
-    static #formatDate(date, locales) {
-        return new Date(date).toLocaleString(
-            locales,
-            {
-                'day': '2-digit',
-                'month': '2-digit',
-                'year': '2-digit',
-
-                'hour': '2-digit',
-                'minute': '2-digit',
-            }
-        );
-    }
-
     setReading(reading) {
         if (reading === null) {
             this.#gauge.refresh(null);
@@ -86,8 +68,10 @@ class GaugeCard {
             return;
         }
         this.#gauge.refresh(reading.temperature);
-        this.#datetimeValue.textContent =
-            GaugeCard.#formatDate(reading.created_on, this.#locales);
+        this.#datetimeValue.textContent = formatDateToCompactDatetime(
+            new Date(reading.created_on),
+            this.#locales
+        );
     }
 
 }

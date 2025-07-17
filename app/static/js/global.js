@@ -27,6 +27,33 @@ function formatDateForDateInput(date) {
 
 
 /**
+ * Format the given Date with year, month, day, hours, and minutes, all of them
+ * 2-digits long, according to the user's locales.
+ */
+function formatDateToCompactDatetime(date, locales) {
+    return date.toLocaleString(
+        locales,
+        {
+            'year': '2-digit',
+            'month': '2-digit',
+            'day': '2-digit',
+
+            'hour': '2-digit',
+            'minute': '2-digit',
+        }
+    );
+}
+
+
+/**
+ * Return a list of the user's preferred languages.
+ */
+function getUserLocales() {
+    return navigator.languages;
+}
+
+
+/**
  * Return the given `date` (implicitly in UTC) adjusted to the local timezone.
  *
  * So a date of 00:00 UTC, for example, would be returned as 00:00 but in the local

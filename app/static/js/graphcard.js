@@ -3,8 +3,10 @@ class GraphCard {
     #data = [];
     #graph = null;
     #controls = null;
+    #locales = [];
 
     constructor(element, sensorId, sensorName) {
+        this.#locales = getUserLocales();
         GraphCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
 
@@ -19,15 +21,17 @@ class GraphCard {
             [],  // empty data
             {
                 interactionModel: {}, // disable zooming, etc.
-                // we'll pass the labels once the data is set
+                labels: null,  // we'll pass the proper values once the data is set
                 valueRange: [-30, 30],
-                legendFormatter(data) {
+                legendFormatter: (data) => {
                     if (data.x == null) {
                         return '';  // no selection
                     }
                     const temperature = data.series[0].y.toFixed(1);
-                    // TODO: shorter format?
-                    const datetime = new Date(data.x).toLocaleString();
+                    const datetime = formatDateToCompactDatetime(
+                        new Date(data.x), this.#locales
+                    );
+
                     return `
                         <b class="temperature-label">Temperature:</b>
                         <code>${temperature}</code> °C
