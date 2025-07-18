@@ -4,6 +4,7 @@ class GraphCard {
     #graph = null;
     #controls = null;
     #infoText = null;
+    #readingsCountValue = null;
     #locales = [];
 
     constructor(element, sensorId, sensorName) {
@@ -11,6 +12,7 @@ class GraphCard {
         GraphCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
         this.#infoText = this.#card.querySelector('.info-text');
+        this.#readingsCountValue = this.#card.querySelector('.readings-count-value');
 
         this.#controls = {
             'previousDayButton': this.#card.querySelector('.button-previous'),
@@ -62,6 +64,9 @@ class GraphCard {
         card.innerHTML = `
             <div class="header">
                 <h2 class="sensor-name"></h2>
+                <div class="readings-count">
+                    <span class="readings-count-value"></span> readings
+                </div>
                 <div class="controls">
                     <button class="button-previous">
                         <span>&lt;</span>
@@ -94,14 +99,21 @@ class GraphCard {
     }
 
     setReadings(readings) {
-        const labels = (readings.length > 0)
-            ? ['Time', 'Temperature', 'id']
-            : null;  // prevent "mismatch between number of labels and columns" error
+        let labels = null;
+        if (readings.length > 0) {
+            labels = ['Time', 'Temperature', 'id'];
+            this.#card.classList.remove('empty');
+        } else {
+            // prevent "mismatch between number of labels and columns" error
+            labels = null;
+            this.#card.classList.add('empty');
+        }
         this.#data = GraphCard.#formatReadings(readings)
         this.#graph.updateOptions({
             'labels': labels,
             'file': this.#data
         });
+        this.#readingsCountValue.textContent = this.#data.length;
     }
 
     pushReadings(readings) {
@@ -110,6 +122,7 @@ class GraphCard {
             'labels': ['Time', 'Temperature', 'id'],
             'file': this.#data,
         });
+        this.#readingsCountValue.textContent = this.#data.length;
     }
 
     getCardElement() {

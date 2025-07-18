@@ -14,8 +14,16 @@
 .graph-card .header {
     display: flex;
     flex-direction: row;
+    column-gap: 16px;
     align-items: center;
-    justify-content: space-between;
+}
+
+.graph-card .sensor-name {
+    flex: 1;
+}
+
+.graph-card.empty .readings-count {
+    display: none;
 }
 
 .graph-card .current-date:invalid {
