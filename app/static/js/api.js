@@ -36,6 +36,7 @@ const Api = {
     createReport(sensorId, rangeStart, rangeEnd, dataFormat, notes) {
         return fetch('/api/reports', {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 'sensor_id': sensorId,
                 'range_start': rangeStart.toISOString(),
