@@ -243,6 +243,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        Api.createReport(
+            Number(sensorsSelect.value),
+            getRangeStart(),
+            getRangeEnd(),
+            formatSelect.value,
+            notes.value.trim() || null
+        );
+
         alert(
             `sensor_id=${Number(sensorsSelect.value)}`
             + `\nformat=${formatSelect.value}`

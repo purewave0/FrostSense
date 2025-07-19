@@ -31,5 +31,18 @@ const Api = {
             + `?range_start=${encodeURIComponent(rangeStart)}`
             + `&range_end=${encodeURIComponent(rangeEnd)}`
         );
+    },
+
+    createReport(sensorId, rangeStart, rangeEnd, dataFormat, notes) {
+        return fetch('/api/reports', {
+            method: 'POST',
+            body: JSON.stringify({
+                'sensor_id': sensorId,
+                'range_start': rangeStart.toISOString(),
+                'range_end': rangeEnd.toISOString(),
+                'data_format': dataFormat,
+                'notes': (notes) ? notes.trim() : null,
+            })
+        });
     }
 };
