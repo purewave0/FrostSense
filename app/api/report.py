@@ -16,13 +16,6 @@ _TOKEN_CHARSET = ascii_lowercase + digits
 _TOKEN_LENGTH = 10
 
 
-def _to_formatted_datetime(dt: datetime) -> str:
-    return dt.strftime('%Y/%m/%d %H:%M:%S')
-
-def _to_compact_formatted_datetime(dt: datetime) -> str:
-    return dt.strftime('%y/%m/%d %H:%M')
-
-
 class DataFormat(Enum):
     """How the readings should be displayed in the report."""
     TABLE = 'table'
@@ -51,9 +44,9 @@ def generate_report_html(
         sensor_name=sensor_name,
         formatted_token=format_token(token),
         token_qr_base64=token_qr_base64,
-        created_on=_to_formatted_datetime(created_on),
-        range_start=_to_formatted_datetime(range_start),
-        range_end=_to_formatted_datetime(range_end),
+        created_on=created_on,
+        range_start=range_start,
+        range_end=range_end,
         readings=readings,
         data_format=data_format.value,
         notes=notes,

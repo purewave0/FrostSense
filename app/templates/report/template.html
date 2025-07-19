@@ -18,19 +18,19 @@
 
                     <div class="header-column">
                         <b>Generated on:</b>
-                        <span>{{ created_on }}</span>
+                        <span>{{ created_on | format_datetime_full }}</span>
                     </div>
                 </div>
 
                 <div class="header-row">
                     <div class="header-column">
                         <b>Start:</b>
-                        <span>{{ range_start }}</span>
+                        <span>{{ range_start | format_datetime }}</span>
                     </div>
 
                     <div class="header-column">
                         <b>End:</b>
-                        <span>{{ range_end }}</span>
+                        <span>{{ range_end | format_datetime }}</span>
                     </div>
                 </div>
             </div>
