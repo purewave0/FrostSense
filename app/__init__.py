@@ -1,9 +1,11 @@
 from datetime import datetime, date
+from os import makedirs
 
 from flask import Flask
 from flask.json.provider import DefaultJSONProvider
 
 from app.extensions import db
+from app.api.report import REPORTS_DIRECTORY
 from config import Config
 
 
@@ -37,5 +39,8 @@ def create_app(config_class=Config):
     # -- cli --
     from app.cli import register_commands
     register_commands(app)
+
+    # -- dirs --
+    makedirs(REPORTS_DIRECTORY, exist_ok=True)
 
     return app
