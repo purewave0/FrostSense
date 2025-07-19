@@ -4,12 +4,19 @@ from flask import jsonify, request
 
 from app.api import bp
 from app.dbapi import (
-    get_sensors, get_sensor_ids,
+    get_sensors, get_sensor_ids, get_sensor_name,
     create_sensor,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
+    get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
-    create_reading
+    create_reading,
+)
+from app.api.report import (
+    DataFormat,
+    generate_token,
+    generate_report_html,
+    store_report_file
 )
 
 
@@ -154,3 +161,47 @@ def _parse_ints(raw_ints: str, ignore_duplicates: bool = False) -> list[int]:
             parsed.append(integer)
 
     return parsed
+
+
+@bp.route('/reports', methods=['POST'])
+def api_generate_report():
+    try:
+        sensor_id = int(request.json['sensor_id'])
+        range_start = _parse_iso_datetime(request.json['range_start'])
+        range_end = _parse_iso_datetime(request.json['range_end'])
+        data_format = DataFormat(request.json['data_format'])
+        notes = request.json['notes']
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'field_error'}), 400
+
+    # TODO: verify sensor's existence
+    # TODO: verify that range_start < range_end
+
+    if notes:
+        notes = notes.strip() or None
+
+    # TODO: verify notes length
+
+    sensor_name = get_sensor_name(sensor_id)
+    readings = get_sensor_readings_in_time_range(
+        sensor_id, None, range_start, range_end
+    )
+
+    # TODO: verify readings count
+    #
+    token = generate_token()
+    utc_now = datetime.utcnow()
+
+    report_html = generate_report_html(
+        sensor_name,
+        token,
+        'TODO',
+        utc_now,
+        range_start,
+        range_end,
+        readings,
+        data_format,
+        notes
+    )
+    store_report_file(token, report_html)
+    return jsonify(token)
