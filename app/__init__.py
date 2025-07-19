@@ -40,6 +40,11 @@ def create_app(config_class=Config):
     from app.cli import register_commands
     register_commands(app)
 
+    # -- filters
+    @app.template_filter()
+    def format_datetime_short(dt: datetime) -> str:
+        return dt.strftime('%y/%m/%d %H:%M')
+
     # -- dirs --
     makedirs(REPORTS_DIRECTORY, exist_ok=True)
 

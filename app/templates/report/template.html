@@ -43,7 +43,24 @@
         </header>
 
         {% if data_format == 'table' or data_format == 'table-and-graph' %}
-            <div>table here</div>
+            <section id="table-section">
+                <!-- TODO: split into more tables to the right if needed -->
+                <table class="table">
+                {% for reading in readings %}
+                    <tr>
+                        <td class="datetime">
+                            {{ reading.created_on | format_datetime_short }}
+                        </td>
+                        <td class="temperature">
+                            <span class="temperature-value">
+                                {{ reading.temperature | round(1) }}
+                            </span>
+                            °C
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </section>
         {% endif %}
         {% if data_format == 'graph' or data_format == 'table-and-graph' %}
             <div>graph here</div>

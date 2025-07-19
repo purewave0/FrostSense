@@ -26,7 +26,6 @@ header {
     flex: 1;
 }
 
-
 #header-token {
     display: flex;
     flex-direction: column;
@@ -40,4 +39,21 @@ header {
 
 #header-token span {
     font-family: monospace;
+}
+
+/* -- table -- */
+
+.table .datetime {
+    background-color: lightpink;
+    text-align: right;
+}
+
+.table .temperature {
+    background-color: lightblue;
+    text-align: right;
+}
+
+.table .temperature-value {
+    font-family: monospace;
+    font-size: 11pt;
 }
