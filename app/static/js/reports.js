@@ -249,15 +249,11 @@ document.addEventListener('DOMContentLoaded', () => {
             getRangeEnd(),
             formatSelect.value,
             notes.value.trim() || null
-        );
-
-        alert(
-            `sensor_id=${Number(sensorsSelect.value)}`
-            + `\nformat=${formatSelect.value}`
-            + `\nstart=${getRangeStart().toLocaleString()}`
-            + `\nend=${getRangeEnd().toLocaleString()}`
-            + `\nnotes=${notes.value.trim() || '(no notes)'}`
-        );
+        ).then(
+            (response) => response.json()
+        ).then((token) => {
+            window.open(`/reports/${token}`, '_blank').focus();
+        });
     });
 
     const readingsCountElement = document.getElementById('readings-count');
