@@ -43,6 +43,21 @@ header {
 
 /* -- table -- */
 
+#tables-section {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+}
+
+.table {
+    font-size: 9pt;
+    height: fit-content;
+}
+
+#table-header td {
+    background-color: lightgray;
+}
+
 .table .datetime {
     background-color: lightpink;
     text-align: right;
@@ -55,5 +70,4 @@ header {
 
 .table .temperature-value {
     font-family: monospace;
-    font-size: 11pt;
 }

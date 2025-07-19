@@ -43,10 +43,27 @@
         </header>
 
         {% if data_format == 'table' or data_format == 'table-and-graph' %}
-            <section id="table-section">
-                <!-- TODO: split into more tables to the right if needed -->
-                <table class="table">
+            <section id="tables-section">
+                {# split the table into multiple adjacent ones, avoiding multiple pages #}
+                {% set ROWS_PER_TABLE = 50 %}
+                {% set ns = namespace(current_row_index=0) %}
                 {% for reading in readings %}
+                    {% if ns.current_row_index % ROWS_PER_TABLE == 0 %}
+                        {% if ns.current_row_index != 0 %}
+                            </table>
+                        {% endif %}
+                        <table class="table">
+                        {% if ns.current_row_index == 0 %}
+                            {# add a header (only to the first table) #}
+                            <tr id="table-header">
+                                <td>Time</td>
+                                <td>°C</td>
+                            </tr>
+                            {# count this header row already #}
+                            {% set ns.current_row_index = ns.current_row_index + 1 %}
+                        {% endif %}
+                    {% endif %}
+
                     <tr>
                         <td class="datetime">
                             {{ reading.created_on | format_datetime_short }}
@@ -55,11 +72,11 @@
                             <span class="temperature-value">
                                 {{ reading.temperature | round(1) }}
                             </span>
-                            °C
                         </td>
                     </tr>
+
+                    {% set ns.current_row_index = ns.current_row_index + 1 %}
                 {% endfor %}
-                </table>
             </section>
         {% endif %}
         {% if data_format == 'graph' or data_format == 'table-and-graph' %}
