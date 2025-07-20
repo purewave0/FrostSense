@@ -50,8 +50,8 @@ header {
 }
 
 .table {
-    font-size: 9pt;
     height: fit-content;
+    font-size: 8pt;
 }
 
 #table-header td {

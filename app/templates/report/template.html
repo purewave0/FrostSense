@@ -44,45 +44,23 @@
 
         {% if data_format == 'table' or data_format == 'table-and-graph' %}
             <section id="tables-section">
-                {# split the table into multiple adjacent ones, avoiding multiple pages #}
-                {% set ROWS_PER_TABLE = 50 %}
-                {% set ns = namespace(current_row_index=0) %}
-                {% for reading in readings %}
-                    {% if ns.current_row_index % ROWS_PER_TABLE == 0 %}
-                        {% if ns.current_row_index != 0 %}
-                            </table>
-                        {% endif %}
-                        <table class="table">
-                        {% if ns.current_row_index == 0 %}
-                            {# add a header (only to the first table) #}
-                            <tr id="table-header">
-                                <td>Time</td>
-                                <td>°C</td>
-                            </tr>
-                            {# count this header row already #}
-                            {% set ns.current_row_index = ns.current_row_index + 1 %}
-                        {% endif %}
-                    {% endif %}
-
-                    <tr>
-                        <td class="datetime">
-                            {{ reading.created_on | format_datetime_short }}
-                        </td>
-                        <td class="temperature">
-                            <span class="temperature-value">
-                                {{ reading.temperature | round(1) }}
-                            </span>
-                        </td>
-                    </tr>
-
-                    {% set ns.current_row_index = ns.current_row_index + 1 %}
-                {% endfor %}
             </section>
         {% endif %}
+
         {% if data_format == 'graph' or data_format == 'table-and-graph' %}
             <div>graph here</div>
         {% endif %}
 
+        <script src="/static/js/global.js"></script>
+        <script>
+            const hasTable = {{
+                (data_format == 'table' or data_format == 'table_and_graph') | tojson
+            }};
+            const hasGraph = {{
+                (data_format == 'graph' or data_format == 'table_and_graph') | tojson
+            }};
+            const readings = {{ readings | tojson }};
+        </script>
         <script src="/static/js/report/report.js"></script>
     </body>
 </html>
