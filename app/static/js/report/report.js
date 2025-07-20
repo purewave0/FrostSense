@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ).replace(',', '');
             row.querySelector('.datetime').textContent = formattedDatetime;
             row.querySelector('.temperature').textContent =
-                roundTemperature(reading.temperature);
+                reading.temperature.toFixed(1);
             currentTable.append(row);
             ++rowIndex;
         }
