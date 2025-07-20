@@ -42,11 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 new Date(reading.created_on), locales
             ).replace(',', '');
             row.querySelector('.datetime').textContent = formattedDatetime;
-            row.querySelector('.temperature').innerHTML = `
-                <span class="temperature-value">
-                    ${roundTemperature(reading.temperature)}
-                </span> °C
-            `;
+            row.querySelector('.temperature').textContent =
+                roundTemperature(reading.temperature);
             currentTable.append(row);
             ++rowIndex;
         }

@@ -66,8 +66,5 @@ header {
 .table .temperature {
     background-color: lightblue;
     text-align: right;
-}
-
-.table .temperature-value {
     font-family: monospace;
 }
