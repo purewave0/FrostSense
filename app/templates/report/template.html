@@ -62,10 +62,10 @@
         {% endif %}
         <script>
             const hasTable = {{
-                (data_format == 'table' or data_format == 'table_and_graph') | tojson
+                (data_format == 'table' or data_format == 'table-and-graph') | tojson
             }};
             const hasGraph = {{
-                (data_format == 'graph' or data_format == 'table_and_graph') | tojson
+                (data_format == 'graph' or data_format == 'table-and-graph') | tojson
             }};
             const readings = {{ readings | tojson }};
         </script>
