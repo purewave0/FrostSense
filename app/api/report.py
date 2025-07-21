@@ -30,7 +30,6 @@ class DataFormat(Enum):
 def generate_report_html(
     sensor_name: str,
     token: str,
-    token_qr_base64: str,
     created_on: datetime,
     range_start: datetime,
     range_end: datetime,
@@ -42,8 +41,8 @@ def generate_report_html(
     return render_template(
         'report/template.html',
         sensor_name=sensor_name,
+        token=token,
         formatted_token=format_token(token),
-        token_qr_base64=token_qr_base64,
         created_on=created_on,
         range_start=range_start,
         range_end=range_end,

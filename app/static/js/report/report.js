@@ -9,6 +9,15 @@ function formatReadingsForGraph(rawReadings) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    new QRCode(
+        document.getElementById('qr-code'),
+        {
+            text: token,
+            width: 72,
+            height: 72,
+            drawer: 'svg',
+        }
+    );
     const locales = getUserLocales();
     if (hasTable) {
         const rowsPerTable = 65;

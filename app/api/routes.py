@@ -195,7 +195,6 @@ def api_generate_report():
     report_html = generate_report_html(
         sensor_name,
         token,
-        'TODO',
         utc_now,
         range_start,
         range_end,

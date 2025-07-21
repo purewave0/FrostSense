@@ -42,7 +42,7 @@
 
             <div id="header-token" class="header-column">
                 <!-- TODO -->
-                <img id="qr-code" src="{{ token_qr_base64 }}" />
+                <div id="qr-code" />
             </div>
         </header>
 
@@ -79,7 +79,9 @@
                 (data_format == 'graph' or data_format == 'table-and-graph') | tojson
             }};
             const readings = {{ readings | tojson }};
+            const token = {{ token | tojson }};
         </script>
+        <script src="/static/js/lib/easyqrcode.min.js"></script>
         <script src="/static/js/report/report.js"></script>
     </body>
 </html>
