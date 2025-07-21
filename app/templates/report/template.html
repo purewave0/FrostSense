@@ -42,16 +42,24 @@
             </div>
         </header>
 
-        {% if data_format == 'table' or data_format == 'table-and-graph' %}
-            <section id="tables-section">
-            </section>
-        {% endif %}
+        <section id="data-section">
+            {% if data_format == 'table' or data_format == 'table-and-graph' %}
+                <section id="tables-section">
+                </section>
+            {% endif %}
 
-        {% if data_format == 'graph' or data_format == 'table-and-graph' %}
-            <div>graph here</div>
-        {% endif %}
+            {% if data_format == 'graph' or data_format == 'table-and-graph' %}
+                <section id="graph-section">
+                    <div id="graph"></div>
+                </section>
+            {% endif %}
+        </section>
 
         <script src="/static/js/global.js"></script>
+        {% if data_format == 'graph' or data_format == 'table-and-graph' %}
+            <script src="/static/js/lib/raphael.min.js"></script>
+            <script src="/static/js/lib/dygraph.min.js"></script>
+        {% endif %}
         <script>
             const hasTable = {{
                 (data_format == 'table' or data_format == 'table_and_graph') | tojson

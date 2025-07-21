@@ -41,6 +41,13 @@ header {
     font-family: monospace;
 }
 
+/* -- data -- */
+
+#data-section {
+    margin-top: 16px;
+    width: 100%;
+}
+
 /* -- table -- */
 
 #tables-section {
@@ -67,4 +74,16 @@ header {
     background-color: lightblue;
     text-align: right;
     font-family: monospace;
+}
+
+/* -- graph -- */
+
+#graph-section {
+    margin: 0 auto;
+    position: relative;
+    right: 12px; /* align it */
+}
+
+.dygraph-axis-label-y {
+    font-size: 9pt;
 }

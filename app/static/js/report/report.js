@@ -1,3 +1,13 @@
+function formatReadingsForGraph(rawReadings) {
+    // the format dygraphs expects is:
+    // [
+    //     [x,y], [x,y], [x,y]...
+    // ] for data x and y.
+    return rawReadings.map((reading) => {
+        return [new Date(reading.created_on), reading.temperature]
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const locales = getUserLocales();
     if (hasTable) {
@@ -53,6 +63,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (hasGraph) {
-        // TODO
+        const graphDestination = document.getElementById('graph-section');
+        const graphElement = document.getElementById('graph-section');
+
+        let width = null;
+        let height = null;
+        if (hasTable) {
+            // TODO
+            width = 400;
+            height = 400;
+        } else {
+            // 4:3
+            width = 700;
+            height = 525;
+        }
+
+        const graph = new Dygraph(
+            graphElement,
+            formatReadingsForGraph(readings),
+            {
+                width: width,
+                height: height,
+                // make graph static/noninteractive
+                interactionModel: {},  // no zooming, etc.
+                drawHighlightPointCallback: () => { },  // no point highlight on hover
+                showLabelsOnHighlight: false,  // no legend on hover
+                // no ID column needed
+                labels: ['Time', 'Temperature'],
+                valueRange: [-30, 30],
+                axes: {
+                    y: {
+                        valueFormatter(temperature) {
+                            return formatTemperature(temperature)
+                        },
+                        axisLabelFormatter(temperature) {
+                            return formatTemperature(temperature, 0);
+                        },
+                    },
+                }
+            }
+        );
     }
 });
