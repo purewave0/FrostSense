@@ -11,13 +11,9 @@ function formatReadingsForGraph(rawReadings) {
 document.addEventListener('DOMContentLoaded', () => {
     const locales = getUserLocales();
     if (hasTable) {
-        // // TODO:
-        // const rowsPerTable = (hasGraph)
-        //     ? 40   // make some space for the graph
-        //     : 60;
-        const rowsPerTable = 50;
+        const rowsPerTable = 55;
         let rowIndex = 0;
-        const tables = []
+        const tables = [];
         // use the horizontal space by distributing readings between multiple tables.
         // this avoids creating multiple pages unnecessarily
         for (const reading of readings) {
@@ -63,15 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (hasGraph) {
-        const graphDestination = document.getElementById('graph-section');
         const graphElement = document.getElementById('graph-section');
 
         let width = null;
         let height = null;
         if (hasTable) {
-            // TODO
+            // 4:3
             width = 400;
-            height = 400;
+            height = 300;
         } else {
             // 4:3
             width = 700;
