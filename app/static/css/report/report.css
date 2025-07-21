@@ -44,7 +44,7 @@ header {
 /* -- data -- */
 
 #data-section {
-    margin-top: 16px;
+    padding: 8px;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -61,10 +61,21 @@ header {
 .table {
     height: fit-content;
     font-size: 8pt;
+    border-collapse: collapse;
 }
 
-#table-header td {
-    background-color: lightgray;
+.table td {
+    border: 1px solid gray;
+}
+
+.table-day .day-value {
+    text-align: center;
+    background-color: black;
+    color: white;
+}
+
+.table-spacer {
+    height: 15px; /* exact height of a row */
 }
 
 .table .datetime {

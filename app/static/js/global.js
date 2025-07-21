@@ -63,6 +63,37 @@ function formatDateToCompactDatetime(date, locales) {
 
 
 /**
+ * Format the given Date with year, month, and day, all of them 2-digits long, according
+ * to the user's locales.
+ */
+function formatDateToCompactDate(date, locales) {
+    return date.toLocaleString(
+        locales,
+        {
+            'year': '2-digit',
+            'month': '2-digit',
+            'day': '2-digit',
+        }
+    );
+}
+
+
+/**
+ * Format the given Date with hours, and minute, all of them 2-digits long, according to
+ * the user's locales.
+ */
+function formatDateToCompactTime(date, locales) {
+    return date.toLocaleString(
+        locales,
+        {
+            'hour': '2-digit',
+            'minute': '2-digit',
+        }
+    );
+}
+
+
+/**
  * Return a list of the user's preferred languages.
  */
 function getUserLocales() {

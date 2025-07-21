@@ -11,9 +11,10 @@ function formatReadingsForGraph(rawReadings) {
 document.addEventListener('DOMContentLoaded', () => {
     const locales = getUserLocales();
     if (hasTable) {
-        const rowsPerTable = 55;
+        const rowsPerTable = 65;
         let rowIndex = 0;
         const tables = [];
+        let previousDate = null;
         // use the horizontal space by distributing readings between multiple tables.
         // this avoids creating multiple pages unnecessarily
         for (const reading of readings) {
@@ -26,16 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const currentTable = tables.at(-1);
 
-            const shouldAddHeader = rowIndex === 0;
-            if (shouldAddHeader) {
-                const headerRow = document.createElement('tr');
-                headerRow.id = 'table-header';
-                headerRow.innerHTML = `
-                    <td>Time</td>
-                    <td>°C</td>
-                `;
-                currentTable.append(headerRow);
-                // it's a row too - count it
+            const currentDate = new Date(reading.created_on);
+
+            const isNewDay = (
+                previousDate === null
+                || previousDate.getDate() != currentDate.getDate()
+            );
+
+            if (isNewDay) {
+                const isFirstDay = previousDate === null;
+                if (!isFirstDay) {
+                    // add an empty row to work as a spacer
+                    const spacerRow = document.createElement('tr');
+                    spacerRow.className = 'table-spacer';
+                    currentTable.append(spacerRow);
+                    // count it as a row so we don't misalign the tables
+                    ++rowIndex;
+                }
+                const dayRow = document.createElement('tr');
+                dayRow.className = 'table-day';
+                dayRow.innerHTML = '<td class="day-value" colspan="2"></td>';
+                dayRow.querySelector('.day-value').textContent =
+                    formatDateToCompactDate(currentDate, locales);
+                currentTable.append(dayRow);
+
+                // count it as a row too
                 ++rowIndex;
             }
 
@@ -44,10 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td class="datetime"></td>
                 <td class="temperature">°C</td>
             `;
-            let formattedDatetime = formatDateToCompactDatetime(
-                new Date(reading.created_on), locales
-            ).replace(',', '');
-            row.querySelector('.datetime').textContent = formattedDatetime;
+            let formattedTime = formatDateToCompactTime(currentDate, locales);
+            previousDate = currentDate;
+            row.querySelector('.datetime').textContent = formattedTime;
             row.querySelector('.temperature').textContent =
                 reading.temperature.toFixed(1);
             currentTable.append(row);
