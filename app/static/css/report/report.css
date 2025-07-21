@@ -2,29 +2,35 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    background-color: #c6ffe2;
     font-size: 9pt;
 }
 
 header {
-    background-color: coral;
     display: flex;
     flex-direction: row;
+    border-bottom: 2px solid black;
 }
 
 #header-info {
     flex: 1;
     display: flex;
-    flex-direction: column;
-}
-
-.header-row {
-    display: flex;
     flex-direction: row;
 }
 
-.header-column {
+#header-info .header-column {
+    display: flex;
+    flex-direction: column;
     flex: 1;
+    row-gap: 2px;
+}
+
+/* TODO: differently-coloured letters and numbers for readability? */
+#token-value {
+    font-family: monospace;
+    background-color: #efefef;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 2px 4px;
 }
 
 #header-token {
@@ -35,11 +41,7 @@ header {
 #header-token img {
     width: 72px;
     height: 72px;
-    background-color: red;
-}
-
-#header-token span {
-    font-family: monospace;
+    background-color: whitesmoke;
 }
 
 /* -- data -- */
@@ -80,12 +82,11 @@ header {
 }
 
 .table .datetime {
-    background-color: lightpink;
     text-align: right;
+    background-color: #dddddd;
 }
 
 .table .temperature {
-    background-color: lightblue;
     text-align: right;
     font-family: monospace;
 }
@@ -107,7 +108,6 @@ header {
 #notes-section {
     padding: 8px;
     width: 793px;
-    background-color: lightskyblue;
 }
 
 #notes-title {
