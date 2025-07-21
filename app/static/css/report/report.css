@@ -3,6 +3,7 @@ body {
     padding: 0;
     font-family: sans-serif;
     background-color: #c6ffe2;
+    font-size: 9pt;
 }
 
 header {
@@ -105,7 +106,6 @@ header {
 
 #notes-section {
     padding: 8px;
-    font-size: 9pt;
     width: 793px;
     background-color: lightskyblue;
 }
