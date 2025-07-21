@@ -55,6 +55,11 @@
             {% endif %}
         </section>
 
+        <section id="notes-section">
+            <span id="notes-title">Notes:</span>
+            <span id="notes">{{ notes }}</span>
+        </section>
+
         <script src="/static/js/global.js"></script>
         {% if data_format == 'graph' or data_format == 'table-and-graph' %}
             <script src="/static/js/lib/raphael.min.js"></script>

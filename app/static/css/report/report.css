@@ -100,3 +100,16 @@ header {
 .dygraph-axis-label-y {
     font-size: 9pt;
 }
+
+/* -- notes -- */
+
+#notes-section {
+    padding: 8px;
+    font-size: 9pt;
+    width: 793px;
+    background-color: lightskyblue;
+}
+
+#notes-title {
+    font-weight: bold;
+}
