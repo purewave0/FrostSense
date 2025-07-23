@@ -20,14 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     const locales = getUserLocales();
     if (hasTable) {
-        const rowsPerTable = 65;
         let rowIndex = 0;
         const tables = [];
         let previousDate = null;
         // use the horizontal space by distributing readings between multiple tables.
         // this avoids creating multiple pages unnecessarily
         for (const reading of readings) {
-            const shouldCreateTable = rowIndex % rowsPerTable === 0;
+            const shouldCreateTable = rowIndex % ReadingsReport.ROWS_PER_TABLE === 0;
             if (shouldCreateTable) {
                 const table = document.createElement('table');
                 table.className = 'table';
