@@ -139,14 +139,14 @@ header {
     right: 12px; /* align it */
 }
 
-.dygraph-axis-label-y {
-    font-size: 9pt;
+.dygraph-axis-label {
+    font-size: 8pt;
 }
 
 /* -- notes -- */
 
 #notes-section {
-    padding: 8px;
+    padding: 0 8px;
     width: 793px;
 }
 
