@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Collection
 from datetime import datetime
 from enum import Enum
 from os import path
@@ -33,7 +33,7 @@ def generate_report_html(
     created_on: datetime,
     range_start: datetime,
     range_end: datetime,
-    readings: Iterable[dict[str, Any]],
+    readings: Collection[dict[str, Any]],
     data_format: DataFormat,
     notes: str | None
 ) -> str:
@@ -47,6 +47,7 @@ def generate_report_html(
         range_start=range_start,
         range_end=range_end,
         readings=readings,
+        total_readings=len(readings),
         data_format=data_format.value,
         notes=notes,
     )

@@ -9,33 +9,48 @@
 
     <body>
         <header>
-            <div id="header-info">
-                <div class="header-column">
-                    <div class="header-row">
-                        <b>Sensor:</b>
-                        <span>{{ sensor_name }}</span>
+            <div id="header-logo">
+                <!-- TODO: -->
+                <!-- <img id="/static/img/logo.svg"> -->
+                <h1>logo</h1>
+            </div>
+            <div id="header-center">
+                <h1 id="title">Readings Report</h1>
+                <div id="header-info">
+                    <div class="header-column">
+                        <div class="header-row">
+                            <b>Generated on:</b>
+                            <span>{{ created_on | format_datetime_full }}</span>
+                        </div>
+
+                        <div class="header-row">
+                            <b>Sensor:</b>
+                            <span>{{ sensor_name }}</span>
+                        </div>
+
+                        <div class="header-row">
+                            <b>Token:</b>
+                            <span id="token-value">{{ formatted_token }}</span>
+                        </div>
                     </div>
 
-                    <div class="header-row">
-                        <b>Generated on:</b>
-                        <span>{{ created_on | format_datetime_full }}</span>
-                    </div>
+                    <div class="header-column">
+                        <div class="header-row">
+                            <b>Start:</b>
+                            <span>{{ range_start | format_datetime }}</span>
+                        </div>
 
-                    <div class="header-row">
-                        <b>Token:</b>
-                        <span id="token-value">{{ formatted_token }}</span>
-                    </div>
-                </div>
+                        <div class="header-row">
+                            <b>End:</b>
+                            <span id="range-end-value">
+                                {{ range_end | format_datetime }}
+                            </span>
+                        </div>
 
-                <div class="header-column">
-                    <div class="header-row">
-                        <b>Start:</b>
-                        <span>{{ range_start | format_datetime }}</span>
-                    </div>
-
-                    <div class="header-row">
-                        <b>End:</b>
-                        <span id="range-end-value">{{ range_end | format_datetime }}</span>
+                        <div class="header-row">
+                            <b>Total readings:</b>
+                            <span>{{ total_readings }}</span>
+                        </div>
                     </div>
                 </div>
             </div>

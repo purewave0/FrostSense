@@ -142,6 +142,6 @@ const UPDATE_INTERVAL = 2_000;  // TODO: proper value. 2s is just for testing
 const ReadingsReport = {
     /** How many rows one table has. Any more, and the next readings go into a new
      *  table. */
-    ROWS_PER_TABLE: 65,
+    ROWS_PER_TABLE: 80,
 
 }

@@ -2,19 +2,49 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    font-size: 9pt;
+    font-size: 8pt;
+    --border-color: #aaaaaa;
+    --header-spacing: 4px;
 }
 
 header {
     display: flex;
     flex-direction: row;
-    border-bottom: 2px solid black;
+    border: 2px solid var(--border-color);
+}
+
+#header-logo {
+    height: 72px;
+    width: 72px;
+    background-color: #2288ee;
+    text-align: center;
+    margin: var(--header-spacing);
+}
+
+#header-logo h1 {
+    rotate: -45deg;
+}
+
+#header-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid var(--border-color);
+    border-right: 2px solid var(--border-color);
+}
+
+#title {
+    text-align: center;
+    font-size: 12pt;
+    border-bottom: 2px solid var(--border-color);
+    margin: var(--header-spacing) 0;
+    padding-bottom: var(--header-spacing);
 }
 
 #header-info {
-    flex: 1;
     display: flex;
     flex-direction: row;
+    padding: 0 var(--header-spacing) var(--header-spacing) var(--header-spacing);
 }
 
 #header-info .header-column {
@@ -25,7 +55,7 @@ header {
 }
 
 #range-end-value {
-    margin-left: 9px;
+    margin-left: 8px; /* align it with the start of the range */
 }
 
 /* TODO: differently-coloured letters and numbers for readability? */
@@ -34,7 +64,7 @@ header {
     background-color: #efefef;
     border: 1px solid lightgray;
     border-radius: 4px;
-    padding: 2px 4px;
+    padding: 1px 4px;
 }
 
 #header-token {
@@ -46,6 +76,12 @@ header {
     width: 72px;
     height: 72px;
     background-color: whitesmoke;
+}
+
+#qr-code {
+    height: 72px;
+    width: 72px;
+    margin: var(--header-spacing);
 }
 
 /* -- data -- */
@@ -68,7 +104,7 @@ header {
 
 .table {
     height: fit-content;
-    font-size: 8pt;
+    font-size: 6pt;
     border-collapse: collapse;
 }
 
@@ -83,7 +119,7 @@ header {
 }
 
 .table-spacer {
-    height: 15px; /* exact height of a row */
+    height: 12.416px; /* exact height of a row */
 }
 
 .table .datetime {
