@@ -139,6 +139,10 @@ header {
     right: 12px; /* align it */
 }
 
+body[data-format="graph"] #graph-section {
+    margin: auto;
+}
+
 .dygraph-axis-label {
     font-size: 8pt;
 }
