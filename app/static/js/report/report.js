@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
             height = 300;
         } else {
             // 4:3
-            width = 700;
-            height = 525;
+            width = 800;
+            height = 600;
         }
 
         const graph = new Dygraph(
