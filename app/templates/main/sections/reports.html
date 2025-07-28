@@ -14,61 +14,72 @@
 {% block content %}
     <h2>reports</h2>
     <form id="report-form">
-        <div class="form-row columns">
-            <div class="form-field">
-                <label for="sensor">Sensor</label>
-                <select id="sensor" required disabled>
-                    <option value="" disabled selected hidden>-- Pick one --</option>
-                </select>
-            </div>
-
-            <div class="form-field">
-                <label for="format">Data format</label>
-                <select id="format" required>
-                    <option value="table" selected>Table</option>
-                    <option value="graph">Graph</option>
-                    <option value="table-and-graph">Table &amp; Graph</option>
-                </select>
-            </div>
-
-            <!-- TODO: add a small preview of the report (according to the data format) -->
-        </div>
-
-
-        <div class="form-row columns">
+        <div class="columns">
             <div>
-                <label>From…</label>
-                <div class="datetime-field">
-                    <input type="radio" id="start-today" name="range-start-type" value="today" required checked>
-                    <label for="start-today">Start of today</label>
+                <div class="form-row columns">
+                    <div class="form-field">
+                        <label for="sensor">Sensor</label>
+                        <select id="sensor" required disabled>
+                            <option value="" disabled selected hidden>-- Pick one --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="format">Data format</label>
+                        <select id="format" required>
+                            <option value="table" selected>Table</option>
+                            <option value="graph">Graph</option>
+                            <option value="table-and-graph">Table &amp; Graph</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="datetime-field">
-                    <input type="radio" id="start-custom" name="range-start-type" value="custom">
-                    <label for="start-custom">Custom</label>
-                    <input type="datetime-local" id="start-custom-value" disabled>
+
+                <div class="form-row columns">
+                    <div>
+                        <label>From…</label>
+                        <div class="datetime-field">
+                            <input type="radio" id="start-today" name="range-start-type" value="today" required checked>
+                            <label for="start-today">Start of today</label>
+                        </div>
+
+                        <div class="datetime-field">
+                            <input type="radio" id="start-custom" name="range-start-type" value="custom">
+                            <label for="start-custom">Custom</label>
+                            <input type="datetime-local" id="start-custom-value" disabled>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Until…</label>
+                        <div class="datetime-field">
+                            <input type="radio" id="end-today" name="range-end-type" value="today" required checked>
+                            <label for="end-today">End of today</label>
+                        </div>
+
+                        <div class="datetime-field">
+                            <input type="radio" id="end-custom" name="range-end-type" value="custom">
+                            <label for="end-custom">Custom</label>
+                            <input type="datetime-local" id="end-custom-value" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    Total readings: <span id="readings-count">…</span>
                 </div>
             </div>
-
             <div>
-                <label>Until…</label>
-                <div class="datetime-field">
-                    <input type="radio" id="end-today" name="range-end-type" value="today" required checked>
-                    <label for="end-today">End of today</label>
-                </div>
-
-                <div class="datetime-field">
-                    <input type="radio" id="end-custom" name="range-end-type" value="custom">
-                    <label for="end-custom">Custom</label>
-                    <input type="datetime-local" id="end-custom-value" disabled>
+                <div id="preview">
+                    <div id="preview-header"></div>
+                    <div id="preview-data">
+                        <div id="preview-table"></div>
+                        <div id="preview-graph"></div>
+                    </div>
+                    <div id="preview-notes"></div>
                 </div>
             </div>
         </div>
-
-        <div class="form-row">
-            Total readings: <span id="readings-count">…</span>
-        </div>
-
 
         <div class="form-row form-field">
             <label for="notes">Notes (optional)</label>

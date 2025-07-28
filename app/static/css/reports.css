@@ -1,3 +1,20 @@
+body {
+    /* -- report preview measurements, based on A4 paper -- */
+    /* a4 ratio */
+    --report-width: 100px;
+    --report-height: 141px;
+    /* header */
+    --report-header-height: calc(0.07 * var(--report-height));
+    /* graph (when table-and-graph) */
+    --report-graph-width: calc(0.4 * var(--report-width));
+    --report-graph-height: calc(0.235 * var(--report-height));
+    /* graph (when alone) */
+    --report-graph-full-width: calc(0.96 * var(--report-width));
+    --report-graph-full-height: calc(0.51 * var(--report-height));
+    /* notes */
+    --report-notes-height: calc(0.048 * var(--report-height));
+}
+
 input[type="radio"] {
     margin: 0;
 }
@@ -39,4 +56,69 @@ input[type="radio"] {
 #notes-length {
     text-align: right;
     font-size: 10pt;
+}
+
+/* -- report preview -- */
+
+#preview {
+    background-color: red;
+    width: var(--report-width);
+    height: var(--report-height);
+    display: flex;
+    flex-direction: column;
+}
+
+#preview-header {
+    width: 100%;
+    height: var(--report-header-height);
+    background-color: blue;
+}
+
+#preview-data {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    margin: 2px;
+    column-gap: 2px;
+    justify-content: space-between;
+}
+
+#preview-table {
+    background-color: green;
+    flex: 1;
+    /* no height here; its height will be set according to the number of rows */
+}
+
+#preview-graph {
+    background-color: lightsalmon;
+    width: var(--report-graph-width);
+    height: var(--report-graph-height);
+}
+
+#preview-notes {
+    height: var(--report-notes-height);
+    background-color: lightgreen;
+}
+
+/* -- graph/table -- */
+
+#preview:not([data-format="table"]):not([data-format="table-and-graph"])
+    #preview-table {
+    display: none;
+}
+
+#preview:not([data-format="graph"]):not([data-format="table-and-graph"])
+    #preview-graph {
+    display: none;
+}
+
+#preview[data-format="graph"] #preview-graph {
+    margin: 0 auto auto auto;
+    width: var(--report-graph-full-width);
+    height: var(--report-graph-full-height);
+}
+
+#preview:not(.has-notes) #preview-notes {
+    /* still occupy space */
+    opacity: 0;
 }

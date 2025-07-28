@@ -145,7 +145,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const notes = document.getElementById('notes');
     const notesLengthCount = document.getElementById('notes-current-length');
     notes.addEventListener('input', () => {
-        notesLengthCount.textContent = notes.value.trim().length;
+        const length = notes.value.trim().length;
+        notesLengthCount.textContent = length;
+        // reflect Notes in the preview
+        if (length) {
+            reportPreview.classList.add('has-notes');
+        } else {
+            reportPreview.classList.remove('has-notes');
+        }
     });
 
 
@@ -191,6 +198,14 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
+    /**
+     * Return the Notes value.
+     *
+     * @returns {?string} The trimmed Notes value, or null if empty or whitespace-only.
+     */
+    function getNotesValue() {
+        return notes.value.trim() || null
+    }
 
     // ensure Start comes before End, or End comes after Start (whichever is filled
     // last)
@@ -248,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
             getRangeStart(),
             getRangeEnd(),
             formatSelect.value,
-            notes.value.trim() || null
+            getNotesValue()
         ).then(
             (response) => response.json()
         ).then((token) => {
@@ -286,4 +301,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    const reportPreview = document.getElementById('preview');
+    // reflect data format changes in the preview
+    formatSelect.addEventListener('change', () => {
+        reportPreview.dataset.format = formatSelect.value;
+    });
+    reportPreview.dataset.format = formatSelect.value;
 });
