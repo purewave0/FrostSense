@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'end': document.getElementById('end-value'),
     };
 
+    // select today by default
+    singleDateInput.valueAsDate = new Date();
+
     // if 'range' is checked, require its inputs to be filled
     for (const radio of Object.values(timeframeRadios)) {
         radio.addEventListener('change', () => {
