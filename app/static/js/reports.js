@@ -1,29 +1,11 @@
 /**
- * Return today @ 23h:59m:59s.999ms.
+ * Return the given date 23h:59m:59s.999ms later.
  */
-function getEndOfToday() {
-    const date = new Date();
-    date.setHours(23, 59, 59, 999);  // today @ 23h:59m:59s.999ms
-    return date;
-}
-
-/**
- * Return today @ 00h:01m, 1 minute later than the start of today (00h:00m).
- */
-function getDateAfterStartOfToday() {
-    const date = new Date();
-    date.setHours(0, 1, 0);  // today @ 00h:01m:00s
-    return date;
-}
-
-/**
- * Return today @ 23h:58m, 1 minute earlier than the end of today (23h:58m).
- */
-function getDateBeforeEndOfToday() {
-    const date = new Date();
-    // custom datetimes are limited to minutes, so it's unnecessary to set non-0 values
-    // to seconds and beyond.
-    date.setHours(23, 58, 0, 0);  // today @ 23h:58m:00s.000ms
+function getEndOfDay(date) {
+    date.setHours(date.getHours() + 23);
+    date.setMinutes(date.getMinutes() + 59);
+    date.setSeconds(date.getSeconds() + 59);
+    date.setMilliseconds(date.getMilliseconds() + 999);
     return date;
 }
 
@@ -45,99 +27,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const formatSelect = document.getElementById('format');
 
-    const datetimeRadios = {
-        'start': {
-            'today': document.getElementById('start-today'),
-            'custom': document.getElementById('start-custom'),
-        },
-        'end': {
-            'today': document.getElementById('end-today'),
-            'custom': document.getElementById('end-custom'),
-        },
+    const timeframeRadios = {
+        'single': document.getElementById('single-timeframe'),
+        'range': document.getElementById('range-timeframe'),
     };
-    const customDatetimeInputs = {
-        'start': document.getElementById('start-custom-value'),
-        'end': document.getElementById('end-custom-value'),
-    }
+    const singleDateInput = document.getElementById('single-value');
+    const rangeDateInputs = {
+        'start': document.getElementById('start-value'),
+        'end': document.getElementById('end-value'),
+    };
 
-
-    /**
-     * Set the custom Start local-datetime's max value to be today @ 23:58, 1 minute
-     * earlier than the end of today (23:59)
-     */
-    function setCustomStartMaxBeforeEndOfToday() {
-        // work in the user's timezone, as working in UTC would be quite confusing for
-        // the user. for instance, in UTC-3 our 23:58 of today would be 20:58; our 00:01
-        // of today would be 21:01 of *yesterday*
-        customDatetimeInputs.start.max = formatDateForDatetimeInput(
-            adjustToLocalTimezone(getDateBeforeEndOfToday())
-        );
-    }
-
-    /**
-     * Set the custom End local-datetime's min value to be today @ 00:01, 1 minute
-     * later than the start of today (00:00)
-     */
-    function setCustomEndMinAfterStartOfToday() {
-        customDatetimeInputs.end.min = formatDateForDatetimeInput(
-            adjustToLocalTimezone(getDateAfterStartOfToday())
-        );
-    }
-
-    // set any min/max values depending on the other end; and if 'custom' is checked,
-    // require the relevant datetime input to be filled
-    for (const radio of Object.values(datetimeRadios.start)) {
+    // if 'range' is checked, require its inputs to be filled
+    for (const radio of Object.values(timeframeRadios)) {
         radio.addEventListener('change', () => {
-            customDatetimeInputs.start.max = '';
-            const isCustom = datetimeRadios.start.custom.checked;
-            if (isCustom) {
+            const isRange = timeframeRadios.range.checked;
+            singleDateInput.value = '';
+            singleDateInput.disabled = isRange;
+            singleDateInput.required = !isRange;
+
+            for (const point in rangeDateInputs) {
                 // TODO: fix the difference in width when enabled/disabled
-                customDatetimeInputs.start.disabled = false;
-                customDatetimeInputs.start.required = true;
-
-                const rangeEndsToday = datetimeRadios.end.today.checked;
-                if (rangeEndsToday) {
-                    // End is until the end of today (23:59), so Start must go UP TO
-                    // 23:58
-                    setCustomStartMaxBeforeEndOfToday();
-                }
-            } else {
-                customDatetimeInputs.start.required = false;
-                customDatetimeInputs.start.value = '';
-                customDatetimeInputs.start.disabled = true;
-
-                // only set the limit if needed
-                const isCustomEnd = datetimeRadios.end.custom.checked;
-                if (isCustomEnd) {
-                    setCustomEndMinAfterStartOfToday();
-                }
-            }
-        });
-    }
-    for (const radio of Object.values(datetimeRadios.end)) {
-        radio.addEventListener('change', () => {
-            customDatetimeInputs.end.min = '';
-            const isCustom = datetimeRadios.end.custom.checked;
-            if (isCustom) {
-                customDatetimeInputs.end.disabled = false;
-                customDatetimeInputs.end.required = true;
-
-                const rangeStartsToday = datetimeRadios.start.today.checked;
-                if (rangeStartsToday) {
-                    // Start is since the start of today (00:00), so End must be AT
-                    // LEAST 00:01.
-                    setCustomEndMinAfterStartOfToday();
-                }
-            } else {
-                customDatetimeInputs.end.required = false;
-                customDatetimeInputs.end.value = '';
-                customDatetimeInputs.end.disabled = true;
-
-                // only set the limit if needed
-                const isCustomStart = datetimeRadios.start.custom.checked;
-                if (isCustomStart) {
-                    setCustomStartMaxBeforeEndOfToday();
-                }
+                const input = rangeDateInputs[point];
+                input.disabled = !isRange;
+                input.required = isRange;
+                input.value = '';
             }
         });
     }
@@ -161,40 +74,46 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Return the start of the time range.
      *
-     * @returns {?Date} The datetime value in UTC if valid, otherwise null.
+     * @returns {?Date} The date value in UTC if valid, otherwise null.
      */
     function getRangeStart() {
-        if (datetimeRadios.start.today.checked) {
-            return getStartOfToday();
+        if (timeframeRadios.single.checked) {
+            if (!singleDateInput.validity.valid) {
+                return null;
+            }
+            // for user convenience, the range date inputs are in the local timezone;
+            // so adjust them back to UTC.
+            // besides that, no other adjustment is needed. the time is already 00:00
+            return adjustToUTC(singleDateInput.valueAsDate);
         }
 
-        if (!customDatetimeInputs.start.validity.valid) {
+        if (!rangeDateInputs.start.validity.valid) {
             return null;
         }
-
-        // for user convenience, the custom datetime inputs are in the local timezone;
-        // so adjust them back to UTC
-        return adjustToUTC(
-            customDatetimeInputs.start.valueAsDate
-        );
+        return adjustToUTC(rangeDateInputs.start.valueAsDate);
     }
 
     /**
      * Return the end of the time range.
      *
-     * @returns {?Date} The datetime value in UTC if valid, otherwise null.
+     * @returns {?Date} The date value in UTC if valid, otherwise null.
      */
     function getRangeEnd() {
-        if (datetimeRadios.end.today.checked) {
-            return getEndOfToday();
+        if (timeframeRadios.single.checked) {
+            if (!singleDateInput.validity.valid) {
+                return null;
+            }
+            return adjustToUTC(
+                getEndOfDay(singleDateInput.valueAsDate)
+            );
         }
 
-        if (!customDatetimeInputs.end.validity.valid) {
+        if (!rangeDateInputs.end.validity.valid) {
             return null;
         }
 
         return adjustToUTC(
-            customDatetimeInputs.end.valueAsDate
+            getEndOfDay(rangeDateInputs.end.valueAsDate)
         );
     }
 
@@ -207,42 +126,36 @@ document.addEventListener('DOMContentLoaded', () => {
         return notes.value.trim() || null
     }
 
-    // ensure Start comes before End, or End comes after Start (whichever is filled
-    // last)
-    customDatetimeInputs.start.addEventListener('change', () => {
-        if (customDatetimeInputs.start.validity.valid) {
-            // End must come AFTER Start (at least 1 minute later)
-            const minimumDatetime = customDatetimeInputs.start.valueAsDate;
-            minimumDatetime.setMinutes(minimumDatetime.getMinutes() + 1)
-
-            customDatetimeInputs.end.min =
-                formatDateForDatetimeInput(minimumDatetime);
+    // set min/max limits based on whichever point (Start/End) is filled last
+    rangeDateInputs.start.addEventListener('change', () => {
+        if (rangeDateInputs.start.validity.valid) {
+            // End must not come before Start
+            const minimumDate = rangeDateInputs.start.valueAsDate;
+            rangeDateInputs.end.min =
+                formatDateForDateInput(minimumDate);
         } else {
-            customDatetimeInputs.end.min = '';
+            rangeDateInputs.end.min = '';
         }
     });
-    customDatetimeInputs.end.addEventListener('change', () => {
-        if (customDatetimeInputs.end.validity.valid) {
-            // Start must come BEFORE End (at least 1 minute earlier)
-            const maximumDatetime = customDatetimeInputs.end.valueAsDate;
-            maximumDatetime.setMinutes(maximumDatetime.getMinutes() - 1);
-
-            customDatetimeInputs.start.max =
-                formatDateForDatetimeInput(maximumDatetime);
+    rangeDateInputs.end.addEventListener('change', () => {
+        if (rangeDateInputs.end.validity.valid) {
+            // Start must not come after End
+            const maximumDate = rangeDateInputs.end.valueAsDate;
+            rangeDateInputs.start.max =
+                formatDateForDateInput(maximumDate);
         } else {
-            customDatetimeInputs.start.max = '';
+            rangeDateInputs.start.max = '';
         }
     });
 
     // inputs that filter the readings that will be included in the report
     const filterInputs = [
         sensorsSelect,
-        datetimeRadios.start.today,
-        datetimeRadios.start.custom,
-        datetimeRadios.end.today,
-        datetimeRadios.end.custom,
-        customDatetimeInputs.start,
-        customDatetimeInputs.end,
+        timeframeRadios.single,
+        timeframeRadios.range,
+        singleDateInput,
+        rangeDateInputs.start,
+        rangeDateInputs.end,
     ];
 
     const form = document.getElementById('report-form');
@@ -250,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         if (!readingsCount) {
-            // TODO: move this to an element
+            // TODO: move this to an element, or allow empty reports (with a warning)?
             alert(
                 'No readings within this time period. Please try changing the time'
                 + ' range.'
