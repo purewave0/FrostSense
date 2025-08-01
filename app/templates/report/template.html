@@ -52,11 +52,24 @@
                             <span>{{ total_readings }}</span>
                         </div>
                     </div>
+
+                    <div class="header-column">
+                        <div class="header-row">
+                            <b>Timezone:</b>
+                            <span id="timezone-value"></span>
+                        </div>
+
+                        <div class="header-row">
+                            <b>Unit:</b>
+                            <!-- TODO: support Fahrenheit -->
+                            <!-- TODO: put this in a pill? -->
+                            <span id="unit-value">Celsius (°C)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div id="header-token" class="header-column">
-                <!-- TODO -->
                 <div id="qr-code" />
             </div>
         </header>

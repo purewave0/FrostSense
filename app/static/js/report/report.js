@@ -9,6 +9,9 @@ function formatReadingsForGraph(rawReadings) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const headerTimezone = document.getElementById('timezone-value');
+    headerTimezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     new QRCode(
         document.getElementById('qr-code'),
         {
