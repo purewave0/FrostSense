@@ -4,7 +4,7 @@ from flask import jsonify, request
 
 from app.api import bp
 from app.dbapi import (
-    get_sensors, get_sensor_ids, get_sensor_name,
+    get_sensors, get_sensor_ids, get_sensor_name, sensor_name_exists,
     create_sensor,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
@@ -18,6 +18,7 @@ from app.api.report import (
     generate_report_html,
     store_report_file
 )
+from app.models.readings import Sensor
 
 
 @bp.route('/sensors', methods=['GET', 'POST'])
@@ -27,12 +28,19 @@ def api_sensors():
         return jsonify(sensors)
 
     try:
-        name = request.json['name']
+        name = str(request.json['name']).strip()
     except KeyError:
         return jsonify({'error': 'field_error'}), 400
 
-    # TODO: check name length
-    # TODO: check if name already exists
+    name_length = len(name)
+    if (
+        name_length < Sensor.MIN_NAME_LENGTH
+        or name_length > Sensor.MAX_NAME_LENGTH
+    ):
+        return jsonify({'error': 'invalid_name_length'}), 400
+
+    if sensor_name_exists(name):
+        return jsonify({'error': 'name_already_exists'}), 400
 
     sensor = create_sensor(name)
 

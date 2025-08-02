@@ -9,6 +9,7 @@ from app.models.util import utcnow
 class Sensor(db.Model):
     __tablename__ = 'Sensor'
 
+    MIN_NAME_LENGTH = 1
     MAX_NAME_LENGTH = 64
 
     id: Mapped[int] = mapped_column(primary_key=True)
