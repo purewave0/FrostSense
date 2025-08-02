@@ -20,7 +20,7 @@
                     <div class="header-column">
                         <div class="header-row">
                             <b>Generated on:</b>
-                            <span>{{ created_on | format_datetime_full }}</span>
+                            <span class="datetime">{{ created_on }}</span>
                         </div>
 
                         <div class="header-row">
@@ -37,14 +37,12 @@
                     <div class="header-column">
                         <div class="header-row">
                             <b>Start:</b>
-                            <span>{{ range_start | format_datetime }}</span>
+                            <span class="datetime">{{ range_start }}</span>
                         </div>
 
                         <div class="header-row">
                             <b>End:</b>
-                            <span id="range-end-value">
-                                {{ range_end | format_datetime }}
-                            </span>
+                            <span id="range-end-value" class="datetime">{{ range_end }}</span>
                         </div>
 
                         <div class="header-row">

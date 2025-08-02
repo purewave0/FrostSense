@@ -12,6 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerTimezone = document.getElementById('timezone-value');
     headerTimezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+    // datetimes that will be adjusted and formatted
+    const datetimes = document.querySelectorAll('.datetime');
+    for (const datetime of Array.from(datetimes)) {
+        const adjusted = adjustToLocalTimezone(
+            new Date(datetime.textContent)
+        );
+        datetime.textContent = formatDateToCompactDatetime(adjusted);
+    }
+
     new QRCode(
         document.getElementById('qr-code'),
         {
@@ -59,7 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 dayRow.className = 'table-day';
                 dayRow.innerHTML = '<td class="day-value" colspan="2"></td>';
                 dayRow.querySelector('.day-value').textContent =
-                    formatDateToCompactDate(currentDate, locales);
+                    formatDateToCompactDate(
+                        currentDate, // no adjustment needed
+                        locales
+                    );
                 currentTable.append(dayRow);
 
                 // count it as a row too

@@ -40,20 +40,6 @@ def create_app(config_class=Config):
     from app.cli import register_commands
     register_commands(app)
 
-    # -- filters
-    # TODO: decide about timezones for the report
-    @app.template_filter()
-    def format_datetime_full(dt: datetime) -> str:
-        return dt.strftime('%Y/%m/%d %H:%M:%S')
-
-    @app.template_filter()
-    def format_datetime(dt: datetime) -> str:
-        return dt.strftime('%Y/%m/%d %H:%M')
-
-    @app.template_filter()
-    def format_datetime_short(dt: datetime) -> str:
-        return dt.strftime('%y/%m/%d %H:%M')
-
     # -- dirs --
     makedirs(REPORTS_DIRECTORY, exist_ok=True)
 
