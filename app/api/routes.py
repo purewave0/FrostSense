@@ -4,7 +4,7 @@ from flask import jsonify, request
 
 from app.api import bp
 from app.dbapi import (
-    get_sensors, get_sensor_ids, get_sensor_name, sensor_name_exists,
+    get_sensors, get_sensor_ids, get_sensor_name, sensor_name_exists, sensor_id_exists,
     create_sensor,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
@@ -110,7 +110,9 @@ def api_sensor_readings(sensor_id):
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
-    # TODO: throw error if sensor_id doesn't exist
+    if not sensor_id_exists(sensor_id):
+        return jsonify({'error': 'unknown_sensor'}), 404
+
     reading = create_reading(sensor_id, temperature)
 
     return jsonify({
