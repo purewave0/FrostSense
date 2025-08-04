@@ -14,6 +14,7 @@ REPORTS_DIRECTORY = path.join('app', 'generated_reports')
 _TOKEN_CHARSET = ascii_lowercase + digits
 # 36^10 = approx. 3.6 quadrillion possible tokens
 _TOKEN_LENGTH = 10
+MAX_NOTES_LENGTH = 200
 
 
 class DataFormat(Enum):

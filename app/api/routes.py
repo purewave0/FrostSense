@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+import datetime as dt
 
 from flask import jsonify, request
 
@@ -16,7 +16,8 @@ from app.api.report import (
     DataFormat,
     generate_token,
     generate_report_html,
-    store_report_file
+    store_report_file,
+    MAX_NOTES_LENGTH
 )
 from app.models.readings import Sensor
 
@@ -59,7 +60,7 @@ def api_last_readings():
     return jsonify(last_readings)
 
 
-def _parse_iso_datetimes(iso_datetimes: str) -> list[datetime]:
+def _parse_iso_datetimes(iso_datetimes: str) -> list[dt.datetime]:
     """Return the given comma-separated datetimes string as a list of datetime objects.
 
     Args:
@@ -93,7 +94,7 @@ def api_readings_by_days():
     for start_of_day in start_datetimes:
         end_of_day = (
             start_of_day
-            + timedelta(hours=23, minutes=59, seconds=59, milliseconds=9999)
+            + dt.timedelta(hours=23, minutes=59, seconds=59, milliseconds=9999)
         )
         time_ranges.append({'start': start_of_day, 'end': end_of_day})
 
@@ -124,14 +125,14 @@ def api_sensor_readings(sensor_id):
 
 
 # TODO: sensor 'ping' route. requires sensor key too
-def _parse_iso_datetime(iso_datetime: str) -> datetime:
+def _parse_iso_datetime(iso_datetime: str) -> dt.datetime:
     """Return the given datetime string as a datetime object.
 
     Args:
         iso_datetime: ISO datetime string according to the JavaScript datetime
             format, 'YYYY-MM-DDThh:mm:ss.sssZ'.
     """
-    return datetime.strptime(iso_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+    return dt.datetime.strptime(iso_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
 
 @bp.route('/sensors/<int:sensor_id>/readings-count')
 def api_sensor_readings_count(sensor_id):
@@ -178,29 +179,35 @@ def api_generate_report():
     try:
         sensor_id = int(request.json['sensor_id'])
         range_start = _parse_iso_datetime(request.json['range_start'])
+        # TODO: instead of range_end, specify just 'days'?
         range_end = _parse_iso_datetime(request.json['range_end'])
         data_format = DataFormat(request.json['data_format'])
         notes = request.json['notes']
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
-    # TODO: verify sensor's existence
-    # TODO: verify that range_start < range_end
 
     if notes:
         notes = notes.strip() or None
+        if notes and len(notes) > MAX_NOTES_LENGTH:
+            return jsonify({'error': 'invalid_notes_length'}), 400
 
-    # TODO: verify notes length
+
+    if not (range_start < range_end):
+        return jsonify({'error': 'invalid_range'}), 400
+
+    if not sensor_id_exists(sensor_id):
+        return jsonify({'error': 'unknown_sensor'}), 404
 
     sensor_name = get_sensor_name(sensor_id)
     readings = get_sensor_readings_in_time_range(
         sensor_id, None, range_start, range_end
     )
 
-    # TODO: verify readings count
-    #
+    # TODO: verify readings count?
+
     token = generate_token()
-    utc_now = datetime.utcnow()
+    utc_now = dt.datetime.now(dt.timezone.utc)
 
     report_html = generate_report_html(
         sensor_name,
