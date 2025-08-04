@@ -1,6 +1,7 @@
 import datetime as dt
 
 from flask import jsonify, request
+from flask_login import current_user, login_user
 
 from app.api import bp
 from app.dbapi import (
@@ -11,6 +12,7 @@ from app.dbapi import (
     get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
+    get_user_by_name,
 )
 from app.api.report import (
     DataFormat,
@@ -20,6 +22,7 @@ from app.api.report import (
     MAX_NOTES_LENGTH
 )
 from app.models.readings import Sensor
+from app.models.users import User
 
 
 @bp.route('/sensors', methods=['GET', 'POST'])
@@ -221,3 +224,35 @@ def api_generate_report():
     )
     store_report_file(token, report_html)
     return jsonify(token)
+
+
+# -- auth --
+
+@bp.route('/login', methods=['POST'])
+def api_login():
+    try:
+        username = str(request.json['username'])
+        password = str(request.json['password'])
+    except KeyError:
+        return jsonify({'error': 'field_error'}), 400
+
+    username_length = len(username)
+    password_length = len(password)
+    if (
+        username_length < User.MIN_NAME_LENGTH
+        or username_length > User.MAX_NAME_LENGTH
+        or password_length < User.MIN_PASSWORD_LENGTH
+        or password_length > User.MAX_PASSWORD_LENGTH
+    ):
+        return jsonify({'error': 'incorrect_login'}), 401
+
+    if current_user.is_authenticated:
+        # already logged in
+        return '', 204
+
+    user = get_user_by_name(username)
+    if user is None or not user.check_password(password):
+        return jsonify({'error': 'incorrect_login'}), 401
+
+    login_user(user, remember=True)
+    return '', 204
