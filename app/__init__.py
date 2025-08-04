@@ -3,6 +3,7 @@ from os import makedirs
 
 from flask import Flask
 from flask.json.provider import DefaultJSONProvider
+from flask_login import LoginManager
 
 from app.extensions import db
 from app.api.report import REPORTS_DIRECTORY
@@ -24,10 +25,20 @@ def create_app(config_class=Config):
 
     # -- extensions --
     db.init_app(app)
+    login_manager = LoginManager(app)
 
     with app.app_context():
         from app.models.readings import Sensor, Reading
+        from app.models.users import User
         db.create_all()
+
+        @login_manager.user_loader
+        def load_user(user_id: int) -> User | None:
+            user = db.session.execute(
+                    db.select(User).where(User.id == int(user_id))
+                ).scalar_one_or_none()
+            return user
+
 
     # -- blueprints --
     from app.main import bp as main_bp
