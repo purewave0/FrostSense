@@ -45,5 +45,16 @@ const Api = {
                 'notes': (notes) ? notes.trim() : null,
             })
         });
+    },
+
+    login(username, password) {
+        return fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'username': username,
+                'password': password,
+            })
+        });
     }
 };

@@ -1,12 +1,26 @@
 from flask import render_template, redirect, abort
+from flask_login import current_user
 
 from app.main import bp
 from app.api.report import get_report_file
 
 
+@bp.route('/login')
+def login():
+    if current_user.is_authenticated:
+        return redirect('/readings')
+
+    return render_template('login.html')
+
+
 @bp.route('/')
 def index():
+    if not current_user.is_authenticated:
+        return redirect('/login')
+
     return redirect('/readings')
+
+# TODO: login_required for the routes below
 
 @bp.route('/readings')
 def readings():
