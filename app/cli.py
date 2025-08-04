@@ -6,7 +6,9 @@ from time import sleep
 
 import click
 
-from app.dbapi import create_sensor, get_sensors, create_reading, create_readings
+from app.dbapi import (
+    create_sensor, get_sensors, create_reading, create_readings, create_user
+)
 
 
 def register_commands(app):
@@ -106,3 +108,14 @@ def register_commands(app):
         click.echo(
             f'total: {total_seeded} readings.'
         )
+
+
+    @app.cli.command('seed-user')
+    def seed_user():
+        """Seed the database with a default user.
+
+        Name: "default", password: "default".
+        """
+        create_user('default', 'default')
+
+        click.echo('created 1 default user.')

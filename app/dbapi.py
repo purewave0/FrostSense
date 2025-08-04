@@ -6,6 +6,7 @@ from flask import current_app
 
 from app.extensions import db
 from app.models.readings import Sensor, Reading
+from app.models.users import User
 
 
 # TODO: TypedDicts for models?
@@ -335,3 +336,38 @@ def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[i
         result[sensor_id] = count
 
     return result
+
+
+# -- auth --
+
+def get_user_by_name(name: str) -> User | None:
+    """Return the User with the given name, or None."""
+    user = db.session.execute(
+        db.select(
+            User
+        ).where(
+            User.name == name
+        )
+    ).scalar_one_or_none()
+
+    return user
+
+
+def create_user(name: str, password: str) -> User:
+    """Create a user in the database.
+
+    Args:
+        name: The username. Must be between User.MIN_NAME_LENGTH and
+            User.MAX_NAME_LENGTH characters.
+        password: The password. Must be between User.MIN_PASSWORD_LENGTH and
+            User.MAX_PASSWORD_LENGTH characters.
+
+    Returns:
+        The newly created User object.
+    """
+    user = User(name, password)
+
+    db.session.add(user)
+    db.session.commit()
+
+    return user
