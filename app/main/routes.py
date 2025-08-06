@@ -46,3 +46,7 @@ def get_report(code):
         return abort(404)
 
     return report_html
+
+@bp.route('/verify-reports')
+def verify_reports():
+    return render_template('main/sections/verify-reports.html')
