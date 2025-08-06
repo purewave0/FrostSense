@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>FROSTSENSE_Report_{{ formatted_token }}</title>
+        <title>FROSTSENSE_Report_{{ formatted_code }}</title>
         <link rel="stylesheet" href="/static/css/report/report.css" />
     </head>
 
@@ -29,8 +29,8 @@
                         </div>
 
                         <div class="header-row">
-                            <b>Token:</b>
-                            <span id="token-value">{{ formatted_token }}</span>
+                            <b>Code:</b>
+                            <span id="code-value">{{ formatted_code }}</span>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div id="header-token" class="header-column">
+            <div id="header-code" class="header-column">
                 <div id="qr-code" />
             </div>
         </header>
@@ -105,7 +105,7 @@
                 (data_format == 'graph' or data_format == 'table-and-graph') | tojson
             }};
             const readings = {{ readings | tojson }};
-            const token = {{ token | tojson }};
+            const code = {{ code | tojson }};
         </script>
         <script src="/static/js/lib/easyqrcode.min.js"></script>
         <script src="/static/js/report/report.js"></script>

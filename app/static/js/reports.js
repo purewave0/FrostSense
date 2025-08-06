@@ -182,8 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
             getNotesValue()
         ).then(
             (response) => response.json()
-        ).then((token) => {
-            window.open(`/reports/${token}`, '_blank').focus();
+        ).then((code) => {
+            window.open(`/reports/${code}`, '_blank').focus();
         });
     });
 

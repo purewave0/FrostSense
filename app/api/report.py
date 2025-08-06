@@ -11,9 +11,9 @@ from flask import render_template
 
 REPORTS_DIRECTORY = path.join('app', 'generated_reports')
 # a-z + 0-9 = 36 characters
-_TOKEN_CHARSET = ascii_lowercase + digits
-# 36^10 = approx. 3.6 quadrillion possible tokens
-_TOKEN_LENGTH = 10
+_REPORT_CODE_CHARSET = ascii_lowercase + digits
+# 36^10 = approx. 3.6 quadrillion possible codes
+_REPORT_CODE_LENGTH = 10
 MAX_NOTES_LENGTH = 200
 
 
@@ -30,7 +30,7 @@ class DataFormat(Enum):
 
 def generate_report_html(
     sensor_name: str,
-    token: str,
+    code: str,
     created_on: datetime,
     range_start: datetime,
     range_end: datetime,
@@ -42,8 +42,8 @@ def generate_report_html(
     return render_template(
         'report/template.html',
         sensor_name=sensor_name,
-        token=token,
-        formatted_token=format_token(token),
+        code=code,
+        formatted_code=format_report_code(code),
         created_on=created_on,
         range_start=range_start,
         range_end=range_end,
@@ -54,28 +54,28 @@ def generate_report_html(
     )
 
 
-def generate_token() -> str:
-    """Return a random token of length 10, made of the characters a-z and 0-9."""
+def generate_report_code() -> str:
+    """Return a random code of length 10, made of the characters a-z and 0-9."""
     return ''.join(
-        random.choices(_TOKEN_CHARSET, k=_TOKEN_LENGTH)
+        random.choices(_REPORT_CODE_CHARSET, k=_REPORT_CODE_LENGTH)
     )
 
 
-def store_report_file(token: str, content: str):
-    """Store the given report content in `REPORTS_DIRECTORY/{token}.html`."""
-    with open(path.join(REPORTS_DIRECTORY, f'{token}.html'), 'w') as report:
+def store_report_file(code: str, content: str):
+    """Store the given report content in `REPORTS_DIRECTORY/{code}.html`."""
+    with open(path.join(REPORTS_DIRECTORY, f'{code}.html'), 'w') as report:
         report.write(content)
 
 
-def get_report_file(token: str) -> str:
-    """Return the report with the given token."""
-    with open(path.join(REPORTS_DIRECTORY, f'{token}.html'), 'r') as report:
+def get_report_file(code: str) -> str:
+    """Return the report with the given code."""
+    with open(path.join(REPORTS_DIRECTORY, f'{code}.html'), 'r') as report:
         return report.read()
 
 
-def format_token(raw_token: str) -> str:
-    """Return the given token in the format XXXX-XXXX-XX, all letters uppercased."""
-    uppercased = raw_token.upper()
+def format_report_code(raw_code: str) -> str:
+    """Return the given code in the format XXXX-XXXX-XX, all letters uppercased."""
+    uppercased = raw_code.upper()
     return '-'.join(
         (uppercased[0:4], uppercased[4:8], uppercased[8:10])
     )

@@ -38,10 +38,10 @@ def sensors():
 def reports():
     return render_template('main/sections/reports.html')
 
-@bp.route('/reports/<token>')
-def get_report(token):
+@bp.route('/reports/<code>')
+def get_report(code):
     try:
-        report_html = get_report_file(token)
+        report_html = get_report_file(code)
     except IOError:
         return abort(404)
 

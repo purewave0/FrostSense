@@ -16,7 +16,7 @@ from app.dbapi import (
 )
 from app.api.report import (
     DataFormat,
-    generate_token,
+    generate_report_code,
     generate_report_html,
     store_report_file,
     MAX_NOTES_LENGTH
@@ -209,12 +209,12 @@ def api_generate_report():
 
     # TODO: verify readings count?
 
-    token = generate_token()
+    code = generate_report_code()
     utc_now = dt.datetime.now(dt.timezone.utc)
 
     report_html = generate_report_html(
         sensor_name,
-        token,
+        code,
         utc_now,
         range_start,
         range_end,
@@ -222,8 +222,8 @@ def api_generate_report():
         data_format,
         notes
     )
-    store_report_file(token, report_html)
-    return jsonify(token)
+    store_report_file(code, report_html)
+    return jsonify(code)
 
 
 # -- auth --

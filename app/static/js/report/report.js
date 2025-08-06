@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new QRCode(
         document.getElementById('qr-code'),
         {
-            text: token,
+            text: code,
             width: 72,
             height: 72,
             drawer: 'svg',
