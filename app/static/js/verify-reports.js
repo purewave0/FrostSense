@@ -12,8 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
         placeholderChar: '_',
     });
 
-    codeForm.addEventListener('submit', (event) => {
+    codeForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        alert('TODO');
+        const codeValue = mask.unmaskedValue.toLowerCase();
+
+        const url = `/reports/${codeValue}`;
+        // TODO: loading
+        const response = await fetch(url);
+        if (!response.ok) {
+            // TODO: proper error
+            alert('error: report not found');
+            return;
+        }
+
+        window.open(`/reports/${codeValue}`, '_blank').focus();
     });
 });
