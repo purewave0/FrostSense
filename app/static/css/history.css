@@ -18,12 +18,23 @@
     align-items: center;
 }
 
-.graph-card .sensor-name {
+.graph-card .sensor-name-wrapper {
     flex: 1;
+}
+
+.graph-card .sensor-name {
+    font-size: 12pt;
+    max-width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .graph-card.empty .readings-count {
     display: none;
+}
+
+.graph-card.empty .sensor-name {
+    max-width: 285px;
 }
 
 .graph-card .current-date:invalid {

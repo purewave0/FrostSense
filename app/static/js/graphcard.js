@@ -63,7 +63,9 @@ class GraphCard {
         // TODO: svg icons for previous/next
         card.innerHTML = `
             <div class="header">
-                <h2 class="sensor-name"></h2>
+                <div class="sensor-name-wrapper">
+                    <h2 class="sensor-name"></h2>
+                </div>
                 <div class="readings-count">
                     <span class="readings-count-value"></span> readings
                 </div>
@@ -83,6 +85,7 @@ class GraphCard {
 
         const name = card.querySelector('.sensor-name');
         name.textContent = sensorName;
+        name.title = sensorName;  // in case it gets ellipsized
 
         const graphElement = card.querySelector('.graph');
         graphElement.id = `graph${sensorId}`;
