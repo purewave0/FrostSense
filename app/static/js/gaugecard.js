@@ -52,6 +52,7 @@ class GaugeCard {
 
         const name = card.querySelector('.sensor-name');
         name.textContent = sensorName;
+        name.title = sensorName;  // in case it gets ellipsized
 
         const gaugeElement = card.querySelector('.gauge');
         gaugeElement.id = `gauge${sensorId}`;
