@@ -3,6 +3,7 @@ class GaugeCard {
     #gauge = null;
     #datetimeValue = null;
     #locales = null;
+    static #INVALID_READING = -404;
 
     constructor(element, sensorId, sensorName) {
         this.#locales = getUserLocales();
@@ -18,8 +19,7 @@ class GaugeCard {
             minTxt: '30 °C',
             gaugeWidthScale: 0.75,
             textRenderer: (value) => {
-                if (value === null) {
-                    // TODO: hide coloured value section (currently, it sits at 0)
+                if (value === GaugeCard.#INVALID_READING) {
                     return 'N/A';
                 }
                 return `${value.toFixed(1)} °C`;
@@ -63,16 +63,15 @@ class GaugeCard {
     }
 
     setReading(reading) {
-        if (reading === null) {
-            this.#gauge.refresh(null);
-            this.#datetimeValue.textContent = 'N/A';
-            return;
-        }
-        this.#gauge.refresh(reading.temperature);
         this.#datetimeValue.textContent = formatDateToCompactDatetime(
             new Date(reading.created_on),
             this.#locales
         );
+
+        const temperature = (reading.temperature !== null)
+            ? reading.temperature
+            : GaugeCard.#INVALID_READING;
+        this.#gauge.refresh(temperature);
     }
 
 }
