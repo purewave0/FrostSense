@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const username = usernameInput.value.trim();
         const password = passwordInput.value.trim();
         const response = await Api.login(username, password);
-        console.log(response);
         if (response.ok) {
             document.location.href = '/readings';
         } else {

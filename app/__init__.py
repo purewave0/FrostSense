@@ -39,6 +39,8 @@ def create_app(config_class=Config):
                 ).scalar_one_or_none()
             return user
 
+        login_manager.login_view = 'main.login'  # type: ignore[attr-defined]
+
 
     # -- blueprints --
     from app.main import bp as main_bp
