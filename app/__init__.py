@@ -1,7 +1,7 @@
 from datetime import datetime, date
 from os import makedirs
 
-from flask import Flask
+from flask import Flask, redirect, url_for, request, abort
 from flask.json.provider import DefaultJSONProvider
 from flask_login import LoginManager
 
@@ -39,7 +39,11 @@ def create_app(config_class=Config):
                 ).scalar_one_or_none()
             return user
 
-        login_manager.login_view = 'main.login'  # type: ignore[attr-defined]
+        @login_manager.unauthorized_handler
+        def unauthorised():
+            if request.blueprint == 'api':
+                return abort(401)
+            return redirect(url_for('main.login'))
 
 
     # -- blueprints --
