@@ -1,7 +1,7 @@
 import datetime as dt
 
 from flask import jsonify, request
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, login_required
 
 from app.api import bp
 from app.dbapi import (
@@ -26,6 +26,7 @@ from app.models.users import User
 
 
 @bp.route('/sensors', methods=['GET', 'POST'])
+@login_required
 def api_sensors():
     if request.method == 'GET':
         sensors = get_sensors()
@@ -56,6 +57,7 @@ def api_sensors():
 
 
 @bp.route('/sensors/last-readings')
+@login_required
 def api_last_readings():
     sensor_ids = get_sensor_ids()
 
@@ -78,6 +80,7 @@ def _parse_iso_datetimes(iso_datetimes: str) -> list[dt.datetime]:
 
 
 @bp.route('/sensors/readings')
+@login_required
 def api_readings_by_days():
     try:
         start_datetimes = _parse_iso_datetimes(request.args['start_dates'])
@@ -108,6 +111,7 @@ def api_readings_by_days():
 
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
+@login_required
 def api_sensor_readings(sensor_id):
     try:
         temperature = float(request.json['temperature'])
@@ -138,6 +142,7 @@ def _parse_iso_datetime(iso_datetime: str) -> dt.datetime:
     return dt.datetime.strptime(iso_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
 
 @bp.route('/sensors/<int:sensor_id>/readings-count')
+@login_required
 def api_sensor_readings_count(sensor_id):
     try:
         range_start = _parse_iso_datetime(request.args['range_start'])
@@ -153,6 +158,7 @@ def api_sensor_readings_count(sensor_id):
 
 
 @bp.route('/sensors/readings-count/today')
+@login_required
 def api_sensors_today_readings_count():
     sensor_ids = get_sensor_ids()
     return jsonify(
@@ -178,6 +184,7 @@ def _parse_ints(raw_ints: str, ignore_duplicates: bool = False) -> list[int]:
 
 
 @bp.route('/reports', methods=['POST'])
+@login_required
 def api_generate_report():
     try:
         sensor_id = int(request.json['sensor_id'])
