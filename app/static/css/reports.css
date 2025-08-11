@@ -1,8 +1,8 @@
 body {
     /* -- report preview measurements, based on A4 paper -- */
     /* a4 ratio */
-    --report-width: 100px;
-    --report-height: 141px;
+    --report-width: 256px;
+    --report-height: calc(1.41 * var(--report-width));
     /* header */
     --report-header-height: calc(0.07 * var(--report-height));
     /* graph (when table-and-graph) */
