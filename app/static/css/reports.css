@@ -151,3 +151,16 @@ input[type="radio"] {
     /* still occupy space */
     opacity: 0;
 }
+
+/* section texts */
+.preview-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#preview-notes {
+    justify-content: start;
+    font-size: 9pt;
+    padding-left: 2px;
+}
