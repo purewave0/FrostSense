@@ -72,6 +72,14 @@
                 <div class="form-row">
                     Total readings: <span id="readings-count">…</span>
                 </div>
+
+                <div class="form-row form-field">
+                    <label for="notes">Notes (optional)</label>
+                    <textarea id="notes" rows="5" maxlength="200" placeholder="Write anything you'd like to be included in the report."></textarea>
+                    <span id="notes-length">
+                        (<span id="notes-current-length">0</span>/200)
+                    </span>
+                </div>
             </div>
 
             <div>
@@ -84,14 +92,6 @@
                     <div id="preview-notes"></div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-row form-field">
-            <label for="notes">Notes (optional)</label>
-            <textarea id="notes" rows="5" maxlength="200" placeholder="Write anything you'd like to be included in the report."></textarea>
-            <span id="notes-length">
-                (<span id="notes-current-length">0</span>/200)
-            </span>
         </div>
 
         <button id="generate" type="submit">Generate report</button>
