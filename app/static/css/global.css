@@ -16,7 +16,16 @@ body {
     padding: 24px;
 }
 
+#header {
+    margin: 12px 24px;
+}
+
+#page-title {
+    font-size: 14pt;
+    margin: 0;
+}
+
 #page-content {
     flex: 1;
-    padding: 24px;
+    padding: 12px 24px 24px 24px;
 }
