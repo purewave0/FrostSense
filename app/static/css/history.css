@@ -7,8 +7,11 @@
 
 .graph-card {
     width: fit-content;
-    background-color: whitesmoke;
     position: relative;
+    background-color: var(--color-foreground);
+    padding: 16px 16px 8px 16px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
 
 .graph-card .header {
@@ -16,6 +19,7 @@
     flex-direction: row;
     column-gap: 16px;
     align-items: center;
+    margin-bottom: 8px;
 }
 
 .graph-card .sensor-name-wrapper {
@@ -23,6 +27,7 @@
 }
 
 .graph-card .sensor-name {
+    margin: 0;
     font-size: 12pt;
     max-width: 165px;
     overflow: hidden;
@@ -46,8 +51,8 @@
     width: fit-content;
     height: fit-content;
     /* put it in the bottom right corner of the graph */
-    bottom: 0;
-    right: 12px;
+    bottom: 16px;
+    right: 20px;
     pointer-events: none;
     font-size: 18pt;
     opacity: 0.4;
@@ -60,4 +65,5 @@
 .dygraph-legend {
     padding: 8px;
     border-radius: 4px;
+    opacity: 0.8;
 }
