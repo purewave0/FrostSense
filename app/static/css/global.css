@@ -2,6 +2,10 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    --color-background: #e0ecf9;
+    --color-foreground: white;
+
+    background-color: var(--color-background);
 }
 
 #content {
