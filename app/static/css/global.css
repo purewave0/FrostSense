@@ -3,6 +3,8 @@ body {
     padding: 0;
     font-family: sans-serif;
 
+    --sidebar-width: 200px;
+
     /* -- colours -- */
     --color-background: #e0ecf9;
     --color-foreground: white;
@@ -28,6 +30,13 @@ a {
 }
 
 #sidebar {
+    box-sizing: border-box;
+    width: var(--sidebar-width);
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -79,6 +88,10 @@ a {
 
 #sidebar-links a.selected svg {
     fill: white;
+}
+
+#section-content {
+    margin-left: var(--sidebar-width);
 }
 
 #header {
