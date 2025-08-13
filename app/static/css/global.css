@@ -2,8 +2,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+
+    /* -- colours -- */
     --color-background: #e0ecf9;
     --color-foreground: white;
+
+    --color-active: #28a745;
 
     background-color: var(--color-background);
 }

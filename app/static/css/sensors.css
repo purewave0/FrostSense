@@ -11,12 +11,47 @@
     border-radius: 8px;
 }
 
+.sensor-header {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    margin-bottom: 8px;
+}
+
+.sensor-name-wrapper {
+    flex: 1;
+}
+
 .sensor-name {
     font-size: 11pt;
-    margin: 0 0 8px 0;
-    max-width: 189px;
+    margin: 0;
+    max-width: 175px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.sensor-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    background-color: lightgray;
+}
+
+.sensor-status.active {
+    background-color: var(--color-active);
+    animation: 3s infinite active-glow;
+}
+
+@keyframes active-glow {
+    0%,
+    25%,
+    75%,
+    100% {
+        box-shadow: 0 0 4px rgba(40, 167, 69, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 4px rgba(40, 167, 69, 0.8);
+    }
 }
 
 .sensor-info {

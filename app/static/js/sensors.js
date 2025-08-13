@@ -2,7 +2,12 @@ function createSensorCard(sensor, todayReadingsCount, locales) {
     const card = document.createElement('div');
     card.className = 'sensor';
     card.innerHTML = `
-        <h2 class="sensor-name"></h2>
+        <div class="sensor-header">
+            <div class="sensor-name-wrapper">
+                <h2 class="sensor-name"></h2>
+            </div>
+            <div class="sensor-status active"></div>
+        </div>
         <ul class="sensor-info">
             <li>
                 Created on: <span class="created-on"></span>
