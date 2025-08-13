@@ -9,7 +9,8 @@ body {
 
     --color-dark-background: #384884;
     --color-dark-background-text: #c7d0f2;
-    --color-dark-background-hover: #4f5f9d;
+    --color-dark-background-hover: #495996;
+    --color-dark-background-selected: #5768ac;
 
     --color-active: #28a745;
 
@@ -69,6 +70,15 @@ a {
     width: 24px;
     height: 24px;
     fill: var(--color-dark-background-text);
+}
+
+#sidebar-links a.selected {
+    background-color: var(--color-dark-background-selected);
+    color: white;
+}
+
+#sidebar-links a.selected svg {
+    fill: white;
 }
 
 #header {

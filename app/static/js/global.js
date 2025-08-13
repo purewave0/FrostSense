@@ -1,3 +1,15 @@
+// highlight current page link
+const sidebarLinks = document.getElementById('sidebar-links');
+if (sidebarLinks) {
+    const currentPathname = document.location.pathname;
+    for (const link of sidebarLinks.children) {
+        if (link.pathname === currentPathname) {
+            link.classList.add('selected');
+            link.href = '#';  // no more need for the link; we're already in that page
+            break;
+        }
+    }
+}
 /**
  * Round `temperature` to 1 decimal place.
  */
