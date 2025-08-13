@@ -7,9 +7,18 @@ body {
     --color-background: #e0ecf9;
     --color-foreground: white;
 
+    --color-dark-background: #384884;
+    --color-dark-background-text: #c7d0f2;
+    --color-dark-background-hover: #4f5f9d;
+
     --color-active: #28a745;
 
     background-color: var(--color-background);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 #content {
@@ -18,14 +27,52 @@ body {
 }
 
 #sidebar {
-    background-color: lightblue;
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    flex-shrink: 0;
+    background-color: var(--color-dark-background);
+    padding: 8px;
+    row-gap: 32px;
+}
+
+#sidebar-logo {
+    font-size: 24pt;
+    text-align: center;
+    background-color: lightsalmon;
+    align-content: center;
+    height: 70px;
+}
+
+#sidebar-links {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+}
+
+#sidebar-links a {
+    padding: 8px 16px;
+    color: var(--color-dark-background-text);
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+    align-items: center;
+    border-radius: 8px;
+    transition: background-color 0.1s ease;
+}
+
+#sidebar-links a:hover {
+    background-color: var(--color-dark-background-hover);
+}
+
+#sidebar-links a svg {
+    fill: white;
+    width: 24px;
+    height: 24px;
+    fill: var(--color-dark-background-text);
 }
 
 #header {
-    margin: 12px 24px;
+    margin: 16px 16px 0 32px;
 }
 
 #page-title {
@@ -35,5 +82,5 @@ body {
 
 #page-content {
     flex: 1;
-    padding: 12px 24px 24px 24px;
+    padding: 16px 16px 16px 32px;
 }
