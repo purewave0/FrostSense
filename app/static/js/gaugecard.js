@@ -31,7 +31,8 @@ class GaugeCard {
                 toplength: 16,
                 bottomlength: 24,
                 bottomwidth: 8,
-            }
+            },
+            hideMinMax: true,
         });
     }
 
