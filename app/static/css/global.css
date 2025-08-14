@@ -9,6 +9,8 @@ body {
     --color-background: #e0ecf9;
     --color-foreground: white;
 
+    --color-border: #99a1bc;
+
     --color-dark-background: #384884;
     --color-dark-background-text: #c7d0f2;
     --color-dark-background-hover: #495996;
@@ -91,6 +93,7 @@ a {
 }
 
 #section-content {
+    flex: 1;
     margin-left: var(--sidebar-width);
 }
 

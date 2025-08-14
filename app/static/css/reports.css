@@ -1,7 +1,7 @@
 body {
     /* -- report preview measurements, based on A4 paper -- */
     /* a4 ratio */
-    --report-width: 256px;
+    --report-width: 330px;
     --report-height: calc(1.41 * var(--report-width));
     /* header */
     --report-header-height: calc(0.07 * var(--report-height));
@@ -19,10 +19,27 @@ input[type="radio"] {
     margin: 0;
 }
 
+select,
+input[type="date"],
+textarea {
+    padding: 4px;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+}
+
+#page-content {
+    display: flex;
+    justify-content: center;
+}
+
 #report-form {
     display: flex;
     flex-direction: column;
     row-gap: 16px;
+    background-color: var(--color-foreground);
+    padding: 16px;
+    border-radius: 8px;
 }
 
 .columns {
@@ -31,15 +48,20 @@ input[type="radio"] {
     column-gap: 32px;
 }
 
-.form-sections {
+#form-columns {
+    column-gap: 64px;
+}
+
+#form-sections {
     display: flex;
     flex-direction: column;
-    row-gap: 16px;
+    row-gap: 32px;
+    font-size: 11pt;
 }
 
 .form-section-title {
     font-size: 11pt;
-    margin: 0 0 4px 0;
+    margin: 0 0 8px 0;
 }
 
 .timeframe-type h4 {
@@ -50,12 +72,17 @@ input[type="radio"] {
 .form-field {
     display: flex;
     flex-direction: column;
+    row-gap: 2px;
+}
+
+#sensor {
+    width: 128px;
 }
 
 #timeframe-types {
     display: flex;
     flex-direction: column;
-    row-gap: 4px;
+    row-gap: 8px;
 }
 
 .datetime-field {
@@ -78,6 +105,8 @@ input[type="radio"] {
 }
 
 #notes {
+    padding: 8px;
+    font-size: 10pt;
     font-family: inherit;
     resize: none;
 }
@@ -85,6 +114,22 @@ input[type="radio"] {
 #notes-length {
     text-align: right;
     font-size: 10pt;
+}
+
+#generate {
+    background-color: var(--color-dark-background);
+    border: none;
+    padding: 8px 0;
+    width: 200px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 auto 0 auto;
+}
+
+#report-form:invalid #generate {
+    opacity: 0.8;
+    cursor: not-allowed;
 }
 
 /* -- report preview -- */
