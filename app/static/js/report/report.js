@@ -86,8 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let formattedTime = formatDateToCompactTime(currentDate, locales);
             previousDate = currentDate;
             row.querySelector('.datetime').textContent = formattedTime;
-            row.querySelector('.temperature').textContent =
-                reading.temperature.toFixed(1);
+            row.querySelector('.temperature').textContent = (
+                (reading.temperature !== null)
+                    ? reading.temperature.toFixed(1)
+                    : 'N/A'
+            );
+
             currentTable.append(row);
             ++rowIndex;
         }
