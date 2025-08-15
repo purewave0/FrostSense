@@ -36,7 +36,7 @@ textarea {
 #report-form {
     display: flex;
     flex-direction: column;
-    row-gap: 16px;
+    row-gap: 32px;
     background-color: var(--color-foreground);
     padding: 16px;
     border-radius: 8px;
@@ -135,17 +135,20 @@ textarea {
 /* -- report preview -- */
 
 #preview {
-    background-color: red;
+    background-color: white;
     width: var(--report-width);
     height: var(--report-height);
     display: flex;
     flex-direction: column;
+    box-shadow:
+        rgba(0, 0, 0, 0.16) 0px 3px 6px,
+        rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 #preview-header {
     width: 100%;
     height: var(--report-header-height);
-    background-color: blue;
+    background-color: #c4c6d0;
 }
 
 #preview-data {
@@ -158,20 +161,22 @@ textarea {
 }
 
 #preview-table {
-    background-color: green;
+    background-color: #add6ff;
+    color: #0b335b;
     flex: 1;
-    /* no height here; its height will be set according to the number of rows */
 }
 
 #preview-graph {
-    background-color: lightsalmon;
+    background-color: #abfab8;
+    color: #125b1e;
     width: var(--report-graph-width);
     height: var(--report-graph-height);
 }
 
 #preview-notes {
     height: var(--report-notes-height);
-    background-color: lightgreen;
+    background-color: #ffd6ad;
+    color: #591d0a;
 }
 
 /* -- graph/table -- */
@@ -202,10 +207,11 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
 }
 
 #preview-notes {
     justify-content: start;
     font-size: 9pt;
-    padding-left: 2px;
+    padding-left: 8px;
 }
