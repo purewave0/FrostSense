@@ -14,8 +14,46 @@
 
 {% block content %}
     <form id="code-form">
-        <label for="code">Report code:</label>
-        <input id="code" type="text" pattern="[0-9A-Z]{4}—[0-9A-Z]{4}—[0-9A-Z]{2}" required/>
-        <button type="submit">Verify</button>
+        <p>
+            Each report has a unique <b>10-character code</b> printed in the document
+            header.
+        </p>
+
+        <div id="sample-header">
+            <div id="sample-header-logo"></div>
+            <div id="sample-header-center">
+                <span id="sample-header-title">Readings Report</span>
+                <div id="sample-header-info">
+                    <div class="info-column">
+                        <div class="placeholder-line"></div>
+                        <div class="placeholder-line"></div>
+                        <div id="sample-code-line">
+                            Code: <span id="sample-code">ABCD-EF12-34</span>
+                        </div>
+                    </div>
+                    <div class="info-column">
+                        <div class="placeholder-line"></div>
+                        <div class="placeholder-line"></div>
+                        <div class="placeholder-line"></div>
+                    </div>
+                    <div class="info-column">
+                        <div class="placeholder-line"></div>
+                        <div class="placeholder-line"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="sample-header-qr">
+                <img src="/static/img/sample-qr-code.png">
+            </div>
+        </div>
+
+        <p>Use it to fetch reports and verify their authenticity.</p>
+
+        <div class="form-field">
+            <label for="code">Report code:</label>
+            <input id="code" type="text" pattern="[0-9A-Z]{4}—[0-9A-Z]{4}—[0-9A-Z]{2}" required/>
+        </div>
+
+        <button id="fetch" type="submit">Fetch report</button>
     </form>
 {% endblock %}
