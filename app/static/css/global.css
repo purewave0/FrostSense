@@ -26,6 +26,12 @@ a {
     text-decoration: none;
 }
 
+.form-field {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+}
+
 #content {
     display: flex;
     flex-direction: row;

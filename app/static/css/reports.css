@@ -70,12 +70,6 @@ textarea {
     margin: 0;
 }
 
-.form-field {
-    display: flex;
-    flex-direction: column;
-    row-gap: 2px;
-}
-
 #sensor {
     width: 128px;
 }
