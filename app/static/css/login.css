@@ -47,26 +47,66 @@
 
 #login-form input {
     font-size: inherit;
-    padding: 8px;
+    padding: 8px 40px 8px 8px;
     background-color: transparent;
     border: 1px solid var(--color-border);
     border-radius: 4px;
+}
+
+#password-wrapper {
+    position: relative;
+}
+
+#password {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 40px; /* 8 + 24 + 8 */
+}
+
+#password-visibility {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    bottom: 0;
+    padding-right: 8px;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#password-visibility svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--color-border);
+}
+
+#password-visibility.visible #invisible {
+    display: none;
+}
+
+#password-visibility:not(.visible) #visible {
+    display: none;
 }
 
 #remember-field {
     display: flex;
     flex-direction: row;
     align-items: center;
-    column-gap: 4px;
 }
 
 #remember-field label {
     font-size: 12pt;
+    cursor: pointer;
+    padding-left: 8px;
 }
 
 #remember-login {
     height: 16px;
     width: 16px;
+    cursor: pointer;
+    margin: 0;
 }
 
 #login {

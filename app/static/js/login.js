@@ -2,6 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
+    const passwordVisibilityToggle = document.getElementById('password-visibility');
+
+    passwordVisibilityToggle.addEventListener('click', () => {
+        if (passwordVisibilityToggle.classList.contains('visible')) {
+            passwordInput.type = 'password';
+        } else {
+            passwordInput.type = 'text';
+        }
+        passwordVisibilityToggle.classList.toggle('visible');
+    });
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
