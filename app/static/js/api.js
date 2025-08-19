@@ -47,13 +47,14 @@ const Api = {
         });
     },
 
-    login(username, password) {
+    login(username, password, shouldRememberLogin) {
         return fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 'username': username,
                 'password': password,
+                'remember_login': shouldRememberLogin,
             })
         });
     }

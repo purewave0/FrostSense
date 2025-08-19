@@ -240,6 +240,7 @@ def api_login():
     try:
         username = str(request.json['username'])
         password = str(request.json['password'])
+        should_remember_login = bool(request.json['remember_login'])
     except KeyError:
         return jsonify({'error': 'field_error'}), 400
 
@@ -261,5 +262,5 @@ def api_login():
     if user is None or not user.check_password(password):
         return jsonify({'error': 'incorrect_login'}), 401
 
-    login_user(user, remember=True)
+    login_user(user, remember=should_remember_login)
     return '', 204

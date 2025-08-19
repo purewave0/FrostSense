@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const passwordVisibilityToggle = document.getElementById('password-visibility');
+    const rememberLoginCheckbox = document.getElementById('remember-login');
 
     passwordVisibilityToggle.addEventListener('click', () => {
         if (passwordVisibilityToggle.classList.contains('visible')) {
@@ -18,7 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const username = usernameInput.value.trim();
         const password = passwordInput.value.trim();
-        const response = await Api.login(username, password);
+        const response = await Api.login(
+            username, password, rememberLoginCheckbox.checked
+        );
         if (response.ok) {
             document.location.href = '/readings';
         } else {
@@ -26,5 +29,4 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('incorrect username or password.');
         }
     });
-
 });
