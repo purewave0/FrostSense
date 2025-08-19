@@ -8,19 +8,37 @@
     </head>
     <body>
         <div id="content">
-            <form id="login-form">
-                <div>
-                    <label for="username">Username</label>
-                    <input type="text" id="username" />
-                </div>
+            <div id="banner-left">
+                <h1 id="title">FrostSense</h1>
+                <h2 id="subtitle">24/7 Temperature Tracking made easy.</h2>
+            </div>
+            <div id="login-right">
+                <form id="login-form">
+                    <div>
+                        <h2>Welcome!</h2>
+                        <p>
+                            Please enter your username and password to log in.
+                        </p>
+                    </div>
 
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" id="password" />
-                </div>
+                    <div class="form-field">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" required autofocus />
+                    </div>
 
-                <button type="submit">Login</button>
-            </form>
+                    <div class="form-field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required />
+                    </div>
+
+                    <div id="remember-field">
+                        <input type="checkbox" id="remember-login" />
+                        <label for="remember-login">Remember me</label>
+                    </div>
+
+                    <button id="login" type="submit">Login</button>
+                </form>
+            </div>
         </div>
 
         <script src="/static/js/global.js"></script>
