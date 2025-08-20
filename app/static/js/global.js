@@ -10,6 +10,23 @@ if (sidebarLinks) {
         }
     }
 }
+
+// header user profile
+const headerAvatar = document.getElementById('header-avatar');
+if (headerAvatar) {
+    const profileDropdown = document.getElementById('profile-dropdown');
+    headerAvatar.addEventListener('click', (event) => {
+        const isShowing = profileDropdown.classList.contains('show');
+        if (isShowing) {
+            profileDropdown.classList.remove('show');
+        } else {
+            profileDropdown.classList.add('show');
+        }
+    });
+}
+
+
+
 /**
  * Round `temperature` to 1 decimal place.
  */

@@ -3,13 +3,16 @@ body {
     padding: 0;
     font-family: sans-serif;
 
+    /* -- sizes -- */
     --sidebar-width: 200px;
+    --header-avatar-size: 42px;
 
     /* -- colours -- */
     --color-background: #e0ecf9;
     --color-foreground: white;
 
     --color-border: #99a1bc;
+    --color-border-light: #d2d6e2;
 
     --color-dark-background: #384884;
     --color-dark-background-text: #c7d0f2;
@@ -17,6 +20,7 @@ body {
     --color-dark-background-selected: #5768ac;
 
     --color-active: #28a745;
+    --color-negative: #28a745;
 
     background-color: var(--color-background);
 }
@@ -24,6 +28,15 @@ body {
 a {
     color: inherit;
     text-decoration: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
 }
 
 .form-field {
@@ -104,12 +117,93 @@ a {
 }
 
 #header {
-    margin: 16px 16px 0 32px;
+    margin: 16px 32px 0 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #page-title {
     font-size: 14pt;
     margin: 0;
+}
+
+#header-user {
+    height: 48px;
+    width: 48px;
+    position: relative;
+}
+
+#header-avatar {
+    user-select: none;
+    cursor: pointer;
+    width: var(--header-avatar-size);
+    height: var(--header-avatar-size);
+    border-radius: 100%;
+}
+
+#mini-profile {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+    margin-bottom: 8px;
+}
+
+#mini-profile img {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+}
+
+#profile-username {
+    margin: 0;
+}
+
+#profile-dropdown {
+    z-index: 1;
+    position: absolute;
+    margin-top: 8px;
+    top: var(--header-avatar-size);
+    right: 0;
+    background-color: var(--color-foreground);
+    width: 192px;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+#profile-dropdown:not(.show) {
+    display: none;
+}
+
+#profile-separator {
+    height: 1px;
+    background-color: var(--color-border-light);
+}
+
+#profile-dropdown li a {
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 8px;
+}
+
+#profile-dropdown li a:hover {
+    background-color: coral;
+}
+
+#profile-dropdown li a svg {
+    width: 20px;
+    height: 20px;
+    fill: black;
+}
+
+#profile-dropdown li a span {
+    display: block;
 }
 
 #page-content {
