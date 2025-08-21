@@ -188,6 +188,10 @@ li {
 }
 
 #mini-info p {
+    max-width: 142px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
     margin: 0;
 }
 

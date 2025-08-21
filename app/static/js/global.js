@@ -23,6 +23,14 @@ if (headerAvatar) {
             profileDropdown.classList.add('show');
         }
     });
+
+    const dropdownMiniName = document.getElementById('mini-name');
+    const dropdownMiniUsername = document.getElementById('mini-username');
+
+    // in case they get ellipsized
+    for (const element of [dropdownMiniName, dropdownMiniUsername]) {
+        element.title = element.textContent.trim();
+    }
 }
 
 
