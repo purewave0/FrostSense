@@ -93,6 +93,11 @@
     opacity: 0.4;
 }
 
+/* only show info-text when displaying today's readings, or when empty */
+.graph-card:not(.empty):not(.today) .info-text {
+    opacity: 0;
+}
+
 .info-text .temperature {
     font-family: monospace;
 }

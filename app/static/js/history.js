@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const graphCard = new GraphCard(card, sensor.id, sensor.name);
         graphCards[sensor.id] = graphCard;
+        graphCard.getCardElement().classList.add('today');
 
         const controls = graphCard.getControls();
         controls.currentDate.valueAsDate = getStartOfToday();
@@ -26,8 +27,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             // the currentDate's value needs to be adjusted, as it is in the local
             // timezone whereas getStartOfToday()'s result is in UTC
             const newDate = adjustToUTC(controls.currentDate.valueAsDate);
-            if (newDate.getTime() === getStartOfToday().getTime()) {
+
+            const isToday = newDate.getTime() === getStartOfToday().getTime();
+            if (isToday) {
+                graphCard.getCardElement().classList.add('today');
+                // can't see the future!
                 controls.nextDayButton.disabled = true;
+            } else {
+                graphCard.getCardElement().classList.remove('today');
             }
 
             Api.fetchSensorReadingsByDays([sensor.id], [newDate])
