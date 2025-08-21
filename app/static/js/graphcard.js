@@ -60,7 +60,6 @@ class GraphCard {
     static #prepareCard(card, sensorId, sensorName) {
         card.dataset.sensorId = sensorId;
         card.className = 'graph-card';
-        // TODO: svg icons for previous/next
         card.innerHTML = `
             <div class="header">
                 <div class="sensor-name-wrapper">
@@ -70,12 +69,23 @@ class GraphCard {
                     <span class="readings-count-value"></span> readings
                 </div>
                 <div class="controls">
-                    <button class="button-previous">
-                        <span>&lt;</span>
+                    <button class="button-previous" title="Previous day">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3">
+                            <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/>
+                        </svg>
                     </button>
                     <input class="current-date" type="date">
-                    <button class="button-next">
-                        <span>&gt;</span>
+                    <button class="button-next" title="Next day">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px" fill="#e3e3e3">
+                            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
+                        </svg>
                     </button>
                 </div>
             </div>
