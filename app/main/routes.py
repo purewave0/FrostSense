@@ -53,3 +53,8 @@ def get_report(code):
 @login_required
 def verify_reports():
     return render_template('main/sections/verify-reports.html')
+
+@bp.route('/my-profile')
+@login_required
+def my_profile():
+    return render_template('main/my-profile.html')

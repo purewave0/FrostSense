@@ -46,12 +46,17 @@ li {
 }
 
 select,
-input[type="date"],
+input,
 textarea {
     padding: 4px;
     background-color: transparent;
     border: 1px solid var(--color-border);
     border-radius: 4px;
+}
+
+.form-section-title {
+    font-size: 11pt;
+    margin: 0 0 8px 0;
 }
 
 .columns {

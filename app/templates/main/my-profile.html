@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{{ current_user.name }} - FrostSense</title>
+        <link rel="stylesheet" href="/static/css/global.css" />
+        <link rel="stylesheet" href="/static/css/my-profile.css" />
+    </head>
+    <body>
+        <div id="content">
+            <form id="profile-form">
+                <div id="profile-header">
+                    <img
+                        id="avatar"
+                        src="/static/img/avatars/default-avatar.jpg"
+                    />
+                    <div id="names">
+                        <div id="displayed-display-name">John Smith</div>
+                        <div id="displayed-username">
+                            {{ current_user.name }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <h3 class="form-section-title">Your Information</h3>
+                    <div class="columns">
+                        <div class="form-field" title="What others see.">
+                            <label for="display-name">Display Name</label>
+                            <input
+                                id="display-name"
+                                type="text"
+                                value="John Smith"
+                                disabled
+                            />
+                        </div>
+
+                        <div class="form-field" title="Used for logging in.">
+                            <label for="username">Username</label>
+                            <input
+                                id="username"
+                                type="text"
+                                value="{{ current_user.name }}"
+                                disabled
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <h3 class="form-section-title">Preferences</h3>
+                    <div class="columns">
+                        <div class="form-field">
+                            <label for="home-page">
+                                Home Page
+                            </label>
+                            <select id="home-page" disabled>
+                                <option value="readings">Readings (default)</option>
+                                <option value="history">History</option>
+                                <option value="sensors">Sensors</option>
+                                <option value="reports">Reports</option>
+                                <option value="verify-reports">Verify Reports</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="temperature-unit">Temperature Unit</label>
+                            <select id="temperature-unit" disabled>
+                                <option value="celsius">Celsius (°C)</option>
+                                <option value="fahrenheit">Fahrenheit (°F)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/static/js/global.js"></script>
+        <script src="/static/js/api.js"></script>
+    </body>
+</html>
