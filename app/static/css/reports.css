@@ -19,15 +19,6 @@ input[type="radio"] {
     margin: 0;
 }
 
-select,
-input[type="date"],
-textarea {
-    padding: 4px;
-    background-color: transparent;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-}
-
 #page-content {
     display: flex;
     justify-content: center;

@@ -45,6 +45,15 @@ li {
     list-style-type: none;
 }
 
+select,
+input[type="date"],
+textarea {
+    padding: 4px;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+}
+
 .form-field {
     display: flex;
     flex-direction: column;
