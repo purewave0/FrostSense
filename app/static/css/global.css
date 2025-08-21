@@ -5,11 +5,14 @@ body {
 
     /* -- sizes -- */
     --sidebar-width: 200px;
-    --header-avatar-size: 42px;
+    --header-avatar-size: 36px;
 
     /* -- colours -- */
     --color-background: #e0ecf9;
     --color-foreground: white;
+
+    --color-text-primary: black;
+    --color-text-secondary: #6e7387;
 
     --color-border: #99a1bc;
     --color-border-light: #d2d6e2;
@@ -19,8 +22,11 @@ body {
     --color-dark-background-hover: #495996;
     --color-dark-background-selected: #5768ac;
 
+    --color-hover: #6e89f457;
+
     --color-active: #28a745;
-    --color-negative: #28a745;
+    --color-negative: #db2929;
+    --color-negative-hover: #ef1b1b36;
 
     background-color: var(--color-background);
 }
@@ -142,23 +148,6 @@ li {
     border-radius: 100%;
 }
 
-#mini-profile {
-    display: flex;
-    flex-direction: row;
-    column-gap: 8px;
-    margin-bottom: 8px;
-}
-
-#mini-profile img {
-    width: 48px;
-    height: 48px;
-    border-radius: 100%;
-}
-
-#profile-username {
-    margin: 0;
-}
-
 #profile-dropdown {
     z-index: 1;
     position: absolute;
@@ -167,15 +156,56 @@ li {
     right: 0;
     background-color: var(--color-foreground);
     width: 192px;
-    padding: 16px;
+    padding: 8px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     row-gap: 8px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 #profile-dropdown:not(.show) {
     display: none;
+}
+
+#mini-profile {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+    margin: 8px 0;
+}
+
+#mini-profile img {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+}
+
+#mini-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#mini-info p {
+    margin: 0;
+}
+
+#mini-username {
+    font-size: 11pt;
+    color: var(--color-text-secondary);
+}
+
+#logout {
+    color: var(--color-negative);
+}
+
+#profile-dropdown #logout svg {
+    fill: var(--color-negative);
+}
+
+#profile-dropdown li #logout:hover {
+    background-color: var(--color-negative-hover);
 }
 
 #profile-separator {
@@ -190,10 +220,11 @@ li {
     flex-direction: row;
     align-items: center;
     column-gap: 8px;
+    transition: background-color 0.075s ease;
 }
 
 #profile-dropdown li a:hover {
-    background-color: coral;
+    background-color: var(--color-hover);
 }
 
 #profile-dropdown li a svg {
