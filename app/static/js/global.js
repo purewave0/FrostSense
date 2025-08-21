@@ -15,13 +15,24 @@ if (sidebarLinks) {
 const headerAvatar = document.getElementById('header-avatar');
 if (headerAvatar) {
     const profileDropdown = document.getElementById('profile-dropdown');
+
+    function dropdownOutsideClickHandler(event) {
+        if (!profileDropdown.contains(event.target)) {
+            headerAvatar.dispatchEvent(new Event('click'));
+        }
+    }
+
     headerAvatar.addEventListener('click', (event) => {
         const isShowing = profileDropdown.classList.contains('show');
         if (isShowing) {
             profileDropdown.classList.remove('show');
+            document.body.removeEventListener('click', dropdownOutsideClickHandler);
         } else {
             profileDropdown.classList.add('show');
+            document.body.addEventListener('click', dropdownOutsideClickHandler);
         }
+        // prevent it from insta-closing itself
+        event.stopPropagation();
     });
 
     const dropdownMiniName = document.getElementById('mini-name');
