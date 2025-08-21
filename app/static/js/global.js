@@ -22,16 +22,24 @@ if (headerAvatar) {
         }
     }
 
+    function dropdownEscHandler(event) {
+        if (event.key === 'Escape') {
+            headerAvatar.dispatchEvent(new Event('click'));
+        }
+    }
+
     headerAvatar.addEventListener('click', (event) => {
         const isShowing = profileDropdown.classList.contains('show');
         if (isShowing) {
             profileDropdown.classList.remove('show');
             document.body.removeEventListener('click', dropdownOutsideClickHandler);
+            document.body.removeEventListener('keydown', dropdownEscHandler);
         } else {
             profileDropdown.classList.add('show');
             document.body.addEventListener('click', dropdownOutsideClickHandler);
+            document.body.addEventListener('keydown', dropdownEscHandler);
         }
-        // prevent it from insta-closing itself
+        // prevent this click from insta-closing the dropdown
         event.stopPropagation();
     });
 
