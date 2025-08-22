@@ -371,3 +371,32 @@ def create_user(name: str, password: str) -> User:
     db.session.commit()
 
     return user
+
+
+def update_user(
+    user_id: int,
+    display_name: str,
+    username: str,
+    homepage: User.WebPage,
+    temperature_unit: User.TemperatureUnit
+) -> None:
+    """Update a user in the database.
+
+    Args:
+        display_name: The name that others will see.
+        username: The name used for logging in.
+        homepage: The first page the user sees after logging in.
+        temperature_unit: The unit used to display temperatures.
+    """
+    db.session.execute(
+        db.update(
+            User
+        ).where(
+            User.id == user_id
+        )
+        .values(
+            # TODO: display_name, username, homepage, temperature_unit
+            name=username,
+        )
+    )
+    db.session.commit()

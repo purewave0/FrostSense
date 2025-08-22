@@ -13,6 +13,7 @@ from app.dbapi import (
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
     get_user_by_name,
+    update_user
 )
 from app.api.report import (
     DataFormat,
@@ -263,4 +264,27 @@ def api_login():
         return jsonify({'error': 'incorrect_login'}), 401
 
     login_user(user, remember=should_remember_login)
+    return '', 204
+
+
+@bp.route('/my-profile', methods=['PUT'])
+@login_required
+def api_update_my_profile():
+    try:
+        display_name = str(request.json['display_name'])
+        username = str(request.json['username'])
+        homepage = User.WebPage(request.json['homepage'])
+        temperature_unit = User.TemperatureUnit(request.json['temperature_unit'])
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'field_error'}), 400
+
+    # TODO: check display_name and username lengths
+    # TODO: check if username is unique
+    update_user(
+        current_user.id,
+        display_name,
+        username,
+        homepage,
+        temperature_unit
+    )
     return '', 204
