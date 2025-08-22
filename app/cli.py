@@ -114,8 +114,8 @@ def register_commands(app):
     def seed_user():
         """Seed the database with a default user.
 
-        Name: "default", password: "default".
+        Display name: "Felix Sullivan"; Username: "felix"; password: "default".
         """
-        create_user('default', 'default')
+        create_user('Felix Sullivan', 'felix', 'default')
 
-        click.echo('created 1 default user.')
+        click.echo('created 1 default user. {Felix Sullivan|felix|default}')

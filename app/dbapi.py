@@ -340,24 +340,26 @@ def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[i
 
 # -- auth --
 
-def get_user_by_name(name: str) -> User | None:
-    """Return the User with the given name, or None."""
+def get_user_by_username(username: str) -> User | None:
+    """Return the User with the given username, or None."""
     user = db.session.execute(
         db.select(
             User
         ).where(
-            User.name == name
+            User.username == username
         )
     ).scalar_one_or_none()
 
     return user
 
 
-def create_user(name: str, password: str) -> User:
+def create_user(display_name: str, username: str, password: str) -> User:
     """Create a user in the database.
 
     Args:
-        name: The username. Must be between User.MIN_NAME_LENGTH and
+        display_name: The name others will see. Must be between User.MIN_NAME_LENGTH and
+            User.MAX_NAME_LENGTH characters.
+        username: The name used for logging in. Must be between User.MIN_NAME_LENGTH and
             User.MAX_NAME_LENGTH characters.
         password: The password. Must be between User.MIN_PASSWORD_LENGTH and
             User.MAX_PASSWORD_LENGTH characters.
@@ -365,7 +367,7 @@ def create_user(name: str, password: str) -> User:
     Returns:
         The newly created User object.
     """
-    user = User(name, password)
+    user = User(display_name, username, password)
 
     db.session.add(user)
     db.session.commit()
@@ -395,8 +397,10 @@ def update_user(
             User.id == user_id
         )
         .values(
-            # TODO: display_name, username, homepage, temperature_unit
-            name=username,
+            display_name=display_name,
+            username=username,
+            homepage=homepage,
+            temperature_unit=temperature_unit,
         )
     )
     db.session.commit()

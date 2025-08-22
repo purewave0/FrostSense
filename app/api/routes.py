@@ -12,7 +12,7 @@ from app.dbapi import (
     get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
-    get_user_by_name,
+    get_user_by_username,
     update_user
 )
 from app.api.report import (
@@ -259,7 +259,7 @@ def api_login():
         # already logged in
         return '', 204
 
-    user = get_user_by_name(username)
+    user = get_user_by_username(username)
     if user is None or not user.check_password(password):
         return jsonify({'error': 'incorrect_login'}), 401
 
@@ -270,6 +270,7 @@ def api_login():
 @bp.route('/my-profile', methods=['PUT'])
 @login_required
 def api_update_my_profile():
+    # TODO: no spaces allowed in username
     try:
         display_name = str(request.json['display_name'])
         username = str(request.json['username'])

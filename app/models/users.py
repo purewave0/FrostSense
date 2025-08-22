@@ -31,21 +31,34 @@ class User(UserMixin, db.Model):
     MAX_PASSWORD_LENGTH = 100
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    # TODO: display_name and username
-    name: Mapped[str] = mapped_column(
+    display_name: Mapped[str] = mapped_column(
+        db.String(MAX_NAME_LENGTH), unique=True, index=True
+    )
+    username: Mapped[str] = mapped_column(
         db.String(MAX_NAME_LENGTH), unique=True, index=True
     )
     password_hash: Mapped[str] = mapped_column(db.String(256))
     created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
+    homepage: Mapped[WebPage] = mapped_column(default=WebPage.READINGS)
+    temperature_unit: Mapped[TemperatureUnit] = mapped_column(
+        default=TemperatureUnit.CELSIUS
+    )
 
-    def __init__(self, name: str, password: str):
-        self.name = name
-        self.password_hash = generate_password_hash(
-            password
-        )
+    def __init__(
+        self,
+        display_name: str,
+        username: str, password: str,
+        homepage: WebPage = WebPage.READINGS,
+        temperature_unit: TemperatureUnit = TemperatureUnit.CELSIUS
+    ):
+        self.display_name = display_name
+        self.username = username
+        self.password_hash = generate_password_hash(password)
+        self.homepage = homepage
+        self.temperature_unit = temperature_unit
 
     def __repr__(self):
-        return f'<User "{self.name}">'
+        return f'<User "{self.display_name}" ({self.username})>'
 
     def check_password(self, password: str):
         return check_password_hash(self.password_hash, password)
