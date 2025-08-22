@@ -57,5 +57,18 @@ const Api = {
                 'remember_login': shouldRememberLogin,
             })
         });
+    },
+
+    editProfile(displayName, username, homepage, temperatureUnit) {
+        return fetch('/api/my-profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'display_name': displayName,
+                'username': username,
+                'homepage': homepage,
+                'temperature_unit': temperatureUnit,
+            })
+        });
     }
 };
