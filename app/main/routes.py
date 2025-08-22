@@ -1,5 +1,5 @@
-from flask import render_template, redirect, abort
-from flask_login import current_user, login_required
+from flask import render_template, redirect, abort, url_for
+from flask_login import current_user, login_required, logout_user
 
 from app.main import bp
 from app.api.report import get_report_file
@@ -58,3 +58,9 @@ def verify_reports():
 @login_required
 def my_profile():
     return render_template('main/my-profile.html')
+
+@bp.route('/logout')
+@login_required
+def main_logout():
+    logout_user()
+    return redirect(url_for('main.login'))
