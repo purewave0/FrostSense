@@ -1,7 +1,7 @@
 import datetime as dt
 
 from flask import jsonify, request
-from flask_login import current_user, login_user, login_required
+from flask_login import current_user, login_user, login_required, logout_user
 
 from app.api import bp
 from app.dbapi import (
@@ -288,4 +288,11 @@ def api_update_my_profile():
         homepage,
         temperature_unit
     )
+    return '', 204
+
+
+@bp.route('/logout')
+@login_required
+def api_logout():
+    logout_user()
     return '', 204
