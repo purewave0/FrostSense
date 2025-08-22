@@ -60,9 +60,11 @@
                         <div id="mini-profile">
                             <img src="/static/img/avatars/default-avatar.jpg"/>
                             <div id="mini-info">
-                                <p id="mini-name">John Smith</p>
+                                <p id="mini-name">
+                                    {{ current_user.display_name }}
+                                </p>
                                 <p id="mini-username">
-                                    {{ current_user.name }}
+                                    {{ current_user.username }}
                                 </p>
                             </div>
                         </div>

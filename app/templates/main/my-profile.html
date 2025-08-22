@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>{{ current_user.name }} - FrostSense</title>
+        <title>{{ current_user.display_name }} - FrostSense</title>
         <link rel="stylesheet" href="/static/css/global.css" />
         <link rel="stylesheet" href="/static/css/my-profile.css" />
     </head>
@@ -15,8 +15,12 @@
                         src="/static/img/avatars/default-avatar.jpg"
                     />
                     <div id="names">
-                        <h1 id="displayed-display-name">John Smith</h1>
-                        <h2 id="displayed-username">{{ current_user.name }}</h2>
+                        <h1 id="displayed-display-name">
+                            {{ current_user.display_name }}
+                        </h1>
+                        <h2 id="displayed-username">
+                            {{ current_user.username }}
+                        </h2>
                     </div>
 
                     <button id="edit-button" type="button">
@@ -46,8 +50,8 @@
                                 id="display-name"
                                 class="editable"
                                 type="text"
-                                value="John Smith"
-                                placeholder="John Smith"
+                                value="{{ current_user.display_name }}"
+                                placeholder="{{ current_user.display_name }}"
                                 disabled
                                 autocomplete="off"
                                 required
@@ -60,8 +64,8 @@
                                 id="username"
                                 class="editable"
                                 type="text"
-                                value="{{ current_user.name }}"
-                                placeholder="{{ current_user.name }}"
+                                value="{{ current_user.username }}"
+                                placeholder="{{ current_user.username }}"
                                 disabled
                                 autocomplete="off"
                                 required
@@ -74,7 +78,7 @@
                     <h3 class="form-section-title">Preferences</h3>
                     <div class="columns">
                         <div class="form-field">
-                            <label for="homepage"> Home Page </label>
+                            <label for="homepage">Home Page</label>
                             <select
                                 id="homepage"
                                 class="editable"
