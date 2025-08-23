@@ -64,3 +64,8 @@ def my_profile():
 def main_logout():
     logout_user()
     return redirect(url_for('main.login'))
+
+@bp.route('/system-settings')
+@login_required
+def system_settings():
+    return render_template('main/system-settings.html')
