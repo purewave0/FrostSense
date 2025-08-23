@@ -70,5 +70,13 @@ const Api = {
                 'temperature_unit': temperatureUnit,
             })
         });
-    }
+    },
+
+    fetchProfile() {
+        return fetch('/api/my-profile');
+    },
+
+    fetchProfileLastUpdateTime() {
+        return fetch('/api/my-profile/last-update-time');
+    },
 };

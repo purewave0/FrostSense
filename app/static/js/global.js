@@ -69,6 +69,56 @@ function formatTemperature(temperature, decimalDigits = 1) {
     return `${temperature.toFixed(decimalDigits)} °C`;
 }
 
+const TemperatureUnits = {
+    CELSIUS: 'celsius',
+    FAHRENHEIT: 'fahrenheit'
+};
+
+/**
+ * Return the given Celsius value converted to Fahrenheit.
+ */
+function celsiusToFahrenheit(celsius) {
+    return (celsius * 1.8) + 32;
+}
+
+/**
+ * Return the given Celsius value converted (if necessary) to the given unit.
+ * This is a convenience function, so that you don't have to do conversions yourself
+ * whenever you need to provide or display a temperature value.
+ *
+ * @param {number} celsius The original temperature in Celsius.
+ * @param {string} unit The unit to use, according to `TemperatureUnits`.
+ *
+ * @returns {number} The converted value.
+ */
+function temperature(celsius, unit) {
+    switch (unit) {
+        case TemperatureUnits.CELSIUS:
+            return celsius;
+        case TemperatureUnits.FAHRENHEIT:
+            return celsiusToFahrenheit(celsius);
+    }
+}
+
+
+/**
+ * Return the given Celsius value converted (if necessary) to the given unit and
+ * formatted accordingly.
+ *
+ * @param {number} celsius The original temperature in Celsius.
+ * @param {string} unit The unit to use, according to `TemperatureUnits`.
+ * @param {number} decimalDigits The number of decimal digits (default 1).
+ *
+ * @returns {string} The formatted value.
+ */
+function formattedTemperature(celsius, unit, decimalDigits = 1) {
+    switch (unit) {
+        case TemperatureUnits.CELSIUS:
+            return `${celsius} °C`;
+        case TemperatureUnits.FAHRENHEIT:
+            return `${celsiusToFahrenheit(celsius)} °F`;
+    }
+}
 
 /**
  * Format `temperature` as "<temperature> °C", with N decimal digits (default 1), and
