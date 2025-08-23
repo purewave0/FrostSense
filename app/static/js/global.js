@@ -94,9 +94,9 @@ function celsiusToFahrenheit(celsius) {
 function temperature(celsius, unit) {
     switch (unit) {
         case TemperatureUnits.CELSIUS:
-            return celsius;
+            return roundTemperature(celsius);
         case TemperatureUnits.FAHRENHEIT:
-            return celsiusToFahrenheit(celsius);
+            return roundTemperature(celsiusToFahrenheit(celsius));
     }
 }
 
@@ -114,9 +114,9 @@ function temperature(celsius, unit) {
 function formattedTemperature(celsius, unit, decimalDigits = 1) {
     switch (unit) {
         case TemperatureUnits.CELSIUS:
-            return `${celsius} °C`;
+            return `${celsius.toFixed(decimalDigits)} °C`;
         case TemperatureUnits.FAHRENHEIT:
-            return `${celsiusToFahrenheit(celsius)} °F`;
+            return `${celsiusToFahrenheit(celsius).toFixed(decimalDigits)} °F`;
     }
 }
 
