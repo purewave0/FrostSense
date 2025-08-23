@@ -340,6 +340,19 @@ def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[i
 
 # -- auth --
 
+def get_user_by_id(id: int) -> User | None:
+    """Return the User with the given id, or None."""
+    user = db.session.execute(
+        db.select(
+            User
+        ).where(
+            User.id == id
+        )
+    ).scalar_one_or_none()
+
+    return user
+
+
 def get_user_by_username(username: str) -> User | None:
     """Return the User with the given username, or None."""
     user = db.session.execute(
@@ -395,8 +408,7 @@ def update_user(
             User
         ).where(
             User.id == user_id
-        )
-        .values(
+        ).values(
             display_name=display_name,
             username=username,
             homepage=homepage,
@@ -404,3 +416,16 @@ def update_user(
         )
     )
     db.session.commit()
+
+
+def get_user_last_update_time(user_id: int) -> int:
+    """Return when the User of id `user_id` was last updated."""
+    result = db.session.execute(
+        db.select(
+            User.updated_on
+        ).where(
+            User.id == user_id
+        )
+    ).scalar_one()
+
+    return result

@@ -12,8 +12,9 @@ from app.dbapi import (
     get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
-    get_user_by_username,
-    update_user
+    get_user_by_id, get_user_by_username,
+    update_user,
+    get_user_last_update_time
 )
 from app.api.report import (
     DataFormat,
@@ -267,9 +268,20 @@ def api_login():
     return '', 204
 
 
-@bp.route('/my-profile', methods=['PUT'])
+@bp.route('/my-profile', methods=['GET', 'PUT'])
 @login_required
 def api_update_my_profile():
+    if request.method == 'GET':
+        user = get_user_by_id(current_user.id)
+        if not user:
+            return jsonify({'error': 'user_not_found'}), 404
+        return jsonify({
+            'display_name': user.display_name,
+            'username': user.username,
+            'homepage': user.homepage,
+            'temperature_unit': user.temperature_unit,
+        })
+
     # TODO: no spaces allowed in username
     try:
         display_name = str(request.json['display_name'])
@@ -289,6 +301,12 @@ def api_update_my_profile():
         temperature_unit
     )
     return '', 204
+
+
+@bp.route('/my-profile/last-update-time')
+@login_required
+def api_user_last_update_time():
+    return jsonify(get_user_last_update_time(current_user.id))
 
 
 @bp.route('/logout')

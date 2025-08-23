@@ -12,7 +12,8 @@ from app.models.util import utcnow
 class User(UserMixin, db.Model):
     __tablename__ = 'User'
 
-    class WebPage(Enum):
+    # subclassing str for easy JSON serialisation
+    class WebPage(str, Enum):
         """Webpage that can be set as a homepage by the user."""
         READINGS       = 'readings'
         HISTORY        = 'history'
@@ -20,7 +21,8 @@ class User(UserMixin, db.Model):
         REPORTS        = 'reports'
         VERIFY_REPORTS = 'verify_reports'
 
-    class TemperatureUnit(Enum):
+    # subclassing str for easy JSON serialisation
+    class TemperatureUnit(str, Enum):
         """Unit used to display temperatures in gauges, graphs, reports, etc."""
         CELSIUS    = 'celsius'
         FAHRENHEIT = 'fahrenheit'
