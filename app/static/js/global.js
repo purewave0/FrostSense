@@ -91,7 +91,7 @@ function celsiusToFahrenheit(celsius) {
  *
  * @returns {number} The converted value.
  */
-function temperature(celsius, unit) {
+function temperatureValue(celsius, unit) {
     switch (unit) {
         case TemperatureUnits.CELSIUS:
             return roundTemperature(celsius);
