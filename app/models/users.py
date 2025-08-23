@@ -39,6 +39,9 @@ class User(UserMixin, db.Model):
     )
     password_hash: Mapped[str] = mapped_column(db.String(256))
     created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
+    updated_on: Mapped[datetime] = mapped_column(
+        server_default=utcnow(), onupdate=utcnow()
+    )
     homepage: Mapped[WebPage] = mapped_column(default=WebPage.READINGS)
     temperature_unit: Mapped[TemperatureUnit] = mapped_column(
         default=TemperatureUnit.CELSIUS
