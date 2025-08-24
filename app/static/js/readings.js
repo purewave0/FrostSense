@@ -7,13 +7,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const gaugeCards = {};
     const readingsResponse = await Api.fetchLastSensorReadings();
     const sensorReadings = await readingsResponse.json();
+
+    const temperatureUnit = Profile.getTemperatureUnit();
+
     for (const sensor of sensors) {
         // would've used a DocumentFragment here, but JustGage needs the element
         // in the DOM already
         const card = document.createElement('div');
         gaugeCardsDestination.append(card);
 
-        const gaugeCard = new GaugeCard(card, sensor.id, sensor.name);
+        const gaugeCard = new GaugeCard(card, sensor.id, sensor.name, temperatureUnit);
         gaugeCards[sensor.id] = gaugeCard;
         gaugeCard.setReading(sensorReadings[sensor.id]);
     }

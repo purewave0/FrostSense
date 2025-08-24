@@ -3,26 +3,26 @@ class GaugeCard {
     #gauge = null;
     #datetimeValue = null;
     #locales = null;
+    #temperatureUnit = null;
     static #INVALID_READING = -404;
 
-    constructor(element, sensorId, sensorName) {
+    constructor(element, sensorId, sensorName, temperatureUnit) {
         this.#locales = getUserLocales();
         GaugeCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
         this.#datetimeValue = element.querySelector('.datetime-value');
+        this.#temperatureUnit = temperatureUnit;
         this.#gauge = new JustGage({
             id: this.#card.querySelector('.gauge').id,
-            value: -30,
-            min: -30,
-            minTxt: '-30 °C',
-            max: 30,
-            minTxt: '30 °C',
+            value: temperatureValue(-30, temperatureUnit),
+            min: temperatureValue(-30, temperatureUnit),
+            max: temperatureValue(30, temperatureUnit),
             gaugeWidthScale: 0.75,
             textRenderer: (value) => {
                 if (value === GaugeCard.#INVALID_READING) {
                     return 'N/A';
                 }
-                return `${value.toFixed(1)} °C`;
+                return formattedTemperature(value, temperatureUnit);
             },
             startAnimationTime: 500,
             refreshAnimationTime: 500,
@@ -70,7 +70,7 @@ class GaugeCard {
         );
 
         const temperature = (reading.temperature !== null)
-            ? reading.temperature
+            ? temperatureValue(reading.temperature, this.#temperatureUnit)
             : GaugeCard.#INVALID_READING;
         this.#gauge.refresh(temperature);
     }
