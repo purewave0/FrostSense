@@ -70,7 +70,7 @@ class GaugeCard {
         );
 
         const temperature = (reading.temperature !== null)
-            ? temperatureValue(reading.temperature, this.#temperatureUnit)
+            ? reading.temperature
             : GaugeCard.#INVALID_READING;
         this.#gauge.refresh(temperature);
     }
