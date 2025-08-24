@@ -74,6 +74,11 @@ const TemperatureUnits = {
     FAHRENHEIT: 'fahrenheit'
 };
 
+const TemperatureUnitStrings = {
+    [TemperatureUnits.CELSIUS]: '°C',
+    [TemperatureUnits.FAHRENHEIT]: '°F',
+};
+
 /**
  * Return the given Celsius value converted to Fahrenheit.
  */
@@ -121,11 +126,19 @@ function formattedTemperature(celsius, unit, decimalDigits = 1) {
 }
 
 /**
- * Format `temperature` as "<temperature> °C", with N decimal digits (default 1), and
- * with temperature being in a <span class="temperature"> tag.
+ * Format the given temperature as "`temperature` `unit string`", with `temperature`
+ * being in a <span class="temperature"> tag.
+ *
+ * @param {number} celsius The original temperature, in Celsius, to format.
+ * @param {string} unit The unit, according to `TemperatureUnits`.
+ * @param {number} decimalDigits The number of decimal digits (default 1).
  */
-function formatTemperatureHTML(temperature, decimalDigits = 1) {
-    return `<span class="temperature">${temperature.toFixed(decimalDigits)}</span> °C`;
+function formattedTemperatureHTML(celsius, unit, decimalDigits = 1) {
+    return `
+        <span class="temperature">
+            ${temperatureValue(celsius, unit).toFixed(decimalDigits)}
+        </span> ${TemperatureUnitStrings[unit]}
+    `;
 }
 
 

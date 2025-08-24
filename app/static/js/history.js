@@ -10,11 +10,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const startDates = Array(sensors.length).fill(getStartOfToday());
     const readingsResponse = await Api.fetchSensorReadingsByDays(sensorIds, startDates);
     const sensorReadings = await readingsResponse.json();
+
+    const temperatureUnit = Profile.getTemperatureUnit();
+
     for (const sensor of sensors) {
         const card = document.createElement('div');
         graphCardsDestination.append(card);
 
-        const graphCard = new GraphCard(card, sensor.id, sensor.name);
+        const graphCard = new GraphCard(card, sensor.id, sensor.name, temperatureUnit);
         graphCards[sensor.id] = graphCard;
         graphCard.getCardElement().classList.add('today');
 
@@ -44,7 +47,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     graphCard.setReadings(readings);
                     if (readings.length > 0) {
                         graphCard.setInfoTextHTML(
-                            formatTemperatureHTML(sensorReadings[sensor.id].at(-1).temperature)
+                            formattedTemperatureHTML(
+                                sensorReadings[sensor.id].at(-1).temperature,
+                                temperatureUnit
+                            )
                         )
                     } else {
                         graphCard.setInfoTextHTML('No readings')
@@ -75,7 +81,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         graphCard.setReadings(readings);
         if (readings.length > 0) {
             graphCard.setInfoTextHTML(
-                formatTemperatureHTML(readings.at(-1).temperature)
+                formattedTemperatureHTML(
+                    readings.at(-1).temperature, temperatureUnit
+                )
             )
         } else {
             graphCard.setInfoTextHTML('No readings')
@@ -118,8 +126,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     graphCards[sensorId].pushReadings(readings);
                     graphCards[sensorId].setInfoTextHTML(
-                        formatTemperatureHTML(readings.at(-1).temperature)
-                    )
+                        formattedTemperatureHTML(
+                            readings.at(-1).temperature, temperatureUnit
+                        )
+                    );
                 }
             });
     }, UPDATE_INTERVAL);

@@ -6,13 +6,15 @@ class GraphCard {
     #infoText = null;
     #readingsCountValue = null;
     #locales = [];
+    #temperatureUnit = null;
 
-    constructor(element, sensorId, sensorName) {
+    constructor(element, sensorId, sensorName, temperatureUnit) {
         this.#locales = getUserLocales();
         GraphCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
         this.#infoText = this.#card.querySelector('.info-text');
         this.#readingsCountValue = this.#card.querySelector('.readings-count-value');
+        this.#temperatureUnit = temperatureUnit;
 
         this.#controls = {
             'previousDayButton': this.#card.querySelector('.button-previous'),
@@ -20,17 +22,23 @@ class GraphCard {
             'nextDayButton': this.#card.querySelector('.button-next'),
         }
 
+        const unitString = TemperatureUnitStrings[temperatureUnit];
+
         this.#graph = new Dygraph(
             this.#card.querySelector('.graph'),
             [],  // empty data
             {
                 interactionModel: {}, // disable zooming, etc.
                 labels: null,  // we'll pass the proper values once the data is set
-                valueRange: [-30, 30],
+                valueRange: [
+                    temperatureValue(-30, temperatureUnit),
+                    temperatureValue(30, temperatureUnit)
+                ],
                 legendFormatter: (data) => {
                     if (data.x == null) {
                         return '';  // no selection
                     }
+                    // temperature already in the proper unit
                     const temperature = data.series[0].y.toFixed(1);
                     const datetime = formatDateToCompactDatetime(
                         new Date(data.x), this.#locales
@@ -38,18 +46,16 @@ class GraphCard {
 
                     return `
                         <b class="temperature-label">Temperature:</b>
-                        <code>${temperature}</code> °C
+                        <code>${temperature}</code> ${unitString}
                         <br>
                         at ${datetime}
                     `;
                 },
                 axes: {
                     y: {
-                        valueFormatter(temperature) {
-                            return formatTemperature(temperature)
-                        },
-                        axisLabelFormatter(temperature) {
-                            return formatTemperature(temperature, 0);
+                        axisLabelFormatter: (temperature) => {
+                            // temperature already in the proper unit
+                            return `${temperature} ${unitString}`;
                         },
                     },
                 }
@@ -101,13 +107,17 @@ class GraphCard {
         graphElement.id = `graph${sensorId}`;
     }
 
-    static #formatReadings(rawReadings) {
+    static #formatAndConvertReadings(rawReadings, temperatureUnit) {
         // the format dygraphs expects is:
         // [
         //     [x,y,z], [x,y,z], [x,y,z]...
         // ] for data x, y, and z.
         return rawReadings.map((reading) => {
-            return [new Date(reading.created_on), reading.temperature, reading.id]
+            return [
+                new Date(reading.created_on),
+                temperatureValue(reading.temperature, temperatureUnit),
+                reading.id
+            ]
         });
     }
 
@@ -121,7 +131,8 @@ class GraphCard {
             labels = null;
             this.#card.classList.add('empty');
         }
-        this.#data = GraphCard.#formatReadings(readings)
+        this.#data =
+            GraphCard.#formatAndConvertReadings(readings, this.#temperatureUnit)
         this.#graph.updateOptions({
             'labels': labels,
             'file': this.#data
@@ -130,7 +141,11 @@ class GraphCard {
     }
 
     pushReadings(readings) {
-        this.#data.push(...GraphCard.#formatReadings(readings));
+        this.#data.push(
+            ...GraphCard.#formatAndConvertReadings(
+                readings, this.#temperatureUnit
+            )
+        );
         this.#graph.updateOptions({
             'labels': ['Time', 'Temperature', 'id'],
             'file': this.#data,
