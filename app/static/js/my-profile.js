@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'temperatureUnit': document.getElementById('temperature-unit'),
     };
 
+    const profile = Profile.get();
+    formFields.homepage.value = profile.homepage;
+    formFields.temperatureUnit.value = profile.temperatureUnit;
+    editButton.disabled = false;
+
     function enterEditMode() {
         editButton.disabled = true;
         profileForm.classList.add('editing');
@@ -32,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editButton.addEventListener('click', enterEditMode);
 
     const cancelEditButton = document.getElementById('cancel');
+    // TODO: when cancelling, revert all values
     cancelEditButton.addEventListener('click', leaveEditMode);
 
     profileForm.addEventListener('submit', async (event) => {
@@ -54,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             leaveEditMode();
             displayedNames.displayName.textContent = displayName;
             displayedNames.username.textContent = username;
+            ProfileUpdater.updateIfNeeded();
             // TODO: notify success
             return;
         }
