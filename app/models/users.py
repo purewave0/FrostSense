@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
         HISTORY        = 'history'
         SENSORS        = 'sensors'
         REPORTS        = 'reports'
-        VERIFY_REPORTS = 'verify_reports'
+        VERIFY_REPORTS = 'verify-reports'
 
     # subclassing str for easy JSON serialisation
     class TemperatureUnit(str, Enum):
