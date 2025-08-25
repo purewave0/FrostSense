@@ -1,19 +1,20 @@
 const ProfileUpdater = {
-    updateIfNeeded() {
-        Api.fetchProfileLastUpdateTime()
-            .then((response) => response.json())
-            .then((lastUpdateTime) => {
-                if (Profile.getLastUpdateTime() !== lastUpdateTime) {
-                    console.log('[profile-updater.js] stored profile nonexistent or outdated.');
-                    Profile.setLastUpdateTime(lastUpdateTime);
-                    Api.fetchProfile()
-                        .then((response) => response.json())
-                        .then((profile) => {
-                            console.log('[profile-updater.js] profile updated.');
-                            Profile.set(profile.homepage, profile.temperature_unit);
-                        });
-                }
-            });
+    async updateIfNeeded() {
+        const response = await Api.fetchProfileLastUpdateTime();
+        const lastUpdateTime = await response.json();
+        if (Profile.getLastUpdateTime() !== lastUpdateTime) {
+            console.log('[profile-updater.js] stored profile nonexistent or outdated.');
+            Profile.setLastUpdateTime(lastUpdateTime);
+            const profileResponse = await Api.fetchProfile();
+            const profile = await profileResponse.json();
+            Profile.set(
+                profile.display_name,
+                profile.username,
+                profile.homepage,
+                profile.temperature_unit
+            );
+            console.log('[profile-updater.js] profile updated.');
+        }
     }
 }
 

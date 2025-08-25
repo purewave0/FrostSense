@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'temperatureUnit': document.getElementById('temperature-unit'),
     };
 
-    const profile = Profile.get();
-    formFields.homepage.value = profile.homepage;
-    formFields.temperatureUnit.value = profile.temperatureUnit;
+    let originalProfile = Profile.get();
+    formFields.homepage.value = originalProfile.homepage;
+    formFields.temperatureUnit.value = originalProfile.temperatureUnit;
     editButton.disabled = false;
 
     function enterEditMode() {
@@ -34,11 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function revertFields() {
+        for (const fieldKey in formFields) {
+            formFields[fieldKey].value = originalProfile[fieldKey];
+        }
+    }
+
     editButton.addEventListener('click', enterEditMode);
 
     const cancelEditButton = document.getElementById('cancel');
-    // TODO: when cancelling, revert all values
-    cancelEditButton.addEventListener('click', leaveEditMode);
+    cancelEditButton.addEventListener('click', () => {
+        leaveEditMode();
+        revertFields();
+    });
 
     profileForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -60,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
             leaveEditMode();
             displayedNames.displayName.textContent = displayName;
             displayedNames.username.textContent = username;
-            ProfileUpdater.updateIfNeeded();
+            await ProfileUpdater.updateIfNeeded();
+            // also update our copy, used for reverting changes in fields
+            originalProfile = Profile.get();
             // TODO: notify success
             return;
         }
