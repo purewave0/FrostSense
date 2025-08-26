@@ -1,109 +1,181 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %} {% endblock %} - FrostSense</title>
-    <link rel="stylesheet" href="/static/css/global.css">
-    {% block css %} {% endblock %}
-</head>
-<body>
-    <div id="content">
-        <div id="sidebar">
-            <a href="/" id="sidebar-logo">
-                <!-- TODO -->
-                <!-- <img src="/static/img/logo.svg"> -->
-                logo
-            </a>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %} {% endblock %} - FrostSense</title>
+        <link rel="stylesheet" href="/static/css/global.css" />
+        {% block css %} {% endblock %}
+    </head>
+    <body>
+        <div id="content">
+            <div id="sidebar">
+                <a href="/" id="sidebar-logo">
+                    <!-- TODO -->
+                    <!-- <img src="/static/img/logo.svg"> -->
+                    logo
+                </a>
 
-            <nav id="sidebar-links">
-                <a href="/readings">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-                        <path d="M418-340q25 25 63 23.5t55-27.5l224-336-336 224q-26 18-28.5 54.5T418-340ZM204-160q-22 0-40.5-9.5T134-198q-26-47-40-97.5T80-400q0-83 31.5-156T197-683q54-54 127-85.5T480-800q82 0 154 31t126 84.5q54 53.5 86 125T879-406q1 55-12.5 107.5T825-198q-11 19-29.5 28.5T755-160H204Z"/>
-                    </svg>
-                    <span>Readings</span>
-                </a>
-                <a href="/history">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-                        <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm560-550L518-398 360-556 200-396v114l160-160 162 162 238-270v-120Z"/>
-                    </svg>
-                    <span>History</span>
-                </a>
-                <a href="/sensors">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-                        <path d="M148-257q-32-48-50-104.5T80-480q0-63 18-119t50-104l67 44q-26 38-40.5 83.5T160-480q0 50 14.5 95t40.5 83l-67 45Zm332 17q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm331-17-66-45q27-38 41-83t14-95q0-50-14-95.5T745-659l66-44q32 48 50.5 104T880-480q0 62-18.5 118.5T811-257Z"/>
-                    </svg>
-                    <span>Sensors</span>
-                </a>
-                <a href="/reports">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-                        <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm80-160h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Z"/>
-                    </svg>
-                    <span>Reports</span>
-                </a>
-                <a href="/verify-reports">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-                        <path d="M458-280q18 0 35.5-4.5T526-298l98 98 56-56-98-98q9-15 13.5-32.5T600-422q0-58-41-98t-99-40q-58 0-99 41t-41 99q0 58 40 99t98 41Zm2-80q-25 0-42.5-17.5T400-420q0-25 17.5-42.5T460-480q25 0 42.5 17.5T520-420q0 25-17.5 42.5T460-360ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520h200L520-800v200Z"/>
-                    </svg>
-                    <span>Verify Reports</span>
-                </a>
-            </nav>
-        </div>
+                <nav id="sidebar-links">
+                    <a href="/readings">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3"
+                        >
+                            <path
+                                d="M418-340q25 25 63 23.5t55-27.5l224-336-336 224q-26 18-28.5 54.5T418-340ZM204-160q-22 0-40.5-9.5T134-198q-26-47-40-97.5T80-400q0-83 31.5-156T197-683q54-54 127-85.5T480-800q82 0 154 31t126 84.5q54 53.5 86 125T879-406q1 55-12.5 107.5T825-198q-11 19-29.5 28.5T755-160H204Z"
+                            />
+                        </svg>
+                        <span>Readings</span>
+                    </a>
+                    <a href="/history">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3"
+                        >
+                            <path
+                                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm560-550L518-398 360-556 200-396v114l160-160 162 162 238-270v-120Z"
+                            />
+                        </svg>
+                        <span>History</span>
+                    </a>
+                    <a href="/sensors">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3"
+                        >
+                            <path
+                                d="M148-257q-32-48-50-104.5T80-480q0-63 18-119t50-104l67 44q-26 38-40.5 83.5T160-480q0 50 14.5 95t40.5 83l-67 45Zm332 17q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm331-17-66-45q27-38 41-83t14-95q0-50-14-95.5T745-659l66-44q32 48 50.5 104T880-480q0 62-18.5 118.5T811-257Z"
+                            />
+                        </svg>
+                        <span>Sensors</span>
+                    </a>
+                    <a href="/reports">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3"
+                        >
+                            <path
+                                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm80-160h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Z"
+                            />
+                        </svg>
+                        <span>Reports</span>
+                    </a>
+                    <a href="/verify-reports">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3"
+                        >
+                            <path
+                                d="M458-280q18 0 35.5-4.5T526-298l98 98 56-56-98-98q9-15 13.5-32.5T600-422q0-58-41-98t-99-40q-58 0-99 41t-41 99q0 58 40 99t98 41Zm2-80q-25 0-42.5-17.5T400-420q0-25 17.5-42.5T460-480q25 0 42.5 17.5T520-420q0 25-17.5 42.5T460-360ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520h200L520-800v200Z"
+                            />
+                        </svg>
+                        <span>Verify Reports</span>
+                    </a>
+                </nav>
+            </div>
 
-        <div id="section-content">
-            <header id="header">
-                <h1 id="page-title">{{ self.title() }}</h1>
-                <div id="header-user">
-                    <!-- TODO: proper user's avatar -->
-                    <img id="header-avatar" src="/static/img/avatars/default-avatar.jpg"/>
+            <div id="section-content">
+                <header id="header">
+                    <h1 id="page-title">{{ self.title() }}</h1>
+                    <div id="header-user">
+                        <!-- TODO: proper user's avatar -->
+                        <img
+                            id="header-avatar"
+                            src="/static/img/avatars/default-avatar.jpg"
+                        />
 
-                    <div id="profile-dropdown">
-                        <div id="mini-profile">
-                            <img src="/static/img/avatars/default-avatar.jpg"/>
-                            <div id="mini-info">
-                                <p id="mini-name">
-                                    {{ current_user.display_name }}
-                                </p>
-                                <p id="mini-username">
-                                    {{ current_user.username }}
-                                </p>
+                        <div id="profile-dropdown">
+                            <div id="mini-profile">
+                                <img
+                                    src="/static/img/avatars/default-avatar.jpg"
+                                />
+                                <div id="mini-info">
+                                    <p id="mini-name">
+                                        {{ current_user.display_name }}
+                                    </p>
+                                    <p id="mini-username">
+                                        {{ current_user.username }}
+                                    </p>
+                                </div>
                             </div>
+                            <div id="profile-separator"></div>
+                            <ul id="profile-links">
+                                <li>
+                                    <a href="/preferences">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            height="24px"
+                                            viewBox="0 -960 960 960"
+                                            width="24px"
+                                            fill="#e3e3e3"
+                                        >
+                                            <path
+                                                d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"
+                                            />
+                                        </svg>
+                                        <span>Preferences</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/system-settings">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            height="24px"
+                                            viewBox="0 -960 960 960"
+                                            width="24px"
+                                            fill="#e3e3e3"
+                                        >
+                                            <path
+                                                d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z"
+                                            />
+                                        </svg>
+                                        <span>System Settings</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/logout" id="logout">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            height="24px"
+                                            viewBox="0 -960 960 960"
+                                            width="24px"
+                                            fill="#e3e3e3"
+                                        >
+                                            <path
+                                                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"
+                                            />
+                                        </svg>
+                                        <span>Log out</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <div id="profile-separator"></div>
-                        <ul id="profile-links">
-                            <li>
-                                <a href="/preferences">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/></svg>
-                                    <span>Preferences</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="/system-settings">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z"/></svg>
-                                    <span>System Settings</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="/logout" id="logout">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
-                                    <span>Log out</span>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
-                </div>
-            </header>
-            <div id="page-content">
-                {% block content %} {% endblock %}
+                </header>
+                <div id="page-content">{% block content %} {% endblock %}</div>
             </div>
         </div>
-    </div>
 
-    <script src="/static/js/global.js"></script>
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/preferences.js"></script>
-    <script src="/static/js/preferences-updater.js"></script>
-    {% block js %} {% endblock %}
-</body>
+        <script src="/static/js/global.js"></script>
+        <script src="/static/js/api.js"></script>
+        <script src="/static/js/preferences-cache.js"></script>
+        {% block js %} {% endblock %}
+    </body>
 </html>
