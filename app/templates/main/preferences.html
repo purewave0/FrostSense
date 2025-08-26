@@ -4,12 +4,12 @@
         <meta charset="UTF-8" />
         <title>{{ current_user.display_name }} - FrostSense</title>
         <link rel="stylesheet" href="/static/css/global.css" />
-        <link rel="stylesheet" href="/static/css/my-profile.css" />
+        <link rel="stylesheet" href="/static/css/my-preferences.css" />
     </head>
     <body>
         <div id="content">
-            <form id="profile-form">
-                <div id="profile-header">
+            <form id="preferences-form">
+                <div id="preferences-header">
                     <img
                         id="avatar"
                         src="/static/img/avatars/default-avatar.jpg"
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="form-row">
-                    <h3 class="form-section-title">Preferences</h3>
+                    <h3 class="form-section-title">General</h3>
                     <div class="columns">
                         <div class="form-field">
                             <label for="homepage">Home Page</label>
@@ -126,8 +126,8 @@
 
         <script src="/static/js/global.js"></script>
         <script src="/static/js/api.js"></script>
-        <script src="/static/js/profile.js"></script>
-        <script src="/static/js/profile-updater.js"></script>
-        <script src="/static/js/my-profile.js"></script>
+        <script src="/static/js/preferences.js"></script>
+        <script src="/static/js/preferences-updater.js"></script>
+        <script src="/static/js/my-preferences.js"></script>
     </body>
 </html>

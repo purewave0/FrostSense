@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const readingsResponse = await Api.fetchLastSensorReadings();
     const sensorReadings = await readingsResponse.json();
 
-    const temperatureUnit = Profile.getTemperatureUnit();
+    const temperatureUnit = PreferencesCache.getTemperatureUnit();
 
     for (const sensor of sensors) {
         // would've used a DocumentFragment here, but JustGage needs the element

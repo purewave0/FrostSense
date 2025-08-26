@@ -54,10 +54,10 @@ def get_report(code):
 def verify_reports():
     return render_template('main/sections/verify-reports.html')
 
-@bp.route('/my-profile')
+@bp.route('/preferences')
 @login_required
-def my_profile():
-    return render_template('main/my-profile.html')
+def own_preferences():
+    return render_template('main/preferences.html')
 
 @bp.route('/logout')
 @login_required

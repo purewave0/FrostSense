@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const profileForm = document.getElementById('profile-form');
+    const preferencesForm = document.getElementById('preferences-form');
 
     const editButton = document.getElementById('edit-button');
     const displayedNames = {
@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
         'temperatureUnit': document.getElementById('temperature-unit'),
     };
 
-    let originalProfile = Profile.get();
-    formFields.homepage.value = originalProfile.homepage;
-    formFields.temperatureUnit.value = originalProfile.temperatureUnit;
+    let originalPreferences = PreferencesCache.get();
+    formFields.homepage.value = originalPreferences.homepage;
+    formFields.temperatureUnit.value = originalPreferences.temperatureUnit;
     editButton.disabled = false;
 
     function enterEditMode() {
         editButton.disabled = true;
-        profileForm.classList.add('editing');
+        preferencesForm.classList.add('editing');
         for (const id in formFields) {
             formFields[id].disabled = false;
         }
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function leaveEditMode() {
         editButton.disabled = false;
-        profileForm.classList.remove('editing');
+        preferencesForm.classList.remove('editing');
         for (const id in formFields) {
             formFields[id].disabled = true;
         }
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function revertFields() {
         for (const fieldKey in formFields) {
-            formFields[fieldKey].value = originalProfile[fieldKey];
+            formFields[fieldKey].value = originalPreferences[fieldKey];
         }
     }
 
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         revertFields();
     });
 
-    profileForm.addEventListener('submit', async (event) => {
+    preferencesForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const displayName = formFields.displayName.value.trim();
         const username = formFields.username.value.trim();
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const temperatureUnit = formFields.temperatureUnit.value;
 
         // TODO: loading
-        const response = await Api.editProfile(
+        const response = await Api.editPreferences(
             displayName,
             username,
             homepage,
@@ -68,14 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
             leaveEditMode();
             displayedNames.displayName.textContent = displayName;
             displayedNames.username.textContent = username;
-            await ProfileUpdater.updateIfNeeded();
+            await PreferencesCacheUpdater.updateIfNeeded();
             // also update our copy, used for reverting changes in fields
-            originalProfile = Profile.get();
+            originalPreferences = PreferencesCache.get();
             // TODO: notify success
             return;
         }
         // TODO: properly handle errors
         const result = await response.json();
-        alert(`error updating profile: ${result.error}`);
+        alert(`error updating preferences: ${result.error}`);
     });
 });

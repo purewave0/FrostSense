@@ -268,9 +268,9 @@ def api_login():
     return '', 204
 
 
-@bp.route('/my-profile', methods=['GET', 'PUT'])
+@bp.route('/me/preferences', methods=['GET', 'PUT'])
 @login_required
-def api_update_my_profile():
+def api_update_own_preferences():
     if request.method == 'GET':
         user = get_user_by_id(current_user.id)
         if not user:
@@ -303,9 +303,9 @@ def api_update_my_profile():
     return '', 204
 
 
-@bp.route('/my-profile/last-update-time')
+@bp.route('/me/preferences/last-update-time')
 @login_required
-def api_user_last_update_time():
+def api_own_last_update_time():
     return jsonify(get_user_last_update_time(current_user.id))
 
 

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const readingsResponse = await Api.fetchSensorReadingsByDays(sensorIds, startDates);
     const sensorReadings = await readingsResponse.json();
 
-    const temperatureUnit = Profile.getTemperatureUnit();
+    const temperatureUnit = PreferencesCache.getTemperatureUnit();
 
     for (const sensor of sensors) {
         const card = document.createElement('div');

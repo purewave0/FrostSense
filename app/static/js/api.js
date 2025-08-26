@@ -59,8 +59,8 @@ const Api = {
         });
     },
 
-    editProfile(displayName, username, homepage, temperatureUnit) {
-        return fetch('/api/my-profile', {
+    editPreferences(displayName, username, homepage, temperatureUnit) {
+        return fetch('/api/me/preferences', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -72,11 +72,11 @@ const Api = {
         });
     },
 
-    fetchProfile() {
-        return fetch('/api/my-profile');
+    fetchPreferences() {
+        return fetch('/api/me/preferences');
     },
 
-    fetchProfileLastUpdateTime() {
-        return fetch('/api/my-profile/last-update-time');
+    fetchPreferencesLastUpdateTime() {
+        return fetch('/api/me/preferences/last-update-time');
     },
 };
