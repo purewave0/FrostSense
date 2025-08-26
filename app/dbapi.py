@@ -398,6 +398,7 @@ def update_user(
     """Update a user in the database.
 
     Args:
+        user_id: The ID of the user.
         display_name: The name that others will see.
         username: The name used for logging in.
         homepage: The first page the user sees after logging in.
