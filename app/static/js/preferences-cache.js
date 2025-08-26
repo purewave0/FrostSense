@@ -1,11 +1,12 @@
 class PreferencesCache {
+    static #PREFIX = 'preferences';
     static #KEYS = {
-        displayName: 'display_name',
-        username: 'username',
-        homepage: 'homepage',
-        temperatureUnit: 'temperature_unit',
-        lastUpdateTime: 'last_update_time',
-    }
+        displayName: `${PreferencesCache.#PREFIX}.display_name`,
+        username: `${PreferencesCache.#PREFIX}.username`,
+        homepage: `${PreferencesCache.#PREFIX}.homepage`,
+        temperatureUnit: `${PreferencesCache.#PREFIX}.temperature_unit`,
+        lastUpdateTime: `${PreferencesCache.#PREFIX}.last_update_time`,
+    };
 
     /**
      * Store all preferences locally.
