@@ -14,7 +14,9 @@ from app.dbapi import (
     create_reading,
     get_user_by_id, get_user_by_username,
     update_user,
-    get_user_last_update_time
+    get_user_last_update_time,
+    get_system_settings,
+    update_system_settings,
 )
 from app.api.report import (
     DataFormat,
@@ -313,4 +315,35 @@ def api_own_last_update_time():
 @login_required
 def api_logout():
     logout_user()
+    return '', 204
+
+
+# -- system settings --
+
+@bp.route('/system-settings', methods=['GET', 'PUT'])
+@login_required
+def api_system_settings():
+    if request.method == 'GET':
+        return get_system_settings()
+
+    try:
+        default_temperature_unit = User.TemperatureUnit(
+            request.json['default_temperature_unit']
+        )
+        minimum_gauge_value = int(request.json['minimum_gauge_value'])
+        maximum_gauge_value = int(request.json['maximum_gauge_value'])
+        minimum_graph_value = int(request.json['minimum_graph_value'])
+        maximum_graph_value = int(request.json['maximum_graph_value'])
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'field_error'}), 400
+
+    # TODO: verify values' bounds, i.e. min, max
+
+    update_system_settings({
+        'default_temperature_unit': default_temperature_unit.value,
+        'minimum_gauge_value': str(minimum_gauge_value),
+        'maximum_gauge_value': str(maximum_gauge_value),
+        'minimum_graph_value': str(minimum_graph_value),
+        'maximum_graph_value': str(maximum_graph_value)
+    })
     return '', 204
