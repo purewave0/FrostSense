@@ -7,6 +7,7 @@ from flask import current_app
 from app.extensions import db
 from app.models.readings import Sensor, Reading
 from app.models.users import User
+from app.models.system_settings import SystemSetting, defaultSystemSettings
 
 
 # TODO: TypedDicts for models?
@@ -430,3 +431,58 @@ def get_user_last_update_time(user_id: int) -> int:
     ).scalar_one()
 
     return result
+
+
+def create_missing_system_settings() -> None:
+    """Create any missing system settings with default values."""
+    all_stored_keys = db.session.execute(
+        db.select(
+            SystemSetting.key
+        )
+    ).scalars().all()
+
+    to_be_created = {}
+
+    for key in defaultSystemSettings:
+        if key not in all_stored_keys:
+            to_be_created[key] = defaultSystemSettings[key]
+
+    for key in to_be_created:
+        default_value = to_be_created[key]
+        setting = SystemSetting(key=key, value=default_value)
+        db.session.add(setting)
+        current_app.logger.info(f'creating missing SystemSetting "{key}"')
+
+    db.session.commit()
+
+
+def update_system_settings(updated_settings: dict[str, str]) -> None:
+    """Update system settings.
+
+    Args:
+        updated_settings: A dict of system settings with updated values.
+    """
+    for key in updated_settings:
+        updated_value = updated_settings[key]
+        db.session.execute(
+            db.update(
+                SystemSetting
+            ).where(
+                SystemSetting.key == key
+            ).values(
+                value=updated_value,
+            )
+        )
+    db.session.commit()
+
+
+def get_system_settings() -> dict[str, str]:
+    """Get all system settings as a dict."""
+    result = db.session.execute(
+        db.select(
+            SystemSetting.key,
+            SystemSetting.value,
+        )
+    ).all()
+
+    return {key:value for (key,value) in result}
