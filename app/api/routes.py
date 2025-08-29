@@ -16,7 +16,7 @@ from app.dbapi import (
     update_user,
     get_user_last_update_time,
     get_system_settings,
-    update_system_settings,
+    update_system_settings, get_system_settings_update_timestamp
 )
 from app.api.report import (
     DataFormat,
@@ -307,7 +307,7 @@ def api_update_own_preferences():
 
 @bp.route('/me/preferences/last-update-time')
 @login_required
-def api_own_last_update_time():
+def api_own_preferences_timestamp():
     return jsonify(get_user_last_update_time(current_user.id))
 
 
@@ -347,3 +347,9 @@ def api_system_settings():
         'maximum_graph_value': str(maximum_graph_value)
     })
     return '', 204
+
+
+@bp.route('/system-settings/last-update-time')
+@login_required
+def api_system_settings_timestamp():
+    return jsonify(get_system_settings_update_timestamp())
