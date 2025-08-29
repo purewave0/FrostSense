@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.extensions import db
+from app.models.util import utcnow
 
 
 defaultSystemSettings = {
@@ -21,4 +24,13 @@ class SystemSetting(db.Model):
     )
     value: Mapped[str] = mapped_column(
         db.String(32)
+    )
+
+
+class SystemSettingsTimestamp(db.Model):
+    __tablename__ = 'SystemSettingsTimestamp'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    updated_on: Mapped[datetime] = mapped_column(
+        server_default=utcnow()
     )

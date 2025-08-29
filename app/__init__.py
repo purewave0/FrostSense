@@ -5,7 +5,9 @@ from flask import Flask, redirect, url_for, request, abort
 from flask.json.provider import DefaultJSONProvider
 from flask_login import LoginManager
 
-from app.dbapi import create_missing_system_settings
+from app.dbapi import (
+    create_missing_system_settings, create_system_settings_timestamp_if_needed
+)
 from app.extensions import db
 from app.api.report import REPORTS_DIRECTORY
 from config import Config
@@ -31,9 +33,10 @@ def create_app(config_class=Config):
     with app.app_context():
         from app.models.readings import Sensor, Reading
         from app.models.users import User
-        from app.models.system_settings import SystemSetting
+        from app.models.system_settings import SystemSetting, SystemSettingsTimestamp
         db.create_all()
 
+        create_system_settings_timestamp_if_needed()
         create_missing_system_settings()
 
         @login_manager.user_loader

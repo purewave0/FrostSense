@@ -7,10 +7,10 @@ from flask import current_app
 from app.extensions import db
 from app.models.readings import Sensor, Reading
 from app.models.users import User
-from app.models.system_settings import SystemSetting, defaultSystemSettings
+from app.models.system_settings import (
+    SystemSetting, SystemSettingsTimestamp, defaultSystemSettings
+)
 
-
-# TODO: TypedDicts for models?
 
 def _rows_to_dicts(rows):
     """Convert the given Rows from a SQLAlchemy query into a tuple of dicts."""
@@ -23,7 +23,6 @@ def create_sensor(name: str) -> dict:
     sensor = Sensor(name)
     db.session.add(sensor)
     db.session.commit()
-
 
     current_app.logger.info(
         f'creating sensor name="{name}"',
@@ -114,6 +113,7 @@ def create_reading(sensor_id: int, temperature: float) -> dict:
         'created_on': reading.created_on,
     }
 
+
 def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
     """Insert multiple readings from the given sensor.
 
@@ -148,7 +148,7 @@ def get_sensor_readings_in_time_range(
         range_start: The start (inclusive) of the time range.
         range_end: The end (inclusive) of the time range.
     """
-    query =  db.select(
+    query = db.select(
         Reading.id,
         Reading.temperature,
         Reading.created_on,
@@ -166,6 +166,7 @@ def get_sensor_readings_in_time_range(
     result = db.session.execute(query)
 
     return _rows_to_dicts(result)
+
 
 def get_sensors_readings_in_time_ranges(
     sensors_ids: Iterable[int],
@@ -420,13 +421,58 @@ def update_user(
     db.session.commit()
 
 
-def get_user_last_update_time(user_id: int) -> int:
+def get_user_last_update_time(user_id: int) -> datetime:
     """Return when the User of id `user_id` was last updated."""
     result = db.session.execute(
         db.select(
             User.updated_on
         ).where(
             User.id == user_id
+        )
+    ).scalar_one()
+
+    return result
+
+
+def create_system_settings_timestamp_if_needed() -> None:
+    """Create the system settings update timestamp if it does not exist."""
+    already_exists = db.session.execute(
+        db.select(
+            db.exists().where(SystemSettingsTimestamp.id == 1)
+        )
+    ).scalar_one()
+
+    if already_exists:
+        return
+
+    timestamp = SystemSettingsTimestamp(updated_on=datetime.utcnow())
+    db.session.add(timestamp)
+    current_app.logger.info('creating missing system settings update timestamp.')
+
+
+def _update_system_settings_timestamp() -> None:
+    """Create or update the timestamp to mark the system settings as recently updated.
+
+    A timestamp must already exist. Must commit the transaction after.
+    """
+    db.session.execute(
+        db.update(
+            SystemSettingsTimestamp
+        ).where(
+            SystemSettingsTimestamp.id == 1
+        ).values(
+            updated_on=datetime.utcnow()
+        )
+    )
+
+
+def get_system_settings_update_timestamp() -> datetime:
+    """Return when the system settings were last updated."""
+    result = db.session.execute(
+        db.select(
+            SystemSettingsTimestamp.updated_on
+        ).where(
+            SystemSettingsTimestamp.id == 1
         )
     ).scalar_one()
 
@@ -453,6 +499,10 @@ def create_missing_system_settings() -> None:
         db.session.add(setting)
         current_app.logger.info(f'creating missing SystemSetting "{key}"')
 
+    if to_be_created:
+        # something was created. must update the timestamp
+        _update_system_settings_timestamp()
+
     db.session.commit()
 
 
@@ -473,6 +523,8 @@ def update_system_settings(updated_settings: dict[str, str]) -> None:
                 value=updated_value,
             )
         )
+    _update_system_settings_timestamp()
+
     db.session.commit()
 
 
@@ -485,4 +537,4 @@ def get_system_settings() -> dict[str, str]:
         )
     ).all()
 
-    return {key:value for (key,value) in result}
+    return {key: value for (key, value) in result}
