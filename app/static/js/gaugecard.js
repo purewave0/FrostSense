@@ -6,7 +6,7 @@ class GaugeCard {
     #temperatureUnit = null;
     static #INVALID_READING = -404;
 
-    constructor(element, sensorId, sensorName, temperatureUnit) {
+    constructor(element, sensorId, sensorName, temperatureUnit, minTemperature, maxTemperature) {
         this.#locales = getUserLocales();
         GaugeCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
@@ -14,9 +14,9 @@ class GaugeCard {
         this.#temperatureUnit = temperatureUnit;
         this.#gauge = new JustGage({
             id: this.#card.querySelector('.gauge').id,
-            value: temperatureValue(-30, temperatureUnit),
-            min: temperatureValue(-30, temperatureUnit),
-            max: temperatureValue(30, temperatureUnit),
+            value: temperatureValue(minTemperature, temperatureUnit),
+            min: temperatureValue(minTemperature, temperatureUnit),
+            max: temperatureValue(maxTemperature, temperatureUnit),
             gaugeWidthScale: 0.75,
             textRenderer: (value) => {
                 if (value === GaugeCard.#INVALID_READING) {
@@ -39,7 +39,6 @@ class GaugeCard {
     static #prepareCard(card, sensorId, sensorName) {
         card.dataset.sensorId = sensorId;
         card.className = 'gauge-card';
-        // TODO: datetime (of the current reading)
         card.innerHTML = `
             <div class="header">
                 <h2 class="sensor-name"></h2>
@@ -74,5 +73,4 @@ class GaugeCard {
             : GaugeCard.#INVALID_READING;
         this.#gauge.refresh(temperature);
     }
-
 }
