@@ -73,11 +73,15 @@ class SystemSettingsCache {
      */
     static getGaugeLimits() {
         return {
-            'minimum': localStorage.getItem(
-                SystemSettingsCache.#KEYS.minimumGaugeValue
+            'minimum': Number(
+                localStorage.getItem(
+                    SystemSettingsCache.#KEYS.minimumGaugeValue
+                )
             ),
-            'maximum': localStorage.getItem(
-                SystemSettingsCache.#KEYS.minimumGaugeValue
+            'maximum': Number(
+                localStorage.getItem(
+                    SystemSettingsCache.#KEYS.maximumGaugeValue
+                )
             ),
         };
     }
@@ -87,11 +91,15 @@ class SystemSettingsCache {
      */
     static getGraphLimits() {
         return {
-            'minimum': localStorage.getItem(
-                SystemSettingsCache.#KEYS.minimumGraphValue
+            'minimum': Number(
+                localStorage.getItem(
+                    SystemSettingsCache.#KEYS.minimumGraphValue
+                )
             ),
-            'maximum': localStorage.getItem(
-                SystemSettingsCache.#KEYS.minimumGraphValue
+            'maximum': Number(
+                localStorage.getItem(
+                    SystemSettingsCache.#KEYS.maximumGraphValue
+                )
             ),
         };
     }
