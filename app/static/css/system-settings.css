@@ -1,8 +1,5 @@
-#content {
-    margin-top: 32px;
-}
-
 #settings-form {
+    max-width: 768px;
     background-color: var(--color-foreground);
     margin: 0 auto;
     display: flex;
