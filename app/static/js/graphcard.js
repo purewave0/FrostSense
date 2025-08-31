@@ -8,7 +8,7 @@ class GraphCard {
     #locales = [];
     #temperatureUnit = null;
 
-    constructor(element, sensorId, sensorName, temperatureUnit) {
+    constructor(element, sensorId, sensorName, temperatureUnit, minTemperature, maxTemperature) {
         this.#locales = getUserLocales();
         GraphCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
@@ -31,8 +31,8 @@ class GraphCard {
                 interactionModel: {}, // disable zooming, etc.
                 labels: null,  // we'll pass the proper values once the data is set
                 valueRange: [
-                    temperatureValue(-30, temperatureUnit),
-                    temperatureValue(30, temperatureUnit)
+                    temperatureValue(minTemperature, temperatureUnit),
+                    temperatureValue(maxTemperature, temperatureUnit)
                 ],
                 legendFormatter: (data) => {
                     if (data.x == null) {
