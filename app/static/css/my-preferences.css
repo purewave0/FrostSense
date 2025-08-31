@@ -1,8 +1,5 @@
-#content {
-    margin-top: 32px;
-}
-
 #preferences-form {
+    max-width: 512px;
     background-color: var(--color-foreground);
     margin: 0 auto;
     display: flex;

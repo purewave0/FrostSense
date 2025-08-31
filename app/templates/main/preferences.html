@@ -1,133 +1,129 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>{{ current_user.display_name }} - FrostSense</title>
-        <link rel="stylesheet" href="/static/css/global.css" />
-        <link rel="stylesheet" href="/static/css/my-preferences.css" />
-    </head>
-    <body>
-        <div id="content">
-            <form id="preferences-form">
-                <div id="preferences-header">
-                    <img
-                        id="avatar"
-                        src="/static/img/avatars/default-avatar.jpg"
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/my-preferences.css" />
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/my-preferences.js"></script>
+{% endblock %}
+
+{% block title %} Preferences {% endblock %}
+
+{% block content %}
+    <form id="preferences-form">
+        <div id="preferences-header">
+            <img
+                id="avatar"
+                src="/static/img/avatars/default-avatar.jpg"
+            />
+            <div id="names">
+                <h1 id="displayed-display-name">
+                    {{ current_user.display_name }}
+                </h1>
+                <h2 id="displayed-username">
+                    {{ current_user.username }}
+                </h2>
+            </div>
+
+            <button id="edit-button" type="button" disabled>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                >
+                    <path
+                        d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z"
                     />
-                    <div id="names">
-                        <h1 id="displayed-display-name">
-                            {{ current_user.display_name }}
-                        </h1>
-                        <h2 id="displayed-username">
-                            {{ current_user.username }}
-                        </h2>
-                    </div>
-
-                    <button id="edit-button" type="button" disabled>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e3e3e3"
-                        >
-                            <path
-                                d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z"
-                            />
-                        </svg>
-                        <span>Edit</span>
-                    </button>
-                </div>
-
-                <!-- autocomplete=off on inputs so they start disabled on page restart -->
-
-                <div class="form-row">
-                    <h3 class="form-section-title">Your Information</h3>
-                    <div class="columns">
-                        <div class="form-field" title="What others see.">
-                            <label for="display-name">Display Name</label>
-                            <input
-                                id="display-name"
-                                class="editable"
-                                type="text"
-                                value="{{ current_user.display_name }}"
-                                placeholder="{{ current_user.display_name }}"
-                                disabled
-                                autocomplete="off"
-                                required
-                            />
-                        </div>
-
-                        <div class="form-field" title="Used for logging in.">
-                            <label for="username">Username</label>
-                            <input
-                                id="username"
-                                class="editable"
-                                type="text"
-                                value="{{ current_user.username }}"
-                                placeholder="{{ current_user.username }}"
-                                disabled
-                                autocomplete="off"
-                                required
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <h3 class="form-section-title">General</h3>
-                    <div class="columns">
-                        <div class="form-field">
-                            <label for="homepage">Home Page</label>
-                            <select
-                                id="homepage"
-                                class="editable"
-                                disabled
-                                autocomplete="off"
-                                required
-                            >
-                                <option value="readings">
-                                    Readings (default)
-                                </option>
-                                <option value="history">History</option>
-                                <option value="sensors">Sensors</option>
-                                <option value="reports">Reports</option>
-                                <option value="verify-reports">
-                                    Verify Reports
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-field">
-                            <label for="temperature-unit">
-                                Temperature Unit
-                            </label>
-                            <select
-                                id="temperature-unit"
-                                class="editable"
-                                disabled
-                                autocomplete="off"
-                                required
-                            >
-                                <option value="celsius">Celsius (°C)</option>
-                                <option value="fahrenheit">
-                                    Fahrenheit (°F)
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div id="edit-controls">
-                    <button id="cancel" type="button">Cancel</button>
-                    <button id="apply" type="submit">Apply</button>
-                </div>
-            </form>
+                </svg>
+                <span>Edit</span>
+            </button>
         </div>
 
-        <script src="/static/js/global.js"></script>
-        <script src="/static/js/api.js"></script>
-        <script src="/static/js/preferences-cache.js"></script>
-        <script src="/static/js/system-settings-cache.js"></script>
-        <script src="/static/js/my-preferences.js"></script>
-    </body>
-</html>
+        <!-- autocomplete=off on inputs so they start disabled on page restart -->
+
+        <div class="form-row">
+            <h3 class="form-section-title">Your Information</h3>
+            <div class="columns">
+                <div class="form-field" title="What others see.">
+                    <label for="display-name">Display Name</label>
+                    <input
+                        id="display-name"
+                        class="editable"
+                        type="text"
+                        value="{{ current_user.display_name }}"
+                        placeholder="{{ current_user.display_name }}"
+                        disabled
+                        autocomplete="off"
+                        required
+                    />
+                </div>
+
+                <div class="form-field" title="Used for logging in.">
+                    <label for="username">Username</label>
+                    <input
+                        id="username"
+                        class="editable"
+                        type="text"
+                        value="{{ current_user.username }}"
+                        placeholder="{{ current_user.username }}"
+                        disabled
+                        autocomplete="off"
+                        required
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <h3 class="form-section-title">General</h3>
+            <div class="columns">
+                <div class="form-field">
+                    <label for="homepage">Home Page</label>
+                    <select
+                        id="homepage"
+                        class="editable"
+                        disabled
+                        autocomplete="off"
+                        required
+                    >
+                        <option value="readings">
+                            Readings (default)
+                        </option>
+                        <option value="history">History</option>
+                        <option value="sensors">Sensors</option>
+                        <option value="reports">Reports</option>
+                        <option value="verify-reports">
+                            Verify Reports
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="temperature-unit">
+                        Temperature Unit
+                    </label>
+                    <select
+                        id="temperature-unit"
+                        class="editable"
+                        disabled
+                        autocomplete="off"
+                        required
+                    >
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">
+                            Fahrenheit (°F)
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="edit-controls">
+            <button id="cancel" type="button">Cancel</button>
+            <button id="apply" type="submit">Apply</button>
+        </div>
+    </form>
+{% endblock %}
