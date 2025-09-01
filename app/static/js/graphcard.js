@@ -85,7 +85,7 @@ class GraphCard {
                             <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/>
                         </svg>
                     </button>
-                    <input class="current-date" type="date">
+                    <input class="current-date" type="date" required>
                     <button class="button-next" title="Next day">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             height="24px"
