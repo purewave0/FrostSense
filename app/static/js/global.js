@@ -1,8 +1,8 @@
 // highlight current page link
-const sidebarLinks = document.getElementById('sidebar-links');
+const sidebarLinks = document.querySelectorAll('.link-section a');
 if (sidebarLinks) {
     const currentPathname = document.location.pathname;
-    for (const link of sidebarLinks.children) {
+    for (const link of sidebarLinks) {
         if (link.pathname === currentPathname) {
             link.classList.add('selected');
             link.href = '#';  // no more need for the link; we're already in that page

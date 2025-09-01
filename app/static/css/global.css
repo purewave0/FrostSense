@@ -4,7 +4,7 @@ body {
     font-family: sans-serif;
 
     /* -- sizes -- */
-    --sidebar-width: 200px;
+    --sidebar-width: 220px;
     --header-avatar-size: 36px;
 
     /* -- colours -- */
@@ -100,13 +100,27 @@ textarea {
     height: 70px;
 }
 
-#sidebar-links {
+#link-sections {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.link-section {
     display: flex;
     flex-direction: column;
     row-gap: 4px;
 }
 
-#sidebar-links a {
+.link-section-title {
+    margin: 8px 0 8px 16px;
+    color: white;
+    text-transform: uppercase;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.link-section a {
     padding: 8px 16px;
     color: var(--color-dark-background-text);
     display: flex;
@@ -117,23 +131,23 @@ textarea {
     transition: background-color 0.1s ease;
 }
 
-#sidebar-links a:hover {
+.link-section a:hover {
     background-color: var(--color-dark-background-hover);
 }
 
-#sidebar-links a svg {
+.link-section a svg {
     fill: white;
     width: 24px;
     height: 24px;
     fill: var(--color-dark-background-text);
 }
 
-#sidebar-links a.selected {
+.link-section a.selected {
     background-color: var(--color-dark-background-selected);
     color: white;
 }
 
-#sidebar-links a.selected svg {
+.link-section a.selected svg {
     fill: white;
 }
 
