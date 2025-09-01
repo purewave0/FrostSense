@@ -32,9 +32,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // TODO: cache 2-3 most recently fetched days?
         controls.currentDate.addEventListener('change', () => {
+            const currentDay = graphCard.getCurrentDay();
+            if (!controls.currentDate.checkValidity()) {
+                graphCard.setReadings([]);
+                graphCard.setInfoTextHTML('No readings');
+                controls.currentDate.reportValidity();
+                return;
+            }
             // the currentDate's value needs to be adjusted, as it is in the local
             // timezone whereas getStartOfToday()'s result is in UTC
-            const newDate = adjustToUTC(controls.currentDate.valueAsDate);
+            const newDate = adjustToUTC(graphCard.getCurrentDay());
 
             const isToday = newDate.getTime() === getStartOfToday().getTime();
             if (isToday) {
@@ -64,6 +71,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
 
         controls.previousDayButton.addEventListener('click', () => {
+            if (!controls.currentDate.checkValidity()) {
+                controls.currentDate.reportValidity();
+                return;
+            }
             controls.nextDayButton.disabled = false;
             const currentDate = controls.currentDate.valueAsDate;
             currentDate.setDate(currentDate.getDate() - 1);
@@ -75,6 +86,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // no readings tomorrow yet, of course
         controls.nextDayButton.disabled = true;
         controls.nextDayButton.addEventListener('click', () => {
+            if (!controls.currentDate.checkValidity()) {
+                controls.currentDate.reportValidity();
+                return;
+            }
             const currentDate = controls.currentDate.valueAsDate;
             currentDate.setDate(currentDate.getDate() + 1);
             controls.currentDate.valueAsDate = currentDate;
@@ -101,9 +116,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const offsetIds = [];
         for (const sensorId of sensorIds) {
             const graphCard = graphCards[sensorId];
-            const currentDate = adjustToUTC(graphCard.getCurrentDay());
+            if (!graphCard.getControls().currentDate.checkValidity()) {
+                graphCard.setReadings([]);
+                graphCard.setInfoTextHTML('No readings');
+                continue;
+            }
+            const adjustedDate = adjustToUTC(graphCard.getCurrentDay());
             const isViewingTodaysReadings =
-                currentDate.getTime() === getStartOfToday().getTime();
+                adjustedDate.getTime() === getStartOfToday().getTime();
             if (isViewingTodaysReadings) {
                 // only today can new readings be available; past days are already
                 // completed
