@@ -77,8 +77,17 @@
     fill: var(--color-foreground);
 }
 
+.graph-card .current-date {
+    transition:
+        border-color 0.1s ease,
+        color 0.1s ease,
+        background-color 0.1s ease;
+}
+
 .graph-card .current-date:invalid {
-    background-color: red;
+    border-color: #ad0505;
+    color: #ad0505;
+    background-color: #ff35352e;
 }
 
 .graph-card .info-text {
