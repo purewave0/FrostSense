@@ -28,7 +28,8 @@ class GraphCard {
             this.#card.querySelector('.graph'),
             [],  // empty data
             {
-                interactionModel: {}, // disable zooming, etc.
+                visibility: [true, false],  // don't plot IDs
+                interactionModel: {},  // disable zooming, etc.
                 labels: null,  // we'll pass the proper values once the data is set
                 valueRange: [
                     temperatureValue(minTemperature, temperatureUnit),
