@@ -1,3 +1,39 @@
+#controls {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 16px;
+}
+
+#controls button {
+    display: flex;
+    flex-direction: row;
+    column-gap: 4px;
+    align-items: center;
+    padding: 8px 16px 8px 8px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.1s ease;
+}
+
+#controls button:disabled {
+    opacity: 0.8;
+}
+
+#controls button svg {
+    width: 18px;
+    height: 18px;
+}
+
+#create-button {
+    background-color: var(--color-dark-background);
+    color: white;
+}
+
+#create-button svg {
+    fill: white;
+}
+
 #sensors {
     display: flex;
     flex-direction: row;

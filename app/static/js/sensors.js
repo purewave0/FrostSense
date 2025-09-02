@@ -52,4 +52,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     sensorsDestination.append(fragment);
+
+    const createButton = document.getElementById('create-button');
+    createButton.disabled = false;
+
+    createButton.addEventListener('click', () => { alert('TODO') })
 });
