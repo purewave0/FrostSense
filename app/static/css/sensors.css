@@ -62,33 +62,29 @@
 .sensor-name {
     font-size: 11pt;
     margin: 0;
-    max-width: 175px;
+    max-width: 170px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.sensor-status {
-    width: 8px;
-    height: 8px;
-    border-radius: 100%;
-    background-color: lightgray;
+.sensor-options-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: opacity 0.1s ease;
 }
 
-.sensor-status.active {
-    background-color: var(--color-active);
-    animation: 3s infinite active-glow;
+.sensor-options-button svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--color-text-secondary);
 }
 
-@keyframes active-glow {
-    0%,
-    25%,
-    75%,
-    100% {
-        box-shadow: 0 0 4px rgba(40, 167, 69, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 4px rgba(40, 167, 69, 0.8);
-    }
+.sensor:not(:hover) .sensor-options-button {
+    opacity: 0;
 }
 
 .sensor-info {
