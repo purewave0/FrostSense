@@ -3,15 +3,25 @@ class GaugeCard {
     #gauge = null;
     #datetimeValue = null;
     #locales = null;
-    #temperatureUnit = null;
     static #INVALID_READING = -404;
 
-    constructor(element, sensorId, sensorName, temperatureUnit, minTemperature, maxTemperature) {
+    /**
+     * Create a new GaugeCard.
+     *
+     * @param {Node} element The element for displaying the gauge.
+     * @param {number} sensorId The ID of the sensor the readings belong to.
+     * @param {string} sensorName The name of the sensor the readings belong to.
+     * @param {string} temperatureUnit The unit for displaying temperatures.
+     * @param {number} minTemperature The lowest value this gauge can show, in Celsius.
+     * @param {number} maxTemperature The highest value this gauge can show, in Celsius.
+     */
+    constructor(
+        element, sensorId, sensorName, temperatureUnit, minTemperature, maxTemperature
+    ) {
         this.#locales = getUserLocales();
         GaugeCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
         this.#datetimeValue = element.querySelector('.datetime-value');
-        this.#temperatureUnit = temperatureUnit;
         this.#gauge = new JustGage({
             id: this.#card.querySelector('.gauge').id,
             value: temperatureValue(minTemperature, temperatureUnit),
@@ -36,6 +46,9 @@ class GaugeCard {
         });
     }
 
+    /**
+     * Prepare the given `card` element with the given sensor ID and name.
+     */
     static #prepareCard(card, sensorId, sensorName) {
         card.dataset.sensorId = sensorId;
         card.className = 'gauge-card';
@@ -58,10 +71,19 @@ class GaugeCard {
         gaugeElement.id = `gauge${sensorId}`;
     }
 
+    /**
+     * Return the underlying card element for this gauge card.
+     */
     getCardElement() {
         return this.#card;
     }
 
+    /**
+     * Display the given reading.
+     *
+     * @param {object} reading The reading object returned by the API, containing `id`
+     *     (unused), `temperature` in Celsius and `created_on`.
+     */
     setReading(reading) {
         this.#datetimeValue.textContent = formatDateToCompactDatetime(
             new Date(reading.created_on),

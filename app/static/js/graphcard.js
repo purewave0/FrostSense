@@ -7,7 +7,19 @@ class GraphCard {
     #readingsCountValue = null;
     #locales = [];
     #temperatureUnit = null;
+    static #TEMPERATURE_INDEX = 0;
+    static #ID_INDEX = 2;
 
+    /**
+     * Create a new GraphCard.
+     *
+     * @param {Node} element The element for displaying the graph.
+     * @param {number} sensorId The ID of the sensor the readings belong to.
+     * @param {string} sensorName The name of the sensor the readings belong to.
+     * @param {string} temperatureUnit The unit for displaying temperatures.
+     * @param {number} minTemperature The lowest value this graph can show, in Celsius.
+     * @param {number} maxTemperature The highest value this graph can show, in Celsius.
+     */
     constructor(element, sensorId, sensorName, temperatureUnit, minTemperature, maxTemperature) {
         this.#locales = getUserLocales();
         GraphCard.#prepareCard(element, sensorId, sensorName);
@@ -40,7 +52,8 @@ class GraphCard {
                         return '';  // no selection
                     }
                     // temperature already in the proper unit
-                    const temperature = data.series[0].y.toFixed(1);
+                    const temperature =
+                        data.series[GraphCard.#TEMPERATURE_INDEX].y.toFixed(1);
                     const datetime = formatDateToCompactDatetime(
                         new Date(data.x), this.#locales
                     );
@@ -64,6 +77,9 @@ class GraphCard {
         );
     }
 
+    /**
+     * Prepare the given `card` element with the given sensor ID and name.
+     */
     static #prepareCard(card, sensorId, sensorName) {
         card.dataset.sensorId = sensorId;
         card.className = 'graph-card';
@@ -108,6 +124,14 @@ class GraphCard {
         graphElement.id = `graph${sensorId}`;
     }
 
+    /**
+     * Return the given raw readings converted to Dygraphs' accepted format, which is
+     * an array containing *each reading as an array of* [id, temperature, created_on].
+     *
+     * @param {object[]} rawReadings An array of reading objects (id, temperature,
+     *     created_on).
+     * @param {string} temperatureUnit The unit to convert the temperature values to.
+     */
     static #formatAndConvertReadings(rawReadings, temperatureUnit) {
         // the format dygraphs expects is:
         // [
@@ -122,6 +146,12 @@ class GraphCard {
         });
     }
 
+    /**
+     * Clear all readings and display the given ones.
+     *
+     * @param {object[]} readings An array of reading objects (id, temperature,
+     *     created_on).
+     */
     setReadings(readings) {
         let labels = null;
         if (readings.length > 0) {
@@ -141,6 +171,12 @@ class GraphCard {
         this.#readingsCountValue.textContent = this.#data.length;
     }
 
+    /**
+     * Add the given readings to the graph.
+     *
+     * @param {object[]} readings An array of reading objects (id, temperature,
+     *     created_on).
+     */
     pushReadings(readings) {
         this.#data.push(
             ...GraphCard.#formatAndConvertReadings(
@@ -154,27 +190,48 @@ class GraphCard {
         this.#readingsCountValue.textContent = this.#data.length;
     }
 
+    /**
+     * Return the underlying card element for this graph card.
+     */
     getCardElement() {
         return this.#card;
     }
 
+    /**
+     * Return an object containing the current date input, and the previous day and next
+     * day buttons.
+     */
     getControls() {
         return this.#controls;
     }
 
+    /**
+     * Return the Date value of the current date input.
+     */
     getCurrentDay() {
         return this.#controls.currentDate.valueAsDate;
     }
 
+    /**
+     * Return the number of readings being displayed.
+     */
     getReadingsCount() {
         return this.#data.length;
     }
 
+    /**
+     * Set the HTML of the info text.
+     *
+     * Note: this is **raw** HTML; make sure it's safe!
+     */
     setInfoTextHTML(html) {
         this.#infoText.innerHTML = html;
     }
 
+    /**
+     * Return the ID of the last (most recent) reading being displayed.
+     */
     getLastReadingId() {
-        return this.#data.at(-1)[2];
+        return this.#data.at(-1)[GraphCard.#ID_INDEX];
     }
 }
