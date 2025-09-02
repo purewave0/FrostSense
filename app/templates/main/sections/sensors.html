@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block js %}
+    <script src="/static/js/lib/floating-ui/core-1.7.3.min.js"></script>
+    <script src="/static/js/lib/floating-ui/dom-1.7.3.min.js"></script>
     <script src="/static/js/sensors.js"></script>
 {% endblock %}
 
@@ -27,5 +29,12 @@
             <span>Create sensor</span>
         </button>
     </div>
+
     <div id="sensors"></div>
+
+    <ul id="sensor-options-tooltip">
+        <li>Edit</li>
+        <li>Manage key</li>
+        <li id="option-delete">Delete</li>
+    </ul>
 {% endblock %}

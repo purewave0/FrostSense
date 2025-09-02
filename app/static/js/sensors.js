@@ -54,11 +54,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const locales = getUserLocales();
 
+    const optionsTooltip = document.getElementById('sensor-options-tooltip');
+
     const fragment = new DocumentFragment();
     for (const sensor of sensors) {
         const sensorId = sensor.id;
         const sensorCard = createSensorCard(sensor, todayCounts[sensorId], locales);
         fragment.append(sensorCard);
+
+        const optionsButton = sensorCard.querySelector('.sensor-options-button');
+        optionsButton.addEventListener('click', () => {
+            FloatingUIDOM.computePosition(optionsButton, optionsTooltip, {
+                placement: 'right-start',
+                middleware: [
+                    FloatingUIDOM.offset(4),
+                    FloatingUIDOM.flip(),
+                    FloatingUIDOM.shift()
+                ],
+            }).then(({ x, y }) => {
+                Object.assign(optionsTooltip.style, {
+                    left: `${x}px`,
+                    top: `${y}px`,
+                });
+            });
+        });
     }
 
     sensorsDestination.append(fragment);
