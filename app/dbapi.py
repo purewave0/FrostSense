@@ -20,6 +20,7 @@ def _rows_to_dicts(rows):
 # -- sensors --
 
 def create_sensor(name: str) -> dict:
+    """Create a sensor with the given name."""
     sensor = Sensor(name)
     db.session.add(sensor)
     db.session.commit()
@@ -98,6 +99,12 @@ def sensor_name_exists(name: str) -> bool:
 # -- readings --
 
 def create_reading(sensor_id: int, temperature: float) -> dict:
+    """Insert a reading from the given sensor.
+
+    Args:
+        sensor_id: The ID of the Sensor the reading belongs to.
+        temperature: The temperature, in Celsius.
+    """
     reading = Reading(sensor_id, temperature)
     db.session.add(reading)
     db.session.commit()
