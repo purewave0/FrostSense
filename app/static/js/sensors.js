@@ -54,7 +54,60 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const locales = getUserLocales();
 
+    // TODO: rename 'tooltip' to 'menu'
     const optionsTooltip = document.getElementById('sensor-options-tooltip');
+
+    function tooltipOutsideClickHandler(event) {
+        if (!optionsTooltip.contains(event.target)) {
+            const sensorCurrentlyShowingOptions = sensorsDestination
+                .querySelector('.showing-options');
+            const tooltipButton =
+                sensorCurrentlyShowingOptions.querySelector('.sensor-options-button');
+            tooltipButton.dispatchEvent(new Event('click'));
+        }
+    }
+
+    function tooltipEscHandler(event) {
+        if (event.key === 'Escape') {
+            const sensorCurrentlyShowingOptions = sensorsDestination
+                .querySelector('.showing-options');
+            const tooltipButton =
+                sensorCurrentlyShowingOptions.querySelector('.sensor-options-button');
+            tooltipButton.dispatchEvent(new Event('click'));
+        }
+    }
+
+    function showTooltip(sensorCard) {
+        const optionsButton = sensorCard.querySelector('.sensor-options-button');
+        FloatingUIDOM.computePosition(optionsButton, optionsTooltip, {
+            placement: 'right-start',
+            middleware: [
+                FloatingUIDOM.offset(4),
+                FloatingUIDOM.flip(),
+                FloatingUIDOM.shift()
+            ],
+        }).then(({ x, y }) => {
+            sensorCard.classList.add('showing-options');
+            optionsTooltip.classList.add('visible');
+            Object.assign(optionsTooltip.style, {
+                left: `${x}px`,
+                top: `${y}px`,
+            });
+            document.body.addEventListener('click', tooltipOutsideClickHandler);
+            document.body.addEventListener('keydown', tooltipEscHandler);
+        });
+    }
+
+    function hideTooltip() {
+        const sensorCurrentlyShowingOptions = sensorsDestination
+            .querySelector('.showing-options');
+        if (sensorCurrentlyShowingOptions) {
+            sensorCurrentlyShowingOptions.classList.remove('showing-options');
+        }
+        optionsTooltip.classList.remove('visible');
+        document.body.removeEventListener('click', tooltipOutsideClickHandler);
+        document.body.removeEventListener('keydown', tooltipEscHandler);
+    }
 
     const fragment = new DocumentFragment();
     for (const sensor of sensors) {
@@ -63,20 +116,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         fragment.append(sensorCard);
 
         const optionsButton = sensorCard.querySelector('.sensor-options-button');
-        optionsButton.addEventListener('click', () => {
-            FloatingUIDOM.computePosition(optionsButton, optionsTooltip, {
-                placement: 'right-start',
-                middleware: [
-                    FloatingUIDOM.offset(4),
-                    FloatingUIDOM.flip(),
-                    FloatingUIDOM.shift()
-                ],
-            }).then(({ x, y }) => {
-                Object.assign(optionsTooltip.style, {
-                    left: `${x}px`,
-                    top: `${y}px`,
-                });
-            });
+        optionsButton.addEventListener('click', (event) => {
+            const isThisShowingOptions =
+                sensorCard.classList.contains('showing-options');
+            hideTooltip();
+            if (!isThisShowingOptions) {
+                // another card is currently showing options. change to this one
+                showTooltip(sensorCard);
+            }
+
+            // prevent this click from insta-closing the dropdown
+            event.stopPropagation();
         });
     }
 
