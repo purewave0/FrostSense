@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             username, password, rememberLoginCheckbox.checked
         );
         if (response.ok) {
-            document.location.href = '/readings';
+            document.location.href = '/';
         } else {
             // TODO: proper error
             alert('incorrect username or password.');

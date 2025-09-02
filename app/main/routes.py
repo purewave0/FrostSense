@@ -8,7 +8,7 @@ from app.api.report import get_report_file
 @bp.route('/login')
 def login():
     if current_user.is_authenticated:
-        return redirect('/readings')
+        return redirect('/')
 
     return render_template('login.html')
 
@@ -16,7 +16,7 @@ def login():
 @bp.route('/')
 @login_required
 def index():
-    return redirect('/readings')
+    return redirect('/' + current_user.homepage)
 
 
 @bp.route('/readings')
