@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
 {% block css %}
+    <link rel="stylesheet" href="/static/css/lib/micromodal.css">
     <link rel="stylesheet" href="/static/css/sensors.css">
 {% endblock %}
 
 {% block js %}
     <script src="/static/js/lib/floating-ui/core-1.7.3.min.js"></script>
     <script src="/static/js/lib/floating-ui/dom-1.7.3.min.js"></script>
+    <script src="/static/js/lib/micromodal.min.js"></script>
     <script src="/static/js/sensors.js"></script>
 {% endblock %}
 
@@ -33,8 +35,60 @@
     <div id="sensors"></div>
 
     <ul id="sensor-options-menu">
-        <li>Edit</li>
-        <li>Manage key</li>
+        <li id="option-edit">Edit</li>
+        <li id="option-manage-key">Manage key</li>
         <li id="option-delete">Delete</li>
     </ul>
+
+    <!-- modals -->
+
+    <div class="modal micromodal-slide" id="modal-delete" aria-hidden="true">
+        <!--
+            manually adding the onmousedown listener to avoid the modal closing
+            unexpectedly. see:
+            https://github.com/micromodal/Micromodal/issues/505#issuecomment-1358832696
+        -->
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-delete')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-delete-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-delete-title">
+                        Delete sensor
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-delete-content">
+                    <p>Are you sure you want to permanently delete this sensor?</p>
+                    <ul>
+                        <li>
+                            Name: <span id="modal-delete-name"></span>
+                        </li>
+                        <li>
+                            Created on: <span id="modal-delete-created-on"></span>
+                        </li>
+                    </ul>
+                    <p>
+                        The device tied to this sensor will no longer be able to send
+                        data.
+                    </p>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-delete-delete"
+                        class="modal__btn"
+                    >
+                        Delete
+                    </button>
+                </footer>
+            </div>
+        </div>
 {% endblock %}

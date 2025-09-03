@@ -139,3 +139,23 @@
 #sensor-options-menu li#option-delete:hover {
     background-color: var(--color-negative-hover);
 }
+
+/* -- modals -- */
+.modal__container {
+    max-width: 500px;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.modal__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    column-gap: 8px;
+}
+
+#modal-delete-delete {
+    color: white;
+    background-color: var(--color-negative);
+    border: 1px solid var(--color-border);
+}
