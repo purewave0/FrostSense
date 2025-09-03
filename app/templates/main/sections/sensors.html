@@ -15,30 +15,7 @@
 {% block title %} Sensors {% endblock %}
 
 {% block content %}
-    <div id="controls">
-        <button id="create-button" disabled>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-            >
-                <path
-                    d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"
-                />
-            </svg>
-            <span>Create sensor</span>
-        </button>
-    </div>
-
     <div id="sensors"></div>
-
-    <ul id="sensor-options-menu">
-        <li id="option-edit">Edit</li>
-        <li id="option-manage-key">Manage key</li>
-        <li id="option-delete">Delete</li>
-    </ul>
 
     <!-- modals -->
 
@@ -83,53 +60,6 @@
                         form="modal-edit-form"
                     >
                         Apply
-                    </button>
-                </footer>
-            </div>
-        </div>
-    </div>
-
-    <!-- delete modal -->
-    <div class="modal micromodal-slide" id="modal-delete" aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1"
-            onmousedown="event.target.classList.contains('modal__overlay')
-                && MicroModal.close('modal-delete')">
-            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-delete-title">
-                <header class="modal__header">
-                    <h2 class="modal__title" id="modal-delete-title">
-                        Delete sensor
-                    </h2>
-                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
-                </header>
-                <main class="modal__content" id="modal-delete-content">
-                    <p>Are you sure you want to permanently delete this sensor?</p>
-                    <ul>
-                        <li>
-                            Name: <span id="modal-delete-name"></span>
-                        </li>
-                        <li>
-                            Created on: <span id="modal-delete-created-on"></span>
-                        </li>
-                    </ul>
-                    <p>
-                        The device tied to this sensor will no longer be able to send
-                        data.
-                    </p>
-                </main>
-
-                <footer class="modal__footer">
-                    <button
-                        class="modal__btn"
-                        data-micromodal-close=""
-                        aria-label="Close this modal"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        id="modal-delete-delete"
-                        class="modal__btn"
-                    >
-                        Delete
                     </button>
                 </footer>
             </div>
