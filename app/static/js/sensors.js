@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 left: `${x}px`,
                 top: `${y}px`,
             });
-            document.body.addEventListener('click', menuOutsideClickHandler);
-            document.body.addEventListener('keydown', menuEscHandler);
+            document.addEventListener('click', menuOutsideClickHandler);
+            document.addEventListener('keydown', menuEscHandler);
             currentlySelectedSensorCard = sensorCard;
         });
     }
@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             currentlySelectedSensorCard = null;
         }
         optionsMenu.classList.remove('visible');
-        document.body.removeEventListener('click', menuOutsideClickHandler);
-        document.body.removeEventListener('keydown', menuEscHandler);
+        document.removeEventListener('click', menuOutsideClickHandler);
+        document.removeEventListener('keydown', menuEscHandler);
     }
 
     const fragment = new DocumentFragment();
