@@ -154,8 +154,23 @@
     column-gap: 8px;
 }
 
+.modal__container input,
+.modal__container label {
+    font-size: 11pt;
+}
+
 #modal-delete-delete {
     color: white;
     background-color: var(--color-negative);
+    border: 1px solid var(--color-border);
+}
+
+#modal-edit .modal__container {
+    max-width: 350px;
+}
+
+#modal-edit-apply {
+    color: white;
+    background-color: var(--color-dark-background);
     border: 1px solid var(--color-border);
 }

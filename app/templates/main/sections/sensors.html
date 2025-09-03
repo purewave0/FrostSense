@@ -42,12 +42,55 @@
 
     <!-- modals -->
 
-    <div class="modal micromodal-slide" id="modal-delete" aria-hidden="true">
+    <!-- edit modal -->
+    <div class="modal micromodal-slide" id="modal-edit" aria-hidden="true">
         <!--
             manually adding the onmousedown listener to avoid the modal closing
             unexpectedly. see:
             https://github.com/micromodal/Micromodal/issues/505#issuecomment-1358832696
         -->
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-edit')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-edit-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-edit-title">
+                        Edit sensor
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-edit-content">
+                    <form id="modal-edit-form">
+                        <div class="form-field">
+                            <label for="modal-edit-name">Name</label>
+                            <input id="modal-edit-name" type="text" required>
+                        </div>
+                    </form>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-edit-apply"
+                        class="modal__btn"
+                        type="submit"
+                        form="modal-edit-form"
+                    >
+                        Apply
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete modal -->
+    <div class="modal micromodal-slide" id="modal-delete" aria-hidden="true">
         <div class="modal__overlay" tabindex="-1"
             onmousedown="event.target.classList.contains('modal__overlay')
                 && MicroModal.close('modal-delete')">
@@ -91,4 +134,5 @@
                 </footer>
             </div>
         </div>
+    </div>
 {% endblock %}

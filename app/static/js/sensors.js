@@ -72,10 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         if (!optionsMenu.contains(event.target)) {
-            const sensorCurrentlyShowingOptions = sensorsDestination
-                .querySelector('.showing-options');
             const menuButton =
-                sensorCurrentlyShowingOptions.querySelector('.sensor-options-button');
+                currentlySelectedSensorCard.querySelector('.sensor-options-button');
             menuButton.dispatchEvent(new Event('click'));
         }
     }
@@ -152,9 +150,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     createButton.addEventListener('click', () => { alert('TODO') });
 
+    // -- edit modal --
+
+    const editModal = {
+        'form': document.getElementById('modal-edit-form'),
+        'name': document.getElementById('modal-edit-name'),
+    };
+    editModal.form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        alert('TODO editing sensor with id ' + currentlySelectedSensorCard.dataset.id);
+        MicroModal.close('modal-edit');
+        hideMenu();
+    });
+
+    function openEditModal(name, createdOn) {
+        editModal.name.value = name;
+        editModal.name.placeholder = name;
+        MicroModal.show('modal-edit');
+    }
+
     const editOption = document.getElementById('option-edit');
     editOption.addEventListener('click', () => {
-        alert('edit TODO');
+        const name = currentlySelectedSensorCard.dataset.name;
+        const createdOn = new Date(currentlySelectedSensorCard.dataset.createdOn);
+        openEditModal(name, createdOn);
     });
 
 
@@ -162,6 +181,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     manageKeyOption.addEventListener('click', () => {
         alert('manageKey TODO');
     });
+
+    // -- delete modal --
 
     const deleteModal = {
         'name': document.getElementById('modal-delete-name'),
