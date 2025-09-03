@@ -96,7 +96,7 @@
     font-size: 10pt;
 }
 
-#sensor-options-tooltip {
+#sensor-options-menu {
     display: flex;
     flex-direction: column;
     background-color: var(--color-foreground);
@@ -113,7 +113,7 @@
     transition: opacity 0.1s ease;
 }
 
-#sensor-options-tooltip:not(.visible) {
+#sensor-options-menu:not(.visible) {
     opacity: 0;
     pointer-events: none;
 }
@@ -122,13 +122,13 @@
     opacity: 1;
 }
 
-#sensor-options-tooltip li {
+#sensor-options-menu li {
     cursor: pointer;
     padding: 2px 4px;
     border-radius: 2px;
 }
 
-#sensor-options-tooltip li:hover {
+#sensor-options-menu li:hover {
     background-color: var(--color-hover);
 }
 
@@ -136,6 +136,6 @@
     color: var(--color-negative);
 }
 
-#sensor-options-tooltip li#option-delete:hover {
+#sensor-options-menu li#option-delete:hover {
     background-color: var(--color-negative-hover);
 }
