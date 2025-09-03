@@ -54,6 +54,10 @@ textarea {
     border-radius: 4px;
 }
 
+.modal__overlay {
+    z-index: 90;
+}
+
 .form-section-title {
     font-size: 11pt;
     margin: 0 0 8px 0;
