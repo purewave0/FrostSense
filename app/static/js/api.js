@@ -59,6 +59,10 @@ const Api = {
         });
     },
 
+    fetchUsers() {
+        return fetch('/api/users');
+    },
+
     editPreferences(displayName, username, homepage, temperatureUnit) {
         return fetch('/api/me/preferences', {
             method: 'PUT',
