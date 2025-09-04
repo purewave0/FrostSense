@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/lib/datatables.min.css">
+    <link rel="stylesheet" href="/static/css/lib/micromodal.css">
+    <link rel="stylesheet" href="/static/css/users.css">
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/lib/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/lib/datatables.min.js"></script>
+    <script src="/static/js/lib/micromodal.min.js"></script>
+    <script src="/static/js/users.js"></script>
+{% endblock %}
+
+{% block title %} Users {% endblock %}
+
+{% block content %}
+    <table id="users-table" class="display">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>username</th>
+                <th>Permissions</th>
+                <th>Updated on</th>
+                <th>Created on</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+{% endblock %}

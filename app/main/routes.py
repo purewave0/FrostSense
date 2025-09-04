@@ -65,6 +65,11 @@ def main_logout():
     logout_user()
     return redirect(url_for('main.login'))
 
+@bp.route('/users')
+@login_required
+def users():
+    return render_template('main/sections/users.html')
+
 @bp.route('/system-settings')
 @login_required
 def system_settings():
