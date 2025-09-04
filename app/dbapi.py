@@ -347,7 +347,20 @@ def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[i
     return result
 
 
-# -- auth --
+# -- users --
+
+def get_users() -> tuple[dict[str, Any], ...]:
+    users = db.session.execute(
+        db.select(
+            User.id,
+            User.display_name,
+            User.username,
+            User.created_on,
+            User.updated_on,
+        )
+    )
+
+    return _rows_to_dicts(users)
 
 def get_user_by_id(id: int) -> User | None:
     """Return the User with the given id, or None."""

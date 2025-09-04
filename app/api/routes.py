@@ -12,7 +12,7 @@ from app.dbapi import (
     get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
-    get_user_by_id, get_user_by_username,
+    get_users, get_user_by_id, get_user_by_username,
     update_user,
     get_user_last_update_time,
     get_system_settings,
@@ -316,6 +316,16 @@ def api_own_preferences_timestamp():
 def api_logout():
     logout_user()
     return '', 204
+
+
+# -- users --
+
+@bp.route('/users')
+@login_required
+# TODO: permission required here
+def api_users():
+    users = get_users()
+    return jsonify(users)
 
 
 # -- system settings --
