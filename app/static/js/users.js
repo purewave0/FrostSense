@@ -1,5 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
+    const locales = getUserLocales();
     const table = new DataTable('#users-table', {
         columns: [
             {
@@ -28,10 +29,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             {
                 name: 'updated_on',
                 data: 'updated_on',
+                render: (data, type) => {
+                    if (type === 'display') {
+                        return formatDateToCompactDatetime(new Date(data), locales);
+                    }
+                    return data;
+                },
             },
             {
                 name: 'created_on',
                 data: 'created_on',
+                render: (data, type) => {
+                    if (type === 'display') {
+                        return formatDateToCompactDatetime(new Date(data), locales);
+                    }
+                    return data;
+                },
             },
         ],
         order: [
