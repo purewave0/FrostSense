@@ -1,0 +1,5 @@
+.permissions-cell {
+    display: block;
+    text-align: center;
+    user-select: none;
+}
