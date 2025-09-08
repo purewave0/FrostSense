@@ -272,7 +272,7 @@ def api_login():
 
 @bp.route('/me/preferences', methods=['GET', 'PUT'])
 @login_required
-def api_update_own_preferences():
+def api_own_preferences():
     if request.method == 'GET':
         user = get_user_by_id(current_user.id)
         if not user:
@@ -299,6 +299,7 @@ def api_update_own_preferences():
         current_user.id,
         display_name,
         username,
+        current_user.permissions,
         homepage,
         temperature_unit
     )

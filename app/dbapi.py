@@ -350,11 +350,13 @@ def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[i
 # -- users --
 
 def get_users() -> tuple[dict[str, Any], ...]:
+    """Return all users."""
     users = db.session.execute(
         db.select(
             User.id,
             User.display_name,
             User.username,
+            User.permissions,
             User.created_on,
             User.updated_on,
         )
@@ -388,7 +390,12 @@ def get_user_by_username(username: str) -> User | None:
     return user
 
 
-def create_user(display_name: str, username: str, password: str) -> User:
+def create_user(
+    display_name: str,
+    username: str,
+    password: str,
+    permissions: User.Permission
+) -> User:
     """Create a user in the database.
 
     Args:
@@ -398,11 +405,12 @@ def create_user(display_name: str, username: str, password: str) -> User:
             User.MAX_NAME_LENGTH characters.
         password: The password. Must be between User.MIN_PASSWORD_LENGTH and
             User.MAX_PASSWORD_LENGTH characters.
+        permissions: The user's permissions.
 
     Returns:
         The newly created User object.
     """
-    user = User(display_name, username, password)
+    user = User(display_name, username, password, permissions)
 
     db.session.add(user)
     db.session.commit()
@@ -414,6 +422,7 @@ def update_user(
     user_id: int,
     display_name: str,
     username: str,
+    permissions: User.Permission,
     homepage: User.WebPage,
     temperature_unit: User.TemperatureUnit
 ) -> None:
@@ -423,6 +432,7 @@ def update_user(
         user_id: The ID of the user.
         display_name: The name that others will see.
         username: The name used for logging in.
+        permissions: The user's permissions.
         homepage: The first page the user sees after logging in.
         temperature_unit: The unit used to display temperatures.
     """
@@ -434,6 +444,7 @@ def update_user(
         ).values(
             display_name=display_name,
             username=username,
+            permissions=permissions,
             homepage=homepage,
             temperature_unit=temperature_unit,
         )

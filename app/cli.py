@@ -9,6 +9,7 @@ import click
 from app.dbapi import (
     create_sensor, get_sensors, create_reading, create_readings, create_user
 )
+from app.models.users import User
 
 
 def register_commands(app):
@@ -110,12 +111,30 @@ def register_commands(app):
         )
 
 
+    @app.cli.command('seed-admin')
+    def seed_admin():
+        """Seed the database with an admin.
+
+        Display name: "Administrator"; Username: "admin"; password: "default".
+        """
+        create_user(
+            'Administrator', 'admin', 'default', User.Permission.ADMIN
+        )
+
+        click.echo('created 1 default user. {Administrator|admin|default}')
+
+
     @app.cli.command('seed-user')
     def seed_user():
         """Seed the database with a default user.
 
         Display name: "Felix Sullivan"; Username: "felix"; password: "default".
         """
-        create_user('Felix Sullivan', 'felix', 'default')
+        create_user(
+            'Felix Sullivan',
+            'felix',
+            'default',
+            User.Permission.MANAGE_REPORTS | User.Permission.EDIT_SENSORS
+        )
 
         click.echo('created 1 default user. {Felix Sullivan|felix|default}')

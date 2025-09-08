@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum
+from enum import Enum, IntFlag, auto
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -27,6 +27,19 @@ class User(UserMixin, db.Model):
         CELSIUS    = 'celsius'
         FAHRENHEIT = 'fahrenheit'
 
+    class Permission(IntFlag):
+        """Permission flags for actions and resources."""
+        MANAGE_REPORTS = 1
+        """The user can view, generate, and verify reports."""
+        EDIT_SENSORS = 2
+        """The user can edit sensor properties like name and status(TODO)."""
+        MANAGE_USERS = 4
+        """The user can view, create, edit, and delete users."""
+        MANAGE_SYSTEM_SETTINGS = 8
+        """The user can edit system settings."""
+        ADMIN = MANAGE_REPORTS | EDIT_SENSORS | MANAGE_USERS | MANAGE_SYSTEM_SETTINGS
+        """Shorthand for all permissions."""
+
     MIN_NAME_LENGTH = 2
     MAX_NAME_LENGTH = 32
     MIN_PASSWORD_LENGTH = 6
@@ -40,6 +53,7 @@ class User(UserMixin, db.Model):
         db.String(MAX_NAME_LENGTH), unique=True, index=True
     )
     password_hash: Mapped[str] = mapped_column(db.String(256))
+    permissions: Mapped[int] = mapped_column()
     created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
     updated_on: Mapped[datetime] = mapped_column(
         server_default=utcnow(), onupdate=utcnow()
@@ -52,13 +66,16 @@ class User(UserMixin, db.Model):
     def __init__(
         self,
         display_name: str,
-        username: str, password: str,
+        username: str,
+        password: str,
+        permissions: Permission,
         homepage: WebPage = WebPage.READINGS,
         temperature_unit: TemperatureUnit = TemperatureUnit.CELSIUS
     ):
         self.display_name = display_name
         self.username = username
         self.password_hash = generate_password_hash(password)
+        self.permissions = permissions
         self.homepage = homepage
         self.temperature_unit = temperature_unit
 
