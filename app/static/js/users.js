@@ -58,7 +58,9 @@ function formatPermissionsValue(permissionsValue) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    const DATETIME_COLUMN_WIDTH = '190px';
     const locales = getUserLocales();
+
     const table = new DataTable('#users-table', {
         columns: [
             {
@@ -98,6 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             {
                 name: 'updated_on',
                 data: 'updated_on',
+                width: DATETIME_COLUMN_WIDTH,
                 render: (data, type) => {
                     if (type === 'display') {
                         return formatDateToCompactDatetime(new Date(data), locales);
@@ -108,6 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             {
                 name: 'created_on',
                 data: 'created_on',
+                width: DATETIME_COLUMN_WIDTH,
                 render: (data, type) => {
                     if (type === 'display') {
                         return formatDateToCompactDatetime(new Date(data), locales);
