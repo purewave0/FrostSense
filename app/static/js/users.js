@@ -172,6 +172,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const users = await response.json();
 
     for (const user of users) {
+        if (user.id === currentUserId) {
+            // don't let users see themselves
+            continue;
+        }
         table.row.add(
             {
                 'id': user.id,
