@@ -85,9 +85,9 @@
                             <ul id="modal-create-permissions">
                                 <li class="permission">
                                     <div>
-                                        <input type="checkbox" id="permission-manage-reports" value="1" name="permissions">
+                                        <input type="checkbox" id="create-permission-manage-reports" value="1" name="create-permissions">
                                     </div>
-                                    <label for="permission-manage-reports">
+                                    <label for="create-permission-manage-reports">
                                         <span class="permission-name">Manage reports</span>
                                         <span class="permission-description">
                                             View, generate, and verify reports
@@ -97,9 +97,9 @@
 
                                 <li class="permission">
                                     <div>
-                                        <input type="checkbox" id="permission-edit-sensors" value="2" name="permissions">
+                                        <input type="checkbox" id="create-permission-edit-sensors" value="2" name="create-permissions">
                                     </div>
-                                    <label for="permission-edit-sensors">
+                                    <label for="create-permission-edit-sensors">
                                         <span class="permission-name">Edit sensors</span>
                                         <span class="permission-description">
                                             Edit sensor properties like name and status.
@@ -126,6 +126,78 @@
                         form="modal-create-form"
                     >
                         Create
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit modal -->
+    <div class="modal micromodal-slide" id="modal-edit" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-edit')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-edit-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-edit-title">
+                        Edit user
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-edit-content">
+                    <form id="modal-edit-form">
+                        <div>
+                            <h3 class="form-section-title">Permissions</h3>
+                            <ul id="modal-edit-permissions">
+                                <li class="permission">
+                                    <div>
+                                        <input type="checkbox" id="edit-permission-manage-reports" value="1" name="edit-permissions">
+                                    </div>
+                                    <label for="edit-permission-manage-reports">
+                                        <span class="permission-name">
+                                            Manage reports
+                                            <span class="permission-granted-notice">(granted)</span>
+                                        </span>
+                                        <span class="permission-description">
+                                            View, generate, and verify reports
+                                        </span>
+                                    </label>
+                                </li>
+
+                                <li class="permission">
+                                    <div>
+                                        <input type="checkbox" id="edit-permission-edit-sensors" value="2" name="edit-permissions">
+                                    </div>
+                                    <label for="edit-permission-edit-sensors">
+                                        <span class="permission-name">
+                                            Edit sensors
+                                            <span class="permission-granted-notice">(granted)</span>
+                                        </span>
+                                        <span class="permission-description">
+                                            Edit sensor properties like name and status.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-edit-edit"
+                        class="modal__btn"
+                        type="submit"
+                        form="modal-edit-form"
+                    >
+                        Apply
                     </button>
                 </footer>
             </div>

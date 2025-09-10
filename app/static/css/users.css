@@ -95,6 +95,16 @@
     flex-direction: column;
 }
 
+.permission-granted-notice {
+    font-size: 10pt;
+    font-style: italic;
+    color: var(--color-text-secondary);
+}
+
+.permission:not(.currently-granted) .permission-granted-notice {
+    display: none;
+}
+
 .permission-description {
     font-size: 10pt;
     color: var(--color-text-secondary);

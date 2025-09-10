@@ -23,7 +23,7 @@ const allPermissions = [
  * @param {number} permissionsValue The current permissions.
  * @param {number} permission The permission to check for.
  */
-function containsPermission(permissionsValue, permission) {
+function hasPermission(permissionsValue, permission) {
     return (permissionsValue & permission) !== 0;
 }
 
@@ -35,7 +35,7 @@ function containsPermission(permissionsValue, permission) {
  */
 function extractPermissionsFromNumber(permissionsValue) {
     return allPermissions.filter((permission) => {
-        return containsPermission(permissionsValue, permission.value)
+        return hasPermission(permissionsValue, permission.value)
     });
 }
 
@@ -60,6 +60,8 @@ function formatPermissionsValue(permissionsValue) {
 document.addEventListener('DOMContentLoaded', async () => {
     const DATETIME_COLUMN_WIDTH = '190px';
     const locales = getUserLocales();
+
+    let selectedUser = null;
 
     const table = new DataTable('#users-table', {
         columns: [
@@ -125,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 width: '100px',
                 searchable: false,
                 orderable: false,
-                render: (data) => {
+                render: (data, _, user) => {
                     const editButton = document.createElement('button');
                     editButton.className = 'action action-edit';
                     editButton.title = 'Edit';
@@ -140,6 +142,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <path d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z"/>
                         </svg>
                     `;
+                    editButton.addEventListener('click', () => {
+                        selectedUser = user;
+                        openEditModal(user.permissions);
+                    });
 
                     const resetPasswordButton = document.createElement('button');
                     resetPasswordButton.className = 'action action-reset-password';
@@ -191,6 +197,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // TODO: constantly check for updates
 
+    // -- actions/modals --
+
+    // -- Create modal --
     const createButton = document.getElementById('top-action-create');
     createButton.addEventListener('click', (event) => {
         openCreateModal();
@@ -211,5 +220,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     function openCreateModal() {
         createModal.form.reset();  // clear any cache
         MicroModal.show('modal-create');
+    }
+
+    // -- Edit modal --
+    const editModal = {
+        'form': document.getElementById('modal-edit-form'),
+        'permissions': document.querySelectorAll(
+            'input[type="checkbox"][name="edit-permissions"]'
+        ),
+    };
+    editModal.form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        alert('TODO editing user with id ' + selectedUser.id);
+        MicroModal.close('modal-edit');
+        editModal.form.reset();
+        selectedUser = null;
+    });
+
+    function openEditModal(permissionsValue) {
+        for (const permissionCheckbox of editModal.permissions) {
+            const hasThisPermission = hasPermission(
+                permissionsValue, permissionCheckbox.value
+            );
+            if (hasThisPermission) {
+                permissionCheckbox
+                    .parentElement  // div
+                    .parentElement  // li
+                    .classList.add('currently-granted');
+                permissionCheckbox.checked = true;
+            } else {
+                permissionCheckbox
+                    .parentElement
+                    .parentElement
+                    .classList.remove('currently-granted');
+                permissionCheckbox.checked = false;
+            }
+        }
+        MicroModal.show('modal-edit');
     }
 });
