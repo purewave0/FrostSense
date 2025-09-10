@@ -190,4 +190,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     table.draw();
 
     // TODO: constantly check for updates
+
+    const createButton = document.getElementById('top-action-create');
+    createButton.addEventListener('click', (event) => {
+        openCreateModal();
+    });
+
+    const createModal = {
+        'form': document.getElementById('modal-create-form'),
+        'displayName': document.getElementById('modal-create-display-name'),
+        'username': document.getElementById('modal-create-username'),
+    };
+    createModal.form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        alert('TODO creating user.');
+        MicroModal.close('modal-create');
+        createModal.form.reset();
+    });
+
+    function openCreateModal() {
+        createModal.form.reset();  // clear any cache
+        MicroModal.show('modal-create');
+    }
 });

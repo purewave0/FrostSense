@@ -54,9 +54,25 @@ textarea {
     border-radius: 4px;
 }
 
-.modal__overlay {
-    z-index: 90;
+/* -- modals -- */
+
+.modal__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    column-gap: 8px;
 }
+
+.modal__container input,
+.modal__container label {
+    font-size: 11pt;
+}
+
+.modal__content h3 {
+    font-size: 11pt;
+}
+
+/* -- forms -- */
 
 .form-section-title {
     font-size: 11pt;
@@ -73,6 +89,11 @@ textarea {
     display: flex;
     flex-direction: column;
     row-gap: 2px;
+}
+
+.form-field-helper {
+    color: var(--color-text-secondary);
+    font-size: 8pt;
 }
 
 #content {

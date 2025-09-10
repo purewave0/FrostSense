@@ -48,4 +48,87 @@
         <tbody>
         </tbody>
     </table>
+
+    <!-- modals -->
+
+    <!-- create modal -->
+    <div class="modal micromodal-slide" id="modal-create" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-create')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-create-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-create-title">
+                        Create user
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-create-content">
+                    <form id="modal-create-form">
+                        <div class="columns">
+                            <div class="form-field" title="What others see.">
+                                <label for="modal-create-display-name">Display Name</label>
+                                <input id="modal-create-display-name" type="text" placeholder="John Doe" required>
+                            </div>
+
+                            <div class="form-field" title="Used for logging in.">
+                                <label for="modal-create-username">Username</label>
+                                <input id="modal-create-username" type="text" placeholder="john.doe" required>
+                                <span class="form-field-helper">
+                                    No spaces allowed.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="form-section-title">Permissions</h3>
+                            <ul id="modal-create-permissions">
+                                <li class="permission">
+                                    <div>
+                                        <input type="checkbox" id="permission-manage-reports" value="1" name="permissions">
+                                    </div>
+                                    <label for="permission-manage-reports">
+                                        <span class="permission-name">Manage reports</span>
+                                        <span class="permission-description">
+                                            View, generate, and verify reports
+                                        </span>
+                                    </label>
+                                </li>
+
+                                <li class="permission">
+                                    <div>
+                                        <input type="checkbox" id="permission-edit-sensors" value="2" name="permissions">
+                                    </div>
+                                    <label for="permission-edit-sensors">
+                                        <span class="permission-name">Edit sensors</span>
+                                        <span class="permission-description">
+                                            Edit sensor properties like name and status.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-create-create"
+                        class="modal__btn"
+                        type="submit"
+                        form="modal-create-form"
+                    >
+                        Create
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
 {% endblock %}

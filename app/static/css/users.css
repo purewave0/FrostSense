@@ -62,3 +62,40 @@
     text-align: center;
     user-select: none;
 }
+
+.modal__content form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+}
+
+.modal__content .columns > * {
+    flex: 1;
+}
+
+.modal__footer button[type="submit"] {
+    background-color: var(--color-dark-background);
+    color: white;
+}
+
+#modal-create-permissions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.permission {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+}
+
+.permission label {
+    display: flex;
+    flex-direction: column;
+}
+
+.permission-description {
+    font-size: 10pt;
+    color: var(--color-text-secondary);
+}
