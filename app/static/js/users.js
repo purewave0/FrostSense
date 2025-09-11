@@ -314,10 +314,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         'displayName': document.getElementById('modal-reset-password-display-name'),
         'confirmButton': document.getElementById('modal-reset-password-confirm'),
     };
-    resetPasswordModal.confirmButton.addEventListener('click', (event) => {
-        alert('TODO resetting password of user with id ' + selectedUser.id);
-        // TODO: reset password & get value
-        const temporaryPassword = 'TODO0123456789TODO';
+    resetPasswordModal.confirmButton.addEventListener('click', async (event) => {
+        const response = await Api.resetUserPassword(selectedUser.id);
+        // TODO: handle errors
+        const temporaryPassword = await response.json();
+
         MicroModal.close('modal-reset-password');
         openTemporaryPasswordModal(
             selectedUser.display_name, selectedUser.username, temporaryPassword

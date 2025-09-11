@@ -75,6 +75,10 @@ const Api = {
         });
     },
 
+    resetUserPassword(userId) {
+        return fetch(`/api/users/${userId}/reset-password`, { method: 'POST', });
+    },
+
     editPreferences(displayName, username, homepage, temperatureUnit) {
         return fetch('/api/me/preferences', {
             method: 'PUT',
