@@ -63,7 +63,8 @@
     user-select: none;
 }
 
-.modal__content form {
+#modal-create form,
+#modal-edit form {
     display: flex;
     flex-direction: column;
     row-gap: 32px;
@@ -73,7 +74,7 @@
     flex: 1;
 }
 
-.modal__footer button[type="submit"] {
+.modal__footer button.primary {
     background-color: var(--color-dark-background);
     color: white;
 }

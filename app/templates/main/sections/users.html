@@ -121,7 +121,7 @@
                     </button>
                     <button
                         id="modal-create-create"
-                        class="modal__btn"
+                        class="modal__btn primary"
                         type="submit"
                         form="modal-create-form"
                     >
@@ -193,11 +193,59 @@
                     </button>
                     <button
                         id="modal-edit-edit"
-                        class="modal__btn"
+                        class="modal__btn primary"
                         type="submit"
                         form="modal-edit-form"
                     >
                         Apply
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- reset password modal -->
+    <div class="modal micromodal-slide" id="modal-reset-password" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-reset-password')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-reset-password-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-reset-password-title">
+                        Reset password
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-reset-password-content">
+                    <form id="modal-reset-password-form">
+                        <p>Are you sure you want to reset this user's password?</p>
+                        <ul>
+                            <li>
+                                Name:
+                                <span id="modal-reset-password-display-name"></span>
+                            </li>
+                        </ul>
+                        <p>
+                            A temporary password will be created; the user will be
+                            prompted to set a new password once they sign in.
+                        </p>
+                    </form>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-reset-password-confirm"
+                        class="modal__btn primary"
+                        type="button"
+                    >
+                        Confirm
                     </button>
                 </footer>
             </div>
