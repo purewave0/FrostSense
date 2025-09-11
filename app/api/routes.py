@@ -13,7 +13,8 @@ from app.dbapi import (
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
     get_users, get_user_by_id, get_user_by_username,
-    create_user, update_user, update_user_password_by_id,
+    create_user, update_user_by_id, update_user_permissions_by_id,
+    update_user_password_by_id,
     get_user_last_update_time,
     get_system_settings,
     update_system_settings, get_system_settings_update_timestamp
@@ -295,7 +296,7 @@ def api_own_preferences():
 
     # TODO: check display_name and username lengths
     # TODO: check if username is unique
-    update_user(
+    update_user_by_id(
         current_user.id,
         display_name,
         username,
@@ -354,6 +355,19 @@ def api_users():
         'created_on':         new_user.created_on,
         'updated_on':         new_user.updated_on,
     }), 201
+
+
+@bp.route('/users/<int:user_id>', methods=['PUT'])
+@login_required
+# TODO: permission required here
+def api_update_user(user_id: int):
+    try:
+        permissions = User.Permission(int(request.json['permissions']))
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'field_error'}), 400
+
+    update_user_permissions_by_id(user_id, permissions)
+    return '', 204
 
 
 @bp.route('/users/<int:user_id>/reset-password', methods=['POST'])

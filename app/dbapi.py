@@ -420,7 +420,7 @@ def create_user(
     return user
 
 
-def update_user(
+def update_user_by_id(
     user_id: int,
     display_name: str,
     username: str,
@@ -446,9 +446,30 @@ def update_user(
         ).values(
             display_name=display_name,
             username=username,
-            permissions=permissions,
+            permissions=permissions.value,
             homepage=homepage,
             temperature_unit=temperature_unit,
+        )
+    )
+    db.session.commit()
+
+def update_user_permissions_by_id(
+    user_id: int,
+    permissions: User.Permission,
+) -> None:
+    """Update the given user's permissions.
+
+    Args:
+        user_id: The ID of the user.
+        permissions: The new permissions.
+    """
+    db.session.execute(
+        db.update(
+            User
+        ).where(
+            User.id == user_id
+        ).values(
+            permissions=permissions.value
         )
     )
     db.session.commit()
