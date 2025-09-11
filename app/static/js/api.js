@@ -75,6 +75,16 @@ const Api = {
         });
     },
 
+    editUser(userId, permissionsValue) {
+        return fetch(`/api/users/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'permissions': permissionsValue,
+            })
+        });
+    },
+
     resetUserPassword(userId) {
         return fetch(`/api/users/${userId}/reset-password`, { method: 'POST', });
     },

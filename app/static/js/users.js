@@ -278,9 +278,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             'input[type="checkbox"][name="edit-permissions"]'
         ),
     };
-    editModal.form.addEventListener('submit', (event) => {
+    editModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        alert('TODO editing user with id ' + selectedUser.id);
+
+        let permissionsValue = 0;
+        for (const permissionCheckbox of editModal.permissions) {
+            if (permissionCheckbox.checked) {
+                permissionsValue += Number(permissionCheckbox.value);
+            }
+        }
+
+        await Api.editUser(selectedUser.id, permissionsValue);
+        // TODO: handle errors
         MicroModal.close('modal-edit');
         editModal.form.reset();
         selectedUser = null;
