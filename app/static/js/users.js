@@ -219,6 +219,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert('TODO creating user.');
         MicroModal.close('modal-create');
         createModal.form.reset();
+
+        // TODO: create user & get the temporary password
+        selectedUser = {
+            id: 123,
+            display_name: 'John Doe',
+            username: 'john.doe',
+            permissions: 1 | 2,
+            created_on: new Date(),
+            updated_on: new Date(),
+        }
+        const temporaryPassword = 'NEWTODO0123456789TODO';
+        openTemporaryPasswordModal(
+            selectedUser.display_name, selectedUser.username, temporaryPassword
+        );
     });
 
     function openCreateModal() {
