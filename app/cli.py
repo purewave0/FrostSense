@@ -118,7 +118,7 @@ def register_commands(app):
         Display name: "Administrator"; Username: "admin"; password: "default".
         """
         create_user(
-            'Administrator', 'admin', 'default', User.Permission.ADMIN
+            'Administrator', 'admin', 'default', False, User.Permission.ADMIN
         )
 
         click.echo('created 1 default user. {Administrator|admin|default}')
@@ -134,6 +134,7 @@ def register_commands(app):
             'Felix Sullivan',
             'felix',
             'default',
+            False,
             User.Permission.MANAGE_REPORTS | User.Permission.EDIT_SENSORS
         )
 

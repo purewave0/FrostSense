@@ -13,7 +13,7 @@ from app.dbapi import (
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
     get_users, get_user_by_id, get_user_by_username,
-    update_user,
+    create_user, update_user,
     get_user_last_update_time,
     get_system_settings,
     update_system_settings, get_system_settings_update_timestamp
@@ -321,12 +321,39 @@ def api_logout():
 
 # -- users --
 
-@bp.route('/users')
+@bp.route('/users', methods=['GET', 'POST'])
 @login_required
 # TODO: permission required here
 def api_users():
-    users = get_users()
-    return jsonify(users)
+    if request.method == 'GET':
+        users = get_users()
+        return jsonify(users)
+
+    try:
+        display_name = str(request.json['display_name'])
+        username = str(request.json['username'])
+        permissions = User.Permission(int(request.json['permissions']))
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'field_error'}), 400
+
+    temporary_password = User.generate_temporary_password()
+    new_user = create_user(
+        display_name,
+        username,
+        temporary_password,
+        True,
+        permissions
+    )
+
+    return jsonify({
+        'id':                 new_user.id,
+        'display_name':       new_user.display_name,
+        'username':           new_user.username,
+        'temporary_password': temporary_password,
+        'permissions':        new_user.permissions,
+        'created_on':         new_user.created_on,
+        'updated_on':         new_user.updated_on,
+    }), 201
 
 
 # -- system settings --

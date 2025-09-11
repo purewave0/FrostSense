@@ -394,6 +394,7 @@ def create_user(
     display_name: str,
     username: str,
     password: str,
+    is_password_temporary: bool,
     permissions: User.Permission
 ) -> User:
     """Create a user in the database.
@@ -405,13 +406,14 @@ def create_user(
             User.MAX_NAME_LENGTH characters.
         password: The password. Must be between User.MIN_PASSWORD_LENGTH and
             User.MAX_PASSWORD_LENGTH characters.
+        is_password_temporary: Whether the user must change this password after using
+            it to log in (either for the first time, or after a password reset).
         permissions: The user's permissions.
 
     Returns:
         The newly created User object.
     """
-    user = User(display_name, username, password, permissions)
-
+    user = User(display_name, username, password, is_password_temporary, permissions)
     db.session.add(user)
     db.session.commit()
 
