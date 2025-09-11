@@ -110,3 +110,13 @@
     font-size: 10pt;
     color: var(--color-text-secondary);
 }
+
+#modal-temporary-password-username,
+#modal-temporary-password-password {
+    font-size: 12pt;
+    font-family: monospace;
+}
+
+#modal-temporary-password-password {
+    margin-left: 7px; /* align it with the username */
+}

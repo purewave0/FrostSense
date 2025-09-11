@@ -251,4 +251,59 @@
             </div>
         </div>
     </div>
+
+
+    <!-- temporary password modal -->
+    <div class="modal micromodal-slide" id="modal-temporary-password" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-temporary-password')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-temporary-password-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-temporary-password-title">
+                        Temporary password
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-temporary-password-content">
+                    <form id="modal-temporary-password-form">
+                        <p>
+                            A temporary password has been generated for the user
+                            "<span id="modal-temporary-password-display-name"></span>":
+                        </p>
+
+                        <ul>
+                            <li>
+                                Username:
+                                <span id="modal-temporary-password-username"></span>
+                            </li>
+                            <!-- TODO: click to reveal -->
+                            <li>
+                                Password:
+                                <span id="modal-temporary-password-password"></span>
+                            </li>
+                        </ul>
+                        <p>
+                            The user must log in with these credentials.
+                            Once signed in, they will be prompted to create a
+                            new password.
+                        </p>
+                        <p>
+                            This is only shown once.
+                        </p>
+                    </form>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Close
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
 {% endblock %}

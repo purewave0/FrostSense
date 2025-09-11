@@ -226,6 +226,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         MicroModal.show('modal-create');
     }
 
+    // -- Temporary Password modal (for Create & Reset Password modals) --
+    const temporaryPasswordModal = {
+        'displayName': document.getElementById('modal-temporary-password-display-name'),
+        'username': document.getElementById('modal-temporary-password-username'),
+        'password': document.getElementById('modal-temporary-password-password'),
+    };
+
+    function openTemporaryPasswordModal(displayName, username, password) {
+        temporaryPasswordModal.displayName.textContent = displayName;
+        temporaryPasswordModal.username.textContent = username;
+        temporaryPasswordModal.password.textContent = password;
+        MicroModal.show('modal-temporary-password', {
+            onClose() {
+                temporaryPasswordModal.password.textContent = '';
+                selectedUser = null;
+            },
+        });
+    }
+
+
     // -- Edit modal --
     const editModal = {
         'form': document.getElementById('modal-edit-form'),
@@ -271,8 +291,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     resetPasswordModal.confirmButton.addEventListener('click', (event) => {
         alert('TODO resetting password of user with id ' + selectedUser.id);
+        // TODO: reset password & get value
+        const temporaryPassword = 'TODO0123456789TODO';
         MicroModal.close('modal-reset-password');
-        resetPasswordModal.form.reset();
+        openTemporaryPasswordModal(
+            selectedUser.display_name, selectedUser.username, temporaryPassword
+        );
     });
 
     function openResetPasswordModal(displayName) {
