@@ -213,25 +213,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         'form': document.getElementById('modal-create-form'),
         'displayName': document.getElementById('modal-create-display-name'),
         'username': document.getElementById('modal-create-username'),
+        'permissions': document.querySelectorAll(
+            'input[type="checkbox"][name="create-permissions"]'
+        ),
     };
-    createModal.form.addEventListener('submit', (event) => {
+    createModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        alert('TODO creating user.');
         MicroModal.close('modal-create');
+
+        const displayName = createModal.displayName.value.trim();
+        const username = createModal.username.value.trim();
+        let permissionsValue = 0;
+        for (const permissionCheckbox of createModal.permissions) {
+            if (permissionCheckbox.checked) {
+                permissionsValue += Number(permissionCheckbox.value);
+            }
+        }
+
+        const response = await Api.createUser(
+            displayName,
+            username,
+            permissionsValue
+        );
+        // TODO: handle errors
+        const newUser = await response.json();
+
         createModal.form.reset();
 
-        // TODO: create user & get the temporary password
-        selectedUser = {
-            id: 123,
-            display_name: 'John Doe',
-            username: 'john.doe',
-            permissions: 1 | 2,
-            created_on: new Date(),
-            updated_on: new Date(),
-        }
-        const temporaryPassword = 'NEWTODO0123456789TODO';
+        // TODO: add new user row
         openTemporaryPasswordModal(
-            selectedUser.display_name, selectedUser.username, temporaryPassword
+            newUser.display_name, newUser.username, newUser.temporary_password
         );
     });
 
