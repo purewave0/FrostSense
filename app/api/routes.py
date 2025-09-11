@@ -13,7 +13,7 @@ from app.dbapi import (
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
     get_users, get_user_by_id, get_user_by_username,
-    create_user, update_user,
+    create_user, update_user, update_user_password_by_id,
     get_user_last_update_time,
     get_system_settings,
     update_system_settings, get_system_settings_update_timestamp
@@ -354,6 +354,16 @@ def api_users():
         'created_on':         new_user.created_on,
         'updated_on':         new_user.updated_on,
     }), 201
+
+
+@bp.route('/users/<int:user_id>/reset-password', methods=['POST'])
+@login_required
+# TODO: permission required here
+def api_user_reset_password(user_id: int):
+    temporary_password = User.generate_temporary_password()
+    update_user_password_by_id(user_id, temporary_password, True)
+
+    return jsonify(temporary_password)
 
 
 # -- system settings --

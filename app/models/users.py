@@ -92,6 +92,10 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     @staticmethod
+    def generate_password_hash(password: str) -> str:
+        return generate_password_hash(password)
+
+    @staticmethod
     def generate_temporary_password() -> str:
         """Return a 12-character-long password made of lowercase letters and digits."""
         return ''.join(

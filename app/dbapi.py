@@ -454,6 +454,32 @@ def update_user(
     db.session.commit()
 
 
+def update_user_password_by_id(
+    user_id: int,
+    password: str,
+    is_temporary: bool
+) -> None:
+    """Update the given user's password.
+
+    Args:
+        user_id: The ID of the user.
+        password: The new password.
+        is_temporary: Whether the user must change this password after using it to log
+            in (usually, after a password reset).
+    """
+    db.session.execute(
+        db.update(
+            User
+        ).where(
+            User.id == user_id
+        ).values(
+            password_hash=User.generate_password_hash(password),
+            is_password_temporary=is_temporary
+        )
+    )
+    db.session.commit()
+
+
 def get_user_last_update_time(user_id: int) -> datetime:
     """Return when the User of id `user_id` was last updated."""
     result = db.session.execute(
