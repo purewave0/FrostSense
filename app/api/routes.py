@@ -326,7 +326,9 @@ def api_own_preferences():
     if any(char.isspace() for char in username):
         return jsonify({'error': 'invalid_username'}), 400
 
-    # TODO: check if username is unique
+    if get_user_by_username(username):
+        return jsonify({'error': 'username_already_exists'}), 400
+
     update_user_by_id(
         current_user.id,
         display_name,
@@ -393,6 +395,8 @@ def api_users():
     if any(char.isspace() for char in username):
         return jsonify({'error': 'invalid_username'}), 400
 
+    if get_user_by_username(username):
+        return jsonify({'error': 'username_already_exists'}), 400
 
     temporary_password = User.generate_temporary_password()
     new_user = create_user(
