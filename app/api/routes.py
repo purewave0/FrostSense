@@ -136,7 +136,6 @@ def api_sensor_readings(sensor_id):
     }), 201
 
 
-# TODO: sensor 'ping' route. requires sensor key too
 def _parse_iso_datetime(iso_datetime: str) -> dt.datetime:
     """Return the given datetime string as a datetime object.
 
@@ -303,14 +302,30 @@ def api_own_preferences():
 
     # TODO: no spaces allowed in username
     try:
-        display_name = str(request.json['display_name'])
-        username = str(request.json['username'])
+        display_name = str(request.json['display_name']).strip()
+        username = str(request.json['username']).strip()
         homepage = User.WebPage(request.json['homepage'])
         temperature_unit = User.TemperatureUnit(request.json['temperature_unit'])
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
-    # TODO: check display_name and username lengths
+    display_name_length = len(display_name)
+    if (
+        display_name_length < User.MIN_NAME_LENGTH
+        or display_name_length > User.MAX_NAME_LENGTH
+    ):
+        return jsonify({'error': 'invalid_display_name'}), 400
+
+    username_length = len(username)
+    if (
+        username_length < User.MIN_NAME_LENGTH
+        or username_length > User.MAX_NAME_LENGTH
+    ):
+        return jsonify({'error': 'invalid_username'}), 400
+
+    if any(char.isspace() for char in username):
+        return jsonify({'error': 'invalid_username'}), 400
+
     # TODO: check if username is unique
     update_user_by_id(
         current_user.id,
@@ -355,11 +370,29 @@ def api_users():
         return jsonify(users)
 
     try:
-        display_name = str(request.json['display_name'])
-        username = str(request.json['username'])
+        display_name = str(request.json['display_name']).strip()
+        username = str(request.json['username']).strip()
         permissions = User.Permission(int(request.json['permissions']))
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
+
+    display_name_length = len(display_name)
+    if (
+        display_name_length < User.MIN_NAME_LENGTH
+        or display_name_length > User.MAX_NAME_LENGTH
+    ):
+        return jsonify({'error': 'invalid_display_name'}), 400
+
+    username_length = len(username)
+    if (
+        username_length < User.MIN_NAME_LENGTH
+        or username_length > User.MAX_NAME_LENGTH
+    ):
+        return jsonify({'error': 'invalid_username'}), 400
+
+    if any(char.isspace() for char in username):
+        return jsonify({'error': 'invalid_username'}), 400
+
 
     temporary_password = User.generate_temporary_password()
     new_user = create_user(
