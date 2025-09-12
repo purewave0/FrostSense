@@ -57,7 +57,21 @@ function formatPermissionsValue(permissionsValue) {
         .join('\n- ');
 }
 
+
+/**
+ * Colour the given row blue, then return it to its original colour after
+ * `millisDuration` milliseconds.
+ */
+function animateRowUpdate(rowElement, millisDuration) {
+    rowElement.classList.add('recently-updated');
+    setTimeout(() => {
+        rowElement.classList.remove('recently-updated');
+    }, millisDuration);
+}
+
+
 document.addEventListener('DOMContentLoaded', async () => {
+    const UPDATED_ROW_COLOUR_DURATION = 1_500;
     const DATETIME_COLUMN_WIDTH = '190px';
     const locales = getUserLocales();
 
@@ -213,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log(`users.js: fetching updates after ${latestUpdateDate}`)
         const response = await Api.fetchUsers(latestUpdateDate);
         const updatedUsers = await response.json();
-        let wereUpdatesMade = false;
+        const updatedRowIndices = [];
 
         for (const user of updatedUsers) {
             if (user.id === currentUserId) {
@@ -228,8 +242,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const isNewlyCreated = !tableUserIds.includes(user.id);
             if (isNewlyCreated) {
-                console.log('users.js: newly created user:', user)
-                table.row.add(
+                console.log('users.js: newly created user:', user);
+                const newRowIndex = table.row.add(
                     {
                         'id': user.id,
                         'display_name': user.display_name,
@@ -238,13 +252,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                         'updated_on': user.updated_on,
                         'created_on': user.created_on,
                     }
-                );
+                ).index();
+                updatedRowIndices.push(newRowIndex);
 
                 tableUserIds.push(user.id);
             } else {
                 // the user already exists; reflect the changes
-                console.log('users.js: updated user:', user)
-                table
+                console.log('users.js: edited user:', user);
+                const editedRowIndex = table
                     .row((_, userData) => userData.id === user.id)
                     .data(
                         {
@@ -256,13 +271,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                             'created_on': user.created_on,
                         }
                     );
+                updatedRowIndices.push(editedRowIndex);
             }
-            wereUpdatesMade = true;
         }
 
-        if (wereUpdatesMade) {
+        if (updatedRowIndices.length > 0) {
             console.log('users.js: updates were made. redrawing table')
             table.draw();
+            for (const index of updatedRowIndices) {
+                const rowElement = table.row(index).node();
+                animateRowUpdate(rowElement, UPDATED_ROW_COLOUR_DURATION);
+            }
         }
     }
 

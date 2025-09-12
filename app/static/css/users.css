@@ -1,3 +1,7 @@
+body {
+    --color-row-updated: #5571db60;
+}
+
 #page-content {
     display: flex;
     flex-direction: column;
@@ -31,6 +35,14 @@
 
 #top-action-create svg {
     fill: white;
+}
+
+#users-table tr {
+    transition: background-color 0.3s ease;
+}
+
+#users-table tr.recently-updated {
+    background-color: var(--color-row-updated);
 }
 
 .actions-cell {
