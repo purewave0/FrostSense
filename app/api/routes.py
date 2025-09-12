@@ -150,13 +150,23 @@ def api_sensors_today_readings_count():
 @login_required
 def api_update_sensor(sensor_id):
     try:
-        name = str(request.json['name'])
+        name = str(request.json['name']).strip()
         # TODO: status
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
     if not sensor_id_exists(sensor_id):
         return jsonify({'error': 'unknown_sensor'}), 404
+
+    name_length = len(name)
+    if (
+        name_length < Sensor.MIN_NAME_LENGTH
+        or name_length > Sensor.MAX_NAME_LENGTH
+    ):
+        return jsonify({'error': 'invalid_name_length'}), 400
+
+    if sensor_name_exists(name):
+        return jsonify({'error': 'name_already_exists'}), 400
 
     update_sensor_by_id(sensor_id, name)
     return '', 204
