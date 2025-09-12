@@ -68,8 +68,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const editButton = sensorCard.querySelector('.sensor-edit-button');
         editButton.addEventListener('click', (event) => {
-            selectedSensor = sensor;
-            openEditModal(sensor.name)
+            console.log(sensorCard)
+            selectedSensor = {
+                id: sensor.id,
+                created_on: sensor.id,
+                // `sensor.name` may be outdated, so we always it from the card itself
+                name: sensorCard.dataset.name,
+            };
+            openEditModal(selectedSensor.name)
         });
     }
 
