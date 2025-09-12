@@ -301,6 +301,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         openTemporaryPasswordModal(
             newUser.display_name, newUser.username, newUser.temporary_password
         );
+
+        await fetchAndApplyTableUpdates();
     });
 
     function openCreateModal() {
@@ -347,6 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         await Api.editUser(selectedUser.id, permissionsValue);
         // TODO: handle errors
+        await fetchAndApplyTableUpdates();
         MicroModal.close('modal-edit');
         editModal.form.reset();
         selectedUser = null;
@@ -383,6 +386,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     resetPasswordModal.confirmButton.addEventListener('click', async (event) => {
         const response = await Api.resetUserPassword(selectedUser.id);
         // TODO: handle errors
+        await fetchAndApplyTableUpdates();  // just update the `updated_on` date
         const temporaryPassword = await response.json();
 
         MicroModal.close('modal-reset-password');
