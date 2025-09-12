@@ -49,7 +49,7 @@ class User(UserMixin, db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     display_name: Mapped[str] = mapped_column(
-        db.String(MAX_NAME_LENGTH), unique=True, index=True
+        db.String(MAX_NAME_LENGTH), index=True
     )
     username: Mapped[str] = mapped_column(
         db.String(MAX_NAME_LENGTH), unique=True, index=True
