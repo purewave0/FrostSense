@@ -89,8 +89,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     editModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const name = editModal.name.value.trim();
-        await Api.editSensor(selectedSensor.id, name);
-        // TODO: handle errors
+        const response = await Api.editSensor(selectedSensor.id, name);
+
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            switch (error) {
+                case 'name_already_exists':
+                    editModal.name
+                        .setCustomValidity('This sensor name already exists.');
+                    editModal.name.reportValidity();
+                    editModal.name.focus();
+                    editModal.name.setCustomValidity('');
+                    break;
+                default:
+                    // TODO: handle other errors
+                    alert('TODO other errors');
+                    break;
+            }
+            return;
+        }
 
         const correspondingSensorCard = sensorCards
             .find(card => Number(card.dataset.id) === selectedSensor.id);
