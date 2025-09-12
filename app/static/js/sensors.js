@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         correspondingSensorCard.dataset.name = name;
         const nameElement = correspondingSensorCard.querySelector('.sensor-name');
         nameElement.textContent = name;
+        nameElement.title = name;
         MicroModal.close('modal-edit');
     });
 
