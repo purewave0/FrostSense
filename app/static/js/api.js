@@ -59,8 +59,12 @@ const Api = {
         });
     },
 
-    fetchUsers() {
-        return fetch('/api/users');
+    fetchUsers(updatedAfter = null) {
+        let url = '/api/users'
+        if (updatedAfter) {
+            url += `?updated-after=${updatedAfter.toISOString()}`
+        }
+        return fetch(url);
     },
 
     createUser(displayName, username, permissionsValue) {

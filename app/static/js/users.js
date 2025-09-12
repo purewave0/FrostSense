@@ -179,14 +179,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         ]
     });
 
+    let latestUpdateDate = null;
+    let tableUserIds = [];
     const response = await Api.fetchUsers();
     const users = await response.json();
 
     for (const user of users) {
+        const updatedOn = new Date(user.updated_on);
+        if (latestUpdateDate === null || updatedOn > latestUpdateDate) {
+            latestUpdateDate = updatedOn;
+        }
+
         if (user.id === currentUserId) {
             // don't let users see themselves
             continue;
         }
+
         table.row.add(
             {
                 'id': user.id,
@@ -197,10 +205,58 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'created_on': user.created_on,
             }
         );
+        tableUserIds.push(user.id);
     }
     table.draw();
 
-    // TODO: constantly check for updates
+    async function fetchAndApplyTableUpdates() {
+        console.log(`users.js: fetching updates after ${latestUpdateDate}`)
+        const response = await Api.fetchUsers(latestUpdateDate);
+        const updatedUsers = await response.json();
+        let wereUpdatesMade = false;
+
+        for (const user of updatedUsers) {
+            if (user.id === currentUserId) {
+                // the current user is never in the table
+                continue;
+            }
+
+            const updatedOn = new Date(user.updated_on);
+            if (latestUpdateDate === null || updatedOn > latestUpdateDate) {
+                latestUpdateDate = updatedOn;
+            }
+
+            const isNewlyCreated = !tableUserIds.includes(user.id);
+            if (isNewlyCreated) {
+                console.log('users.js: (TODO) newly created user:', user)
+                // TODO: add row
+            } else {
+                // the user already exists; reflect the changes
+                console.log('users.js: updated user:', user)
+                table
+                    .row((_, userData) => userData.id === user.id)
+                    .data(
+                        {
+                            'id': user.id,
+                            'display_name': user.display_name,
+                            'username': user.username,
+                            'permissions': user.permissions,
+                            'updated_on': user.updated_on,
+                            'created_on': user.created_on,
+                        }
+                    );
+            }
+            wereUpdatesMade = true;
+        }
+
+        if (wereUpdatesMade) {
+            console.log('users.js: updates were made. redrawing table')
+            table.draw();
+        }
+    }
+
+    setInterval(fetchAndApplyTableUpdates, 5_000);
+
 
     // -- actions/modals --
 
