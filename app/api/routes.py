@@ -30,35 +30,11 @@ from app.models.readings import Sensor
 from app.models.users import User
 
 
-@bp.route('/sensors', methods=['GET', 'POST'])
+@bp.route('/sensors')
 @login_required
 def api_sensors():
-    if request.method == 'GET':
-        sensors = get_sensors()
-        return jsonify(sensors)
-
-    try:
-        name = str(request.json['name']).strip()
-    except KeyError:
-        return jsonify({'error': 'field_error'}), 400
-
-    name_length = len(name)
-    if (
-        name_length < Sensor.MIN_NAME_LENGTH
-        or name_length > Sensor.MAX_NAME_LENGTH
-    ):
-        return jsonify({'error': 'invalid_name_length'}), 400
-
-    if sensor_name_exists(name):
-        return jsonify({'error': 'name_already_exists'}), 400
-
-    sensor = create_sensor(name)
-
-    return jsonify({
-        'id': sensor['id'],
-        'name': sensor['name'],
-        'created_on': sensor['created_on'],
-    }), 201
+    sensors = get_sensors()
+    return jsonify(sensors)
 
 
 @bp.route('/sensors/last-readings')
