@@ -359,12 +359,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const temporaryPasswordModal = {
         'displayName': document.getElementById('modal-temporary-password-display-name'),
         'username': document.getElementById('modal-temporary-password-username'),
+        'passwordWrapper':
+            document.getElementById('modal-temporary-password-password-wrapper'),
         'password': document.getElementById('modal-temporary-password-password'),
     };
+    temporaryPasswordModal.passwordWrapper.addEventListener('click', () => {
+        temporaryPasswordModal.passwordWrapper.classList.add('revealed');
+    });
 
     function openTemporaryPasswordModal(displayName, username, password) {
         temporaryPasswordModal.displayName.textContent = displayName;
         temporaryPasswordModal.username.textContent = username;
+        temporaryPasswordModal.passwordWrapper.classList.remove('revealed');
         temporaryPasswordModal.password.textContent = password;
         MicroModal.show('modal-temporary-password', {
             onClose() {
