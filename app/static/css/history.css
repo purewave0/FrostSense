@@ -32,6 +32,7 @@
     max-width: 165px;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-wrap: nowrap;
 }
 
 .graph-card.empty .readings-count {
