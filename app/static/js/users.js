@@ -95,9 +95,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                     return data;
                 },
-                createdCell: (cell, data) => {
-                    cell.title = formatPermissionsValue(data);
-                }
             },
             {
                 name: 'updated_on',
@@ -173,6 +170,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         ],
+        rowCallback: (row, userData) => {
+            const permissionsCell = row.cells[1];
+            permissionsCell.title = formatPermissionsValue(userData.permissions);
+        },
         order: [
             [1, 'asc'],
         ]
