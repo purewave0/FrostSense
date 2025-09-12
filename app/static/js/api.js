@@ -33,6 +33,16 @@ const Api = {
         );
     },
 
+    editSensor(sensorId, name) {
+        return fetch(`/api/sensors/${sensorId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+            })
+        });
+    },
+
     createReport(sensorId, rangeStart, rangeEnd, dataFormat, notes) {
         return fetch('/api/reports', {
             method: 'POST',

@@ -51,22 +51,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const sensorsResponse = await Api.fetchSensors();
     const sensors = await sensorsResponse.json();
+    const sensorCards = [];
 
     const todayCountsResponse = await Api.fetchTodayReadingsCounts();
     const todayCounts = await todayCountsResponse.json();
 
     const locales = getUserLocales();
 
-    let currentlySelectedSensor = null;
+    let selectedSensor = null;
 
     const fragment = new DocumentFragment();
     for (const sensor of sensors) {
         const sensorCard = createSensorCard(sensor, todayCounts[sensor.id], locales);
         fragment.append(sensorCard);
+        sensorCards.push(sensorCard);
 
         const editButton = sensorCard.querySelector('.sensor-edit-button');
         editButton.addEventListener('click', (event) => {
-            currentlySelectedSensor = sensor;
+            selectedSensor = sensor;
             openEditModal(sensor.name)
         });
     }
@@ -79,11 +81,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         'form': document.getElementById('modal-edit-form'),
         'name': document.getElementById('modal-edit-name'),
     };
-    editModal.form.addEventListener('submit', (event) => {
+    editModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        alert('TODO editing sensor with id ' + currentlySelectedSensor.id);
+        const name = editModal.name.value.trim();
+        await Api.editSensor(selectedSensor.id, name);
+        // TODO: handle errors
+
+        const correspondingSensorCard = sensorCards
+            .find(card => Number(card.dataset.id) === selectedSensor.id);
+        correspondingSensorCard.dataset.name = name;
+        const nameElement = correspondingSensorCard.querySelector('.sensor-name');
+        nameElement.textContent = name;
         MicroModal.close('modal-edit');
-        hideMenu();
     });
 
     function openEditModal(name) {
