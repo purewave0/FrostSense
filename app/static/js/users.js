@@ -239,6 +239,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         'created_on': user.created_on,
                     }
                 );
+
+                tableUserIds.push(user.id);
             } else {
                 // the user already exists; reflect the changes
                 console.log('users.js: updated user:', user)
@@ -338,6 +340,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const newUser = await response.json();
+        // we'll push the id into `tableUserIds` only once the new table row is added
 
         MicroModal.close('modal-create');
         createModal.form.reset();
