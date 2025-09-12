@@ -275,6 +275,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         openCreateModal();
     });
 
+    function collapseAllWhitespace(string) {
+        return string.replace(/\s+/g, ' ');
+    }
+
+    /**
+     * Return the given string without any whitespace characters.
+     */
+    function eraseAllWhitespace(string) {
+        return string.replace(/\s/g, '');
+    }
+
     const createModal = {
         'form': document.getElementById('modal-create-form'),
         'displayName': document.getElementById('modal-create-display-name'),
@@ -283,6 +294,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             'input[type="checkbox"][name="create-permissions"]'
         ),
     };
+    createModal.displayName.addEventListener('input', () => {
+        createModal.displayName.value =
+            collapseAllWhitespace(createModal.displayName.value);
+    });
+    createModal.username.addEventListener('input', () => {
+        createModal.username.value = eraseAllWhitespace(createModal.username.value);
+    });
     createModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
         MicroModal.close('modal-create');

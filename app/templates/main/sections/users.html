@@ -68,12 +68,30 @@
                         <div class="columns">
                             <div class="form-field" title="What others see.">
                                 <label for="modal-create-display-name">Display Name</label>
-                                <input id="modal-create-display-name" type="text" placeholder="John Doe" required>
+                                <input
+                                    id="modal-create-display-name"
+                                    type="text"
+                                    placeholder="John Doe"
+                                    required
+                                    minlength="2"
+                                    maxlength="32"
+                                    pattern=".*\S.*\S.*"
+                                    title="2-32 characters"
+                                >
                             </div>
 
                             <div class="form-field" title="Used for logging in.">
                                 <label for="modal-create-username">Username</label>
-                                <input id="modal-create-username" type="text" placeholder="john.doe" required>
+                                <input
+                                    id="modal-create-username"
+                                    type="text"
+                                    placeholder="john.doe"
+                                    required
+                                    minlength="2"
+                                    maxlength="32"
+                                    pattern="\S{2,}"
+                                    title="2-32 characters, no spaces"
+                                >
                                 <span class="form-field-helper">
                                     No spaces allowed.
                                 </span>
