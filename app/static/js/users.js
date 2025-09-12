@@ -303,7 +303,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     createModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        MicroModal.close('modal-create');
 
         const displayName = createModal.displayName.value.trim();
         const username = createModal.username.value.trim();
@@ -319,9 +318,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             username,
             permissionsValue
         );
-        // TODO: handle errors
+
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            switch (error) {
+                case 'username_already_exists':
+                    createModal.username
+                        .setCustomValidity('This username already exists.');
+                    createModal.username.reportValidity();
+                    createModal.username.focus();
+                    createModal.username.setCustomValidity('');
+                    break;
+                default:
+                    // TODO: handle other errors
+                    alert('TODO other errors');
+                    break;
+            }
+            return;
+        }
+
         const newUser = await response.json();
 
+        MicroModal.close('modal-create');
         createModal.form.reset();
 
         // TODO: add new user row
