@@ -327,7 +327,15 @@ def api_logout():
 # TODO: permission required here
 def api_users():
     if request.method == 'GET':
-        users = get_users()
+        raw_updated_after = request.args.get('updated-after')
+        updated_after = None
+        if raw_updated_after:
+            try:
+                updated_after = _parse_iso_datetime(raw_updated_after)
+            except (ValueError, TypeError, KeyError):
+                return jsonify({'error': 'invalid_datetime'}), 400
+
+        users = get_users(updated_after)
         return jsonify(users)
 
     try:

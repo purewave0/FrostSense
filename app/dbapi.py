@@ -349,19 +349,30 @@ def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[i
 
 # -- users --
 
-def get_users() -> tuple[dict[str, Any], ...]:
-    """Return all users."""
-    users = db.session.execute(
-        db.select(
-            User.id,
-            User.display_name,
-            User.username,
-            User.permissions,
-            User.created_on,
-            User.updated_on,
-        )
+def get_users(
+    updated_after: datetime | None = None
+) -> tuple[dict[str, Any], ...]:
+    """Return all users.
+
+    If `updated_after` is given, return only users that were updated after the given
+    date.
+
+    """
+    query =  db.select(
+        User.id,
+        User.display_name,
+        User.username,
+        User.permissions,
+        User.created_on,
+        User.updated_on,
     )
 
+    if updated_after:
+        query = query.filter(
+            User.updated_on > updated_after,
+        )
+
+    users = db.session.execute(query)
     return _rows_to_dicts(users)
 
 def get_user_by_id(id: int) -> User | None:
