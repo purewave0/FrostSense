@@ -38,7 +38,15 @@
                     <form id="modal-edit-form">
                         <div class="form-field">
                             <label for="modal-edit-name">Name</label>
-                            <input id="modal-edit-name" type="text" required>
+                            <input
+                                id="modal-edit-name"
+                                type="text"
+                                required
+                                minlength="1"
+                                maxlength="64"
+                                pattern=".*\S.*"
+                                title="The name cannot be empty"
+                            >
                         </div>
                     </form>
                 </main>
