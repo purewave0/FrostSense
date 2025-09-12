@@ -96,6 +96,24 @@ def sensor_name_exists(name: str) -> bool:
     return result
 
 
+def update_sensor_by_id(
+    sensor_id: int,
+    name: str,
+) -> None:
+    """Update a sensor in the database."""
+
+    db.session.execute(
+        db.update(
+            Sensor
+        ).where(
+            Sensor.id == sensor_id
+        ).values(
+            name=name,
+        )
+    )
+    db.session.commit()
+
+
 # -- readings --
 
 def create_reading(sensor_id: int, temperature: float) -> dict:

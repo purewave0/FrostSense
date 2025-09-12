@@ -6,7 +6,7 @@ from flask_login import current_user, login_user, login_required, logout_user
 from app.api import bp
 from app.dbapi import (
     get_sensors, get_sensor_ids, get_sensor_name, sensor_name_exists, sensor_id_exists,
-    create_sensor,
+    create_sensor, update_sensor_by_id,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
     get_sensor_readings_in_time_range,
@@ -169,6 +169,22 @@ def api_sensors_today_readings_count():
     return jsonify(
         get_sensors_readings_counts_since_today(sensor_ids)
     )
+
+
+@bp.route('/sensors/<int:sensor_id>', methods=['PUT'])
+@login_required
+def api_update_sensor(sensor_id):
+    try:
+        name = str(request.json['name'])
+        # TODO: status
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'field_error'}), 400
+
+    if not sensor_id_exists(sensor_id):
+        return jsonify({'error': 'unknown_sensor'}), 404
+
+    update_sensor_by_id(sensor_id, name)
+    return '', 204
 
 
 def _parse_ints(raw_ints: str, ignore_duplicates: bool = False) -> list[int]:
