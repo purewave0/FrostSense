@@ -228,8 +228,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const isNewlyCreated = !tableUserIds.includes(user.id);
             if (isNewlyCreated) {
-                console.log('users.js: (TODO) newly created user:', user)
-                // TODO: add row
+                console.log('users.js: newly created user:', user)
+                table.row.add(
+                    {
+                        'id': user.id,
+                        'display_name': user.display_name,
+                        'username': user.username,
+                        'permissions': user.permissions,
+                        'updated_on': user.updated_on,
+                        'created_on': user.created_on,
+                    }
+                );
             } else {
                 // the user already exists; reflect the changes
                 console.log('users.js: updated user:', user)
