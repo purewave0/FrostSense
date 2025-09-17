@@ -364,7 +364,10 @@ def api_users():
     try:
         display_name = str(request.json['display_name']).strip()
         username = str(request.json['username']).strip()
-        permissions = User.Permission(int(request.json['permissions']))
+        raw_permissions = int(request.json['permissions'])
+        if raw_permissions < 0:
+            raise ValueError('negative permission')
+        permissions = User.Permission(raw_permissions)
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
@@ -413,7 +416,10 @@ def api_users():
 @permission_required(User.Permission.MANAGE_USERS)
 def api_update_user(user_id: int):
     try:
-        permissions = User.Permission(int(request.json['permissions']))
+        raw_permissions = int(request.json['permissions'])
+        if raw_permissions < 0:
+            raise ValueError('negative permission')
+        permissions = User.Permission(raw_permissions)
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
