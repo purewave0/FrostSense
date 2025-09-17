@@ -39,6 +39,10 @@ def create_app(config_class=Config):
         create_system_settings_timestamp_if_needed()
         create_missing_system_settings()
 
+        @app.context_processor
+        def inject_permission():
+            return {'UserPermission': User.Permission}
+
         @login_manager.user_loader
         def load_user(user_id: int) -> User | None:
             user = db.session.execute(
