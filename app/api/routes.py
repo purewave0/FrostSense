@@ -1,12 +1,12 @@
 import datetime as dt
 
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from flask_login import current_user, login_user, login_required, logout_user
 
 from app.api import bp
 from app.dbapi import (
     get_sensors, get_sensor_ids, get_sensor_name, sensor_name_exists, sensor_id_exists,
-    create_sensor, update_sensor_by_id,
+    update_sensor_by_id,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
     get_sensor_readings_in_time_range,
@@ -28,6 +28,7 @@ from app.api.report import (
 )
 from app.models.readings import Sensor
 from app.models.users import User
+from app.util import permission_required
 
 
 @bp.route('/sensors')
@@ -93,6 +94,7 @@ def api_readings_by_days():
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
 @login_required
+# TODO: require sensor key
 def api_sensor_readings(sensor_id):
     try:
         temperature = float(request.json['temperature'])
@@ -148,6 +150,7 @@ def api_sensors_today_readings_count():
 
 @bp.route('/sensors/<int:sensor_id>', methods=['PUT'])
 @login_required
+@permission_required(User.Permission.EDIT_SENSORS)
 def api_update_sensor(sensor_id):
     try:
         name = str(request.json['name']).strip()
@@ -191,6 +194,7 @@ def _parse_ints(raw_ints: str, ignore_duplicates: bool = False) -> list[int]:
 
 @bp.route('/reports', methods=['POST'])
 @login_required
+@permission_required(User.Permission.MANAGE_REPORTS)
 def api_generate_report():
     try:
         sensor_id = int(request.json['sensor_id'])
@@ -343,7 +347,7 @@ def api_logout():
 
 @bp.route('/users', methods=['GET', 'POST'])
 @login_required
-# TODO: permission required here
+@permission_required(User.Permission.MANAGE_USERS)
 def api_users():
     if request.method == 'GET':
         raw_updated_after = request.args.get('updated-after')
@@ -406,12 +410,15 @@ def api_users():
 
 @bp.route('/users/<int:user_id>', methods=['PUT'])
 @login_required
-# TODO: permission required here
+@permission_required(User.Permission.MANAGE_USERS)
 def api_update_user(user_id: int):
     try:
         permissions = User.Permission(int(request.json['permissions']))
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
+
+    # TODO: don't let user edit themselves
+    # TODO: limit what permissions can be given
 
     update_user_permissions_by_id(user_id, permissions)
     return '', 204
@@ -419,10 +426,12 @@ def api_update_user(user_id: int):
 
 @bp.route('/users/<int:user_id>/reset-password', methods=['POST'])
 @login_required
-# TODO: permission required here
+@permission_required(User.Permission.MANAGE_USERS)
 def api_user_reset_password(user_id: int):
+    # TODO: don't let user edit themselves
     temporary_password = User.generate_temporary_password()
     update_user_password_by_id(user_id, temporary_password, True)
+
 
     return jsonify(temporary_password)
 
@@ -434,6 +443,9 @@ def api_user_reset_password(user_id: int):
 def api_system_settings():
     if request.method == 'GET':
         return get_system_settings()
+
+    if not current_user.has_permission(User.Permission.MANAGE_SYSTEM_SETTINGS):
+        return abort(403)
 
     try:
         default_temperature_unit = User.TemperatureUnit(

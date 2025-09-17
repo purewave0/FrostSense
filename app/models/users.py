@@ -41,6 +41,9 @@ class User(UserMixin, db.Model):
         ADMIN = MANAGE_REPORTS | EDIT_SENSORS | MANAGE_USERS | MANAGE_SYSTEM_SETTINGS
         """Shorthand for all permissions."""
 
+        def has_permission(self, other: 'User.Permission') -> bool:
+            return (self & other).value != 0
+
     MIN_NAME_LENGTH = 2
     MAX_NAME_LENGTH = 32
     MIN_PASSWORD_LENGTH = 6
@@ -90,6 +93,9 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password: str):
         return check_password_hash(self.password_hash, password)
+
+    def has_permission(self, permission_value: Permission) -> bool:
+        return User.Permission(self.permissions).has_permission(permission_value)
 
     @staticmethod
     def generate_password_hash(password: str) -> str:
