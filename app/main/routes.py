@@ -3,6 +3,8 @@ from flask_login import current_user, login_required, logout_user
 
 from app.main import bp
 from app.api.report import get_report_file
+from app.models.users import User
+from app.util import permission_required
 
 
 @bp.route('/login')
@@ -36,11 +38,13 @@ def sensors():
 
 @bp.route('/reports')
 @login_required
+@permission_required(User.Permission.MANAGE_REPORTS)
 def reports():
     return render_template('main/sections/reports.html')
 
 @bp.route('/reports/<code>')
 @login_required
+@permission_required(User.Permission.MANAGE_REPORTS)
 def get_report(code):
     try:
         report_html = get_report_file(code)
@@ -51,6 +55,7 @@ def get_report(code):
 
 @bp.route('/verify-reports')
 @login_required
+@permission_required(User.Permission.MANAGE_REPORTS)
 def verify_reports():
     return render_template('main/sections/verify-reports.html')
 
@@ -67,10 +72,12 @@ def main_logout():
 
 @bp.route('/users')
 @login_required
+@permission_required(User.Permission.MANAGE_USERS)
 def users():
     return render_template('main/sections/users.html')
 
 @bp.route('/system-settings')
 @login_required
+@permission_required(User.Permission.MANAGE_SYSTEM_SETTINGS)
 def system_settings():
     return render_template('main/system-settings.html')
