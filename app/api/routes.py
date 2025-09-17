@@ -371,6 +371,12 @@ def api_users():
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
+    contains_illegal_permission = (
+        User.Permission.ASSIGNABLE_PERMISSIONS & permissions != permissions
+    )
+    if contains_illegal_permission:
+        return jsonify({'error': 'illegal_permission'}), 400
+
     display_name_length = len(display_name)
     if (
         display_name_length < User.MIN_NAME_LENGTH
@@ -424,7 +430,12 @@ def api_update_user(user_id: int):
         return jsonify({'error': 'field_error'}), 400
 
     # TODO: don't let user edit themselves
-    # TODO: limit what permissions can be given
+
+    contains_illegal_permission = (
+        User.Permission.ASSIGNABLE_PERMISSIONS & permissions != permissions
+    )
+    if contains_illegal_permission:
+        return jsonify({'error': 'illegal_permission'}), 400
 
     update_user_permissions_by_id(user_id, permissions)
     return '', 204

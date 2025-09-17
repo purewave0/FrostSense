@@ -40,6 +40,8 @@ class User(UserMixin, db.Model):
         """The user can edit system settings."""
         ADMIN = MANAGE_REPORTS | EDIT_SENSORS | MANAGE_USERS | MANAGE_SYSTEM_SETTINGS
         """Shorthand for all permissions."""
+        ASSIGNABLE_PERMISSIONS = MANAGE_REPORTS | EDIT_SENSORS
+        """Permissions that can be granted through the web interface."""
 
         def has_permission(self, other: 'User.Permission') -> bool:
             return (self & other).value != 0
