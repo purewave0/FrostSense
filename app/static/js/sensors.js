@@ -48,6 +48,9 @@ function createSensorCard(sensor, todayReadingsCount, locales) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const sensorsDestination = document.getElementById('sensors');
+    if (canEditSensors) {
+        sensorsDestination.classList.add('can-edit');
+    }
 
     const sensorsResponse = await Api.fetchSensors();
     const sensors = await sensorsResponse.json();
