@@ -13,7 +13,7 @@ from app.dbapi import (
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
     get_users, get_user_by_id, get_user_by_username,
-    create_user, update_user_by_id, update_user_permissions_by_id,
+    create_user, update_user_by_id,
     update_user_password_by_id,
     get_user_last_update_time,
     get_system_settings,
@@ -422,6 +422,7 @@ def api_users():
 @permission_required(User.Permission.MANAGE_USERS)
 def api_update_user(user_id: int):
     try:
+        display_name = str(request.json['display_name']).strip()
         raw_permissions = int(request.json['permissions'])
         if raw_permissions < 0:
             raise ValueError('negative permission')
@@ -429,7 +430,12 @@ def api_update_user(user_id: int):
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
-    # TODO: don't let user edit themselves
+    display_name_length = len(display_name)
+    if (
+        display_name_length < User.MIN_NAME_LENGTH
+        or display_name_length > User.MAX_NAME_LENGTH
+    ):
+        return jsonify({'error': 'invalid_display_name'}), 400
 
     contains_illegal_permission = (
         User.Permission.ASSIGNABLE_PERMISSIONS & permissions != permissions
@@ -437,7 +443,21 @@ def api_update_user(user_id: int):
     if contains_illegal_permission:
         return jsonify({'error': 'illegal_permission'}), 400
 
-    update_user_permissions_by_id(user_id, permissions)
+    if user_id == current_user.id:
+        return jsonify({'error': 'editing_yourself'}), 400
+
+    user = get_user_by_id(user_id)
+    if not user:
+        return jsonify({'error': 'user_not_found'}), 404
+
+    update_user_by_id(
+        user_id,
+        display_name,
+        user.username,
+        permissions,
+        user.homepage,
+        user.temperature_unit
+    )
     return '', 204
 
 
