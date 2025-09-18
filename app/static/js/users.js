@@ -185,6 +185,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         ],
         rowCallback: (row, userData) => {
+            const nameCell = row.cells[0];
+            nameCell.title =
+                `Display name: ${userData.display_name}`
+                + `\nUsername: ${userData.username}`;
+
             const permissionsCell = row.cells[1];
             permissionsCell.title = formatPermissionsValue(userData.permissions);
         },
