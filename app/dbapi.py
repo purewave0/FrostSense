@@ -74,7 +74,6 @@ def get_sensor_name(sensor_id: int) -> str:
 
 def sensor_id_exists(sensor_id: int) -> bool:
     """Return whether a sensor with the given ID exists."""
-    # TODO: case-insensitiveness
     result = db.session.execute(
         db.select(
             db.exists().where(Sensor.id == sensor_id)
@@ -393,6 +392,7 @@ def get_users(
     users = db.session.execute(query)
     return _rows_to_dicts(users)
 
+
 def get_user_by_id(id: int) -> User | None:
     """Return the User with the given id, or None."""
     user = db.session.execute(
@@ -417,6 +417,17 @@ def get_user_by_username(username: str) -> User | None:
     ).scalar_one_or_none()
 
     return user
+
+
+def user_id_exists(user_id: int) -> bool:
+    """Return whether a user with the given ID exists."""
+    result = db.session.execute(
+        db.select(
+            db.exists().where(User.id == user_id)
+        )
+    ).scalar_one()
+
+    return result
 
 
 def create_user(

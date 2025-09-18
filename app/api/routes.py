@@ -13,6 +13,7 @@ from app.dbapi import (
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
     get_users, get_user_by_id, get_user_by_username,
+    user_id_exists,
     create_user, update_user_by_id,
     update_user_password_by_id,
     get_user_last_update_time,
@@ -289,7 +290,6 @@ def api_own_preferences():
             'temperature_unit': user.temperature_unit,
         })
 
-    # TODO: no spaces allowed in username
     try:
         username = str(request.json['username']).strip()
         homepage = User.WebPage(request.json['homepage'])
@@ -462,10 +462,14 @@ def api_update_user(user_id: int):
 @login_required
 @permission_required(User.Permission.MANAGE_USERS)
 def api_user_reset_password(user_id: int):
-    # TODO: don't let user edit themselves
+    if user_id == current_user.id:
+        return jsonify({'error': 'editing_yourself'}), 400
+
+    if not user_id_exists(user_id):
+        return jsonify({'error': 'user_not_found'}), 404
+
     temporary_password = User.generate_temporary_password()
     update_user_password_by_id(user_id, temporary_password, True)
-
 
     return jsonify(temporary_password)
 
