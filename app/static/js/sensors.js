@@ -96,6 +96,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     editModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const name = editModal.name.value.trim();
+
+        const wereChangesMade = (
+            selectedSensor.name !== name
+        );
+        if (!wereChangesMade) {
+            // TODO: show proper alert
+            alert('no changes made')
+            MicroModal.close('modal-edit');
+            return;
+        }
+
         const response = await Api.editSensor(selectedSensor.id, name);
 
         if (!response.ok) {
