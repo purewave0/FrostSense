@@ -427,6 +427,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
+        const wereChangesMade = (
+            selectedUser.display_name !== displayName
+            || permissionsValue !== selectedUser.permissions
+        );
+        if (!wereChangesMade) {
+            // TODO: show proper alert
+            alert('no changes made')
+            MicroModal.close('modal-edit');
+            return;
+        }
+
         await Api.editUser(selectedUser.id, displayName, permissionsValue);
         // TODO: handle errors
         await fetchAndApplyTableUpdates();
