@@ -284,7 +284,6 @@ def api_own_preferences():
         if not user:
             return jsonify({'error': 'user_not_found'}), 404
         return jsonify({
-            'display_name': user.display_name,
             'username': user.username,
             'homepage': user.homepage,
             'temperature_unit': user.temperature_unit,
@@ -292,19 +291,11 @@ def api_own_preferences():
 
     # TODO: no spaces allowed in username
     try:
-        display_name = str(request.json['display_name']).strip()
         username = str(request.json['username']).strip()
         homepage = User.WebPage(request.json['homepage'])
         temperature_unit = User.TemperatureUnit(request.json['temperature_unit'])
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
-
-    display_name_length = len(display_name)
-    if (
-        display_name_length < User.MIN_NAME_LENGTH
-        or display_name_length > User.MAX_NAME_LENGTH
-    ):
-        return jsonify({'error': 'invalid_display_name'}), 400
 
     username_length = len(username)
     if (
@@ -321,9 +312,9 @@ def api_own_preferences():
 
     update_user_by_id(
         current_user.id,
-        display_name,
+        current_user.display_name,
         username,
-        current_user.permissions,
+        User.Permission(current_user.permissions),
         homepage,
         temperature_unit
     )
