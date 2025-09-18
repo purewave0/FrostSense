@@ -2,12 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const preferencesForm = document.getElementById('preferences-form');
 
     const editButton = document.getElementById('edit-button');
-    const displayedNames = {
-        'displayName': document.getElementById('displayed-display-name'),
-        'username': document.getElementById('displayed-username'),
-    };
+    const displayedUsername = document.getElementById('displayed-username');
     const formFields = {
-        'displayName': document.getElementById('display-name'),
         'username': document.getElementById('username'),
         'homepage': document.getElementById('homepage'),
         'temperatureUnit': document.getElementById('temperature-unit'),
@@ -50,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     preferencesForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        const displayName = formFields.displayName.value.trim();
         const username = formFields.username.value.trim();
         // TODO: check if username is unique
 
@@ -59,15 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // TODO: loading
         const response = await Api.editPreferences(
-            displayName,
             username,
             homepage,
             temperatureUnit
         );
         if (response.ok) {
             leaveEditMode();
-            displayedNames.displayName.textContent = displayName;
-            displayedNames.username.textContent = username;
+            displayedUsername.textContent = username;
             await PreferencesCacheUpdater.updateIfNeeded();
             // also update our copy, used for reverting changes in fields
             originalPreferences = PreferencesCache.get();

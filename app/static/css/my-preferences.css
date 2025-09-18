@@ -74,6 +74,27 @@
     transition: color 0.1s ease;
 }
 
+#display-name-wrapper {
+    position: relative;
+}
+
+#display-name {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 24px;
+}
+
+#display-name-wrapper svg {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    right: 4px;
+    bottom: 0;
+    margin: auto 0;
+    fill: var(--color-border);
+}
+
 #edit-controls {
     display: flex;
     flex-direction: row;

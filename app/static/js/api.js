@@ -104,12 +104,11 @@ const Api = {
         return fetch(`/api/users/${userId}/reset-password`, { method: 'POST', });
     },
 
-    editPreferences(displayName, username, homepage, temperatureUnit) {
+    editPreferences(username, homepage, temperatureUnit) {
         return fetch('/api/me/preferences', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                'display_name': displayName,
                 'username': username,
                 'homepage': homepage,
                 'temperature_unit': temperatureUnit,
