@@ -89,11 +89,12 @@ const Api = {
         });
     },
 
-    editUser(userId, permissionsValue) {
+    editUser(userId, displayName, permissionsValue) {
         return fetch(`/api/users/${userId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                'display_name': displayName,
                 'permissions': permissionsValue,
             })
         });

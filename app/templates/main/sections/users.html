@@ -164,6 +164,20 @@
                 </header>
                 <main class="modal__content" id="modal-edit-content">
                     <form id="modal-edit-form">
+                        <div class="form-field" title="What others see.">
+                            <label for="modal-edit-display-name">Display Name</label>
+                            <input
+                                id="modal-edit-display-name"
+                                type="text"
+                                placeholder="John Doe"
+                                required
+                                minlength="2"
+                                maxlength="32"
+                                pattern=".*\S.*\S.*"
+                                title="2-32 characters"
+                            >
+                        </div>
+
                         <div>
                             <h3 class="form-section-title">Permissions</h3>
                             <ul id="modal-edit-permissions">

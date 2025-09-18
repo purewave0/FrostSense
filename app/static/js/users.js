@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 width: '100px',
                 searchable: false,
                 orderable: false,
-                render: (data, _, user) => {
+                render: (_, __, user) => {
                     const editButton = document.createElement('button');
                     editButton.className = 'action action-edit';
                     editButton.title = 'Edit';
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     `;
                     editButton.addEventListener('click', () => {
                         selectedUser = user;
-                        openEditModal(user.permissions);
+                        openEditModal(user.display_name, user.permissions);
                     });
 
                     const resetPasswordButton = document.createElement('button');
@@ -292,10 +292,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // -- Create modal --
     const createButton = document.getElementById('top-action-create');
-    createButton.addEventListener('click', (event) => {
+    createButton.addEventListener('click', () => {
         openCreateModal();
     });
 
+    /**
+     * Return the given string with any consecutive whitespaces collapsed into one.
+     */
     function collapseAllWhitespace(string) {
         return string.replace(/\s+/g, ' ');
     }
@@ -406,13 +409,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     // -- Edit modal --
     const editModal = {
         'form': document.getElementById('modal-edit-form'),
+        'displayName': document.getElementById('modal-edit-display-name'),
         'permissions': document.querySelectorAll(
             'input[type="checkbox"][name="edit-permissions"]'
         ),
     };
+    editModal.displayName.addEventListener('input', () => {
+        editModal.displayName.value =
+            collapseAllWhitespace(editModal.displayName.value);
+    });
     editModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        const displayName = editModal.displayName.value.trim();
         let permissionsValue = 0;
         for (const permissionCheckbox of editModal.permissions) {
             if (permissionCheckbox.checked) {
@@ -420,7 +429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        await Api.editUser(selectedUser.id, permissionsValue);
+        await Api.editUser(selectedUser.id, displayName, permissionsValue);
         // TODO: handle errors
         await fetchAndApplyTableUpdates();
         MicroModal.close('modal-edit');
@@ -428,7 +437,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         selectedUser = null;
     });
 
-    function openEditModal(permissionsValue) {
+    function openEditModal(displayName, permissionsValue) {
+        editModal.displayName.value = displayName;
+        editModal.displayName.placeholder = displayName;
+
         for (const permissionCheckbox of editModal.permissions) {
             const hasThisPermission = hasPermission(
                 permissionsValue, permissionCheckbox.value
@@ -456,7 +468,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'displayName': document.getElementById('modal-reset-password-display-name'),
         'confirmButton': document.getElementById('modal-reset-password-confirm'),
     };
-    resetPasswordModal.confirmButton.addEventListener('click', async (event) => {
+    resetPasswordModal.confirmButton.addEventListener('click', async () => {
         const response = await Api.resetUserPassword(selectedUser.id);
         // TODO: handle errors
         await fetchAndApplyTableUpdates();  // just update the `updated_on` date
