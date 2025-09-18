@@ -389,12 +389,18 @@ def api_users():
         return jsonify({'error': 'username_already_exists'}), 400
 
     temporary_password = User.generate_temporary_password()
+    system_settings = get_system_settings()
+    default_temperature_unit = User.TemperatureUnit(
+        system_settings['default_temperature_unit']
+    )
     new_user = create_user(
         display_name,
         username,
         temporary_password,
         True,
-        permissions
+        permissions,
+        User.WebPage.READINGS,
+        default_temperature_unit
     )
 
     return jsonify({

@@ -424,7 +424,9 @@ def create_user(
     username: str,
     password: str,
     is_password_temporary: bool,
-    permissions: User.Permission
+    permissions: User.Permission,
+    homepage: User.WebPage = User.WebPage.READINGS,
+    temperature_unit: User.TemperatureUnit = User.TemperatureUnit.CELSIUS,
 ) -> User:
     """Create a user in the database.
 
@@ -438,11 +440,21 @@ def create_user(
         is_password_temporary: Whether the user must change this password after using
             it to log in (either for the first time, or after a password reset).
         permissions: The user's permissions.
+        homepage: The page the user is redirected to after logging in.
+        temperature_unit: The unit for displaying any temperatures.
 
     Returns:
         The newly created User object.
     """
-    user = User(display_name, username, password, is_password_temporary, permissions)
+    user = User(
+        display_name,
+        username,
+        password,
+        is_password_temporary,
+        permissions,
+        homepage,
+        temperature_unit,
+    )
     db.session.add(user)
     db.session.commit()
 
