@@ -89,6 +89,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         'form': document.getElementById('modal-edit-form'),
         'name': document.getElementById('modal-edit-name'),
     };
+    editModal.name.addEventListener('input', async () => {
+        editModal.name.value =
+            collapseAllWhitespace(editModal.name.value);
+    });
     editModal.form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const name = editModal.name.value.trim();

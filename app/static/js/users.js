@@ -302,13 +302,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     /**
-     * Return the given string with any consecutive whitespaces collapsed into one.
-     */
-    function collapseAllWhitespace(string) {
-        return string.replace(/\s+/g, ' ');
-    }
-
-    /**
      * Return the given string without any whitespace characters.
      */
     function eraseAllWhitespace(string) {

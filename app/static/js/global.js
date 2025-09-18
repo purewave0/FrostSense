@@ -53,6 +53,12 @@ if (headerAvatar) {
 }
 
 
+/**
+ * Return the given string with all consecutive whitespaces collapsed into one.
+ */
+function collapseAllWhitespace(string) {
+    return string.replace(/\s+/g, ' ');
+}
 
 /**
  * Round `temperature` to 1 decimal place.
