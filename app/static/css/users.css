@@ -129,6 +129,12 @@ body {
     font-family: monospace;
 }
 
+#modal-temporary-password-password-wrapper {
+    display: inline-flex;
+    flex-direction: row;
+    column-gap: 4px;
+}
+
 #modal-temporary-password-password-wrapper:not(.revealed) {
     cursor: pointer;
     user-select: none;
@@ -153,5 +159,6 @@ body {
 
 #modal-temporary-password-password-wrapper.revealed
     #modal-temporary-password-reveal-text {
+    pointer-events: none;
     opacity: 0;
 }
