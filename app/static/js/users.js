@@ -266,6 +266,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log(
                     `users.js: user with id=${userId} no longer exists. deleting`
                 );
+                // TODO: if the soon-to-be-deleted user is selected, close whatever
+                // modal is open and show a warning
                 table
                     .row((_, userData) => userData.id === userId)
                     .remove()
@@ -543,7 +545,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         'confirmButton': document.getElementById('modal-delete-confirm'),
     };
     deleteModal.confirmButton.addEventListener('click', async () => {
-        alert('TODO')
+        const response = await Api.deleteUser(selectedUser.id);
+        // TODO: handle errors
+        await fetchAndApplyTableUpdates();
         MicroModal.close('modal-delete');
     });
 

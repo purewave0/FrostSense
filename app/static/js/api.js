@@ -109,6 +109,10 @@ const Api = {
         return fetch(`/api/users/${userId}/reset-password`, { method: 'POST', });
     },
 
+    deleteUser(userId) {
+        return fetch(`/api/users/${userId}`, { method: 'DELETE', });
+    },
+
     editPreferences(username, homepage, temperatureUnit) {
         return fetch('/api/me/preferences', {
             method: 'PUT',
