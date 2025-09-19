@@ -12,9 +12,9 @@ from app.dbapi import (
     get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
-    get_users, get_user_by_id, get_user_by_username, get_user_ids,
+    get_users, get_user_by_id, get_user_by_username,
     user_id_exists,
-    create_user, update_user_by_id,
+    create_user, update_user_by_id, delete_user_by_id,
     update_user_password_by_id,
     get_user_last_update_time,
     get_system_settings,
@@ -429,10 +429,14 @@ def api_users_summary():
     )
 
 
-@bp.route('/users/<int:user_id>', methods=['PUT'])
+@bp.route('/users/<int:user_id>', methods=['PUT', 'DELETE'])
 @login_required
 @permission_required(User.Permission.MANAGE_USERS)
 def api_update_user(user_id: int):
+    if request.method == 'DELETE':
+        delete_user_by_id(user_id)
+        return '', 204
+
     try:
         display_name = str(request.json['display_name']).strip()
         raw_permissions = int(request.json['permissions'])

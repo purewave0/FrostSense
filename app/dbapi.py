@@ -562,6 +562,18 @@ def update_user_password_by_id(
     db.session.commit()
 
 
+def delete_user_by_id(user_id: int) -> None:
+    """Delete the user with the given ID from the database."""
+    db.session.execute(
+        db.delete(
+            User
+        ).where(
+            User.id == user_id
+        )
+    )
+    db.session.commit()
+
+
 def get_user_last_update_time(user_id: int) -> datetime:
     """Return when the User of id `user_id` was last updated."""
     result = db.session.execute(
