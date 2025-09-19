@@ -12,7 +12,7 @@ from app.dbapi import (
     get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
-    get_users, get_user_by_id, get_user_by_username,
+    get_users, get_user_by_id, get_user_by_username, get_user_ids,
     user_id_exists,
     create_user, update_user_by_id,
     update_user_password_by_id,
@@ -342,15 +342,7 @@ def api_logout():
 @permission_required(User.Permission.MANAGE_USERS)
 def api_users():
     if request.method == 'GET':
-        raw_updated_after = request.args.get('updated-after')
-        updated_after = None
-        if raw_updated_after:
-            try:
-                updated_after = _parse_iso_datetime(raw_updated_after)
-            except (ValueError, TypeError, KeyError):
-                return jsonify({'error': 'invalid_datetime'}), 400
-
-        users = get_users(updated_after)
+        users = get_users()
         return jsonify(users)
 
     try:
@@ -413,6 +405,28 @@ def api_users():
         'created_on':         new_user.created_on,
         'updated_on':         new_user.updated_on,
     }), 201
+
+
+@bp.route('/users/summary')
+@login_required
+@permission_required(User.Permission.MANAGE_USERS)
+def api_users_summary():
+    try:
+        updated_after = _parse_iso_datetime(request.args.get('updated-after'))
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'invalid_datetime'}), 400
+
+    updated_users = []
+    user_ids = []
+    users = get_users()
+    for user in users:
+        user_ids.append(user['id'])
+        if user['updated_on'] > updated_after:
+            updated_users.append(user)
+
+    return jsonify(
+        {'updated_users': updated_users, 'all_user_ids': user_ids }
+    )
 
 
 @bp.route('/users/<int:user_id>', methods=['PUT'])

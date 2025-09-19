@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from datetime import datetime
 from typing import Any
 
@@ -417,6 +417,15 @@ def get_user_by_username(username: str) -> User | None:
     ).scalar_one_or_none()
 
     return user
+
+
+def get_user_ids() -> Sequence[int]:
+    """Return all user IDs."""
+    result = db.session.execute(
+        db.select(User.id)
+    ).scalars().all()
+
+    return result
 
 
 def user_id_exists(user_id: int) -> bool:
