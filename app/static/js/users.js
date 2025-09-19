@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 searchable: false,
                 orderable: false,
                 type: 'string',  /* don't treat it as a number */
+                className: 'dt-head-center',
                 width: '160px',
                 render: (data, type) => {
                     if (type === 'display') {
