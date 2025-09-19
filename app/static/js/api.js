@@ -77,6 +77,11 @@ const Api = {
         return fetch(url);
     },
 
+    fetchUsersSummary(updatedAfter) {
+        let url = `/api/users/summary?updated-after=${updatedAfter.toISOString()}`;
+        return fetch(url);
+    },
+
     createUser(displayName, username, permissionsValue) {
         return fetch('/api/users', {
             method: 'POST',

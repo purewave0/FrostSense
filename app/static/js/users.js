@@ -230,11 +230,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchAndApplyTableUpdates() {
         console.log(`users.js: fetching updates after ${latestUpdateDate}`)
-        const response = await Api.fetchUsers(latestUpdateDate);
-        const updatedUsers = await response.json();
+        const response = await Api.fetchUsersSummary(latestUpdateDate);
+        const usersSummary = await response.json();
         const updatedRowIndices = [];
+        let deletedAnyRows = false;
 
-        for (const user of updatedUsers) {
+        for (const userId of tableUserIds) {
+            const wasUserDeleted = !usersSummary.all_user_ids.includes(userId);
+            if (wasUserDeleted) {
+                console.log(
+                    `users.js: user with id=${userId} no longer exists. deleting`
+                );
+                table
+                    .row((_, userData) => userData.id === userId)
+                    .remove()
+                deletedAnyRows = true;
+            }
+        }
+
+        for (const user of usersSummary.updated_users) {
             if (user.id === currentUserId) {
                 // the current user is never in the table
                 continue;
@@ -280,8 +294,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        if (updatedRowIndices.length > 0) {
-            console.log('users.js: updates were made. redrawing table')
+        if (deletedAnyRows || updatedRowIndices.length > 0) {
+            console.log('users.js: changes were made. redrawing table')
             table.draw();
             for (const index of updatedRowIndices) {
                 const rowElement = table.row(index).node();
