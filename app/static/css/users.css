@@ -124,7 +124,8 @@ body {
 }
 
 #modal-temporary-password-username,
-#modal-temporary-password-password {
+#modal-temporary-password-password,
+#modal-delete-username {
     font-size: 12pt;
     font-family: monospace;
 }
@@ -161,4 +162,9 @@ body {
     #modal-temporary-password-reveal-text {
     pointer-events: none;
     opacity: 0;
+}
+
+#modal-delete .modal__footer button.primary {
+    background-color: var(--color-negative);
+    color: white;
 }

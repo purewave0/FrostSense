@@ -342,4 +342,63 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal micromodal-slide" id="modal-delete" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-delete')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-delete-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-delete-title">
+                        Delete user
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-delete-content">
+                    <form id="modal-delete-form">
+                        <p>Are you sure you want to permanently delete this user?</p>
+                        <ul>
+                            <li>
+                                Name:
+                                <span id="modal-delete-display-name"></span>
+                            </li>
+                            <li>
+                                Username:
+                                <span id="modal-delete-username"></span>
+                            </li>
+                            <li>
+                                Updated on:
+                                <span id="modal-delete-updated-on"></span>
+                            </li>
+                            <li>
+                                Created on:
+                                <span id="modal-delete-created-on"></span>
+                            </li>
+                        </ul>
+                        <p>
+                            This action cannot be undone.
+                        </p>
+                    </form>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-delete-confirm"
+                        class="modal__btn primary"
+                        type="button"
+                    >
+                        Confirm
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
 {% endblock %}
