@@ -623,7 +623,7 @@ def create_missing_system_settings() -> None:
 
     for key in defaultSystemSettings:
         if key not in all_stored_keys:
-            to_be_created[key] = defaultSystemSettings[key]
+            to_be_created[key] = defaultSystemSettings[key]['value']
 
     for key in to_be_created:
         default_value = to_be_created[key]

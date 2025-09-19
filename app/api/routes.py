@@ -29,6 +29,7 @@ from app.api.report import (
 )
 from app.models.readings import Sensor
 from app.models.users import User
+from app.models.system_settings import defaultSystemSettings
 from app.util import permission_required
 
 
@@ -496,7 +497,13 @@ def api_system_settings():
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
-    # TODO: verify values' bounds, i.e. min, max
+    if (
+        minimum_gauge_value < defaultSystemSettings['minimum_gauge_value']['min']
+        or minimum_gauge_value > defaultSystemSettings['minimum_gauge_value']['max']
+        or minimum_graph_value < defaultSystemSettings['minimum_graph_value']['min']
+        or minimum_graph_value > defaultSystemSettings['minimum_graph_value']['max']
+    ):
+        return jsonify({'error': 'value_limits'}), 400
 
     update_system_settings({
         'default_temperature_unit': default_temperature_unit.value,

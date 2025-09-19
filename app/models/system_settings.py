@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -6,12 +7,30 @@ from app.extensions import db
 from app.models.util import utcnow
 
 
-defaultSystemSettings = {
-    'default_temperature_unit': 'celsius',
-    'minimum_gauge_value': -20,
-    'maximum_gauge_value':  40,
-    'minimum_graph_value': -20,
-    'maximum_graph_value':  40,
+defaultSystemSettings: dict[str, dict[str, Any]] = {
+    'default_temperature_unit': {
+        'value': 'celsius'
+    },
+    'minimum_gauge_value': {
+        'value': -30,
+        'min': -50,
+        'max': 5,
+    },
+    'maximum_gauge_value': {
+        'value': 40,
+        'min': 10,
+        'max': 60,
+    },
+    'minimum_graph_value': {
+        'value': -30,
+        'min': -50,
+        'max': 5,
+    },
+    'maximum_graph_value': {
+        'value': 40,
+        'min': 10,
+        'max': 60,
+    },
 }
 
 
