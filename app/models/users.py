@@ -33,7 +33,7 @@ class User(UserMixin, db.Model):
         MANAGE_REPORTS = 1
         """The user can view, generate, and verify reports."""
         EDIT_SENSORS = 2
-        """The user can edit sensor properties like name and status(TODO)."""
+        """The user can edit sensor names."""
         MANAGE_USERS = 4
         """The user can view, create, edit, and delete users."""
         MANAGE_SYSTEM_SETTINGS = 8

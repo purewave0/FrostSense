@@ -156,7 +156,6 @@ def api_sensors_today_readings_count():
 def api_update_sensor(sensor_id):
     try:
         name = str(request.json['name']).strip()
-        # TODO: status
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
