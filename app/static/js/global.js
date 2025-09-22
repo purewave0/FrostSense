@@ -301,7 +301,7 @@ const ToastType = {
 function showToast(type, text) {
     Toastify({
         text: text,
-        duration: 3_000,
+        duration: (type === ToastType.ERROR) ? 5_000 : 3_000,
         close: true,
         stopOnFocus: false,
         gravity: 'bottom',
