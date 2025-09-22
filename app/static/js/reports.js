@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const form = document.getElementById('report-form');
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         if (!readingsCount) {
@@ -174,17 +174,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        Api.createReport(
+        const response = await Api.createReport(
             Number(sensorsSelect.value),
             getRangeStart(),
             getRangeEnd(),
             formatSelect.value,
             getNotesValue()
-        ).then(
-            (response) => response.json()
-        ).then((code) => {
-            window.open(`/reports/${code}`, '_blank').focus();
-        });
+        );
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            showToast(
+                ToastType.ERROR, `Failed to generate report\nError: ${error}`
+            );
+            return;
+        }
+
+        const reportCode = await response.json();
+        showToast(ToastType.SUCCESS, 'Report generated successfully');
+        setTimeout(() => {
+            window.open(`/reports/${reportCode}`, '_blank').focus();
+        }, 700);
     });
 
     const readingsCountElement = document.getElementById('readings-count');
