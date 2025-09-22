@@ -120,8 +120,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     editModal.name.setCustomValidity('');
                     break;
                 default:
-                    // TODO: handle other errors
-                    alert('TODO other errors');
+                    MicroModal.close('modal-edit');
+                    showToast(
+                        ToastType.ERROR, `Failed to edit sensor\nError: ${error}`
+                    );
                     break;
             }
             return;
@@ -134,6 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         nameElement.textContent = name;
         nameElement.title = name;
         MicroModal.close('modal-edit');
+        showToast(ToastType.SUCCESS, 'Sensor edited successfully');
     });
 
     function openEditModal(name) {
