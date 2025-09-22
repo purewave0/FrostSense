@@ -393,8 +393,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     createModal.username.setCustomValidity('');
                     break;
                 default:
-                    // TODO: handle other errors
-                    alert('TODO other errors');
+                    MicroModal.close('modal-create');
+                    showToast(
+                        ToastType.ERROR, `Failed to create user\nError: ${error}`
+                    );
                     break;
             }
             return;
@@ -403,15 +405,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const newUser = await response.json();
         // we'll push the id into `tableUserIds` only once the new table row is added
 
+        await fetchAndApplyTableUpdates();
         MicroModal.close('modal-create');
         createModal.form.reset();
+        showToast(ToastType.SUCCESS, 'User created successfully');
 
-        // TODO: add new user row
         openTemporaryPasswordModal(
             newUser.display_name, newUser.username, newUser.temporary_password
         );
-
-        await fetchAndApplyTableUpdates();
     });
 
     function openCreateModal() {
@@ -473,17 +474,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             || permissionsValue !== selectedUser.permissions
         );
         if (!wereChangesMade) {
-            // TODO: show proper alert
+            // TODO: show proper toast
             alert('no changes made')
             MicroModal.close('modal-edit');
             return;
         }
 
-        await Api.editUser(selectedUser.id, displayName, permissionsValue);
+        const response = await Api.editUser(selectedUser.id, displayName, permissionsValue);
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            MicroModal.close('modal-edit');
+            showToast(ToastType.ERROR, `Failed to edit user\nError: ${error}`);
+            editModal.form.reset();
+            selectedUser = null;
+            return;
+        }
         // TODO: handle errors
         await fetchAndApplyTableUpdates();
         MicroModal.close('modal-edit');
         editModal.form.reset();
+        showToast(ToastType.SUCCESS, 'User edited successfully');
         selectedUser = null;
     });
 
@@ -520,11 +530,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     resetPasswordModal.confirmButton.addEventListener('click', async () => {
         const response = await Api.resetUserPassword(selectedUser.id);
-        // TODO: handle errors
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            MicroModal.close('modal-reset-password');
+            showToast(ToastType.ERROR, `Failed to reset password\nError: ${error}`);
+            selectedUser = null;
+            return;
+        }
         await fetchAndApplyTableUpdates();  // just update the `updated_on` date
         const temporaryPassword = await response.json();
 
         MicroModal.close('modal-reset-password');
+        showToast(ToastType.SUCCESS, 'Password reset successfully');
         openTemporaryPasswordModal(
             selectedUser.display_name, selectedUser.username, temporaryPassword
         );
@@ -546,7 +563,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     deleteModal.confirmButton.addEventListener('click', async () => {
         const response = await Api.deleteUser(selectedUser.id);
-        // TODO: handle errors
+        showToast(ToastType.SUCCESS, 'User deleted successfully');
         await fetchAndApplyTableUpdates();
         MicroModal.close('modal-delete');
     });
