@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) {
             const error = (await response.json()).error;
             showToast(
-                ToastType.ERROR, `Failed to generate report\nError: ${error}`
+                ToastType.ERROR, `Failed to generate report (${error})`
             );
             return;
         }

@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 default:
                     MicroModal.close('modal-create');
                     showToast(
-                        ToastType.ERROR, `Failed to create user\nError: ${error}`
+                        ToastType.ERROR, `Failed to create user (${error})`
                     );
                     break;
             }
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) {
             const error = (await response.json()).error;
             MicroModal.close('modal-edit');
-            showToast(ToastType.ERROR, `Failed to edit user\nError: ${error}`);
+            showToast(ToastType.ERROR, `Failed to edit user (${error})`);
             editModal.form.reset();
             selectedUser = null;
             return;
@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) {
             const error = (await response.json()).error;
             MicroModal.close('modal-reset-password');
-            showToast(ToastType.ERROR, `Failed to reset password\nError: ${error}`);
+            showToast(ToastType.ERROR, `Failed to reset password (${error})`);
             selectedUser = null;
             return;
         }

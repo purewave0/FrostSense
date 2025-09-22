@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 default:
                     MicroModal.close('modal-edit');
                     showToast(
-                        ToastType.ERROR, `Failed to edit sensor\nError: ${error}`
+                        ToastType.ERROR, `Failed to edit sensor (${error})`
                     );
                     break;
             }
