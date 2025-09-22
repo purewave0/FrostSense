@@ -20,11 +20,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // TODO: loading
         const response = await fetch(url);
         if (!response.ok) {
-            // TODO: proper error
-            alert('error: report not found');
+            showToast(
+                ToastType.ERROR, 'Report not found'
+            );
             return;
         }
 
-        window.open(`/reports/${codeValue}`, '_blank').focus();
+        showToast(
+            ToastType.SUCCESS, 'Report fetched successfully'
+        );
+        setTimeout(() => {
+            window.open(`/reports/${codeValue}`, '_blank').focus();
+        }, 700);
     });
 });
