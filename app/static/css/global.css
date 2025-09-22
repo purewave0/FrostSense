@@ -28,6 +28,9 @@ body {
     --color-negative: #db2929;
     --color-negative-hover: #ef1b1b36;
 
+    --color-toast-success: #4caf50;
+    --color-toast-error: #f44336;
+
     background-color: var(--color-background);
 }
 
