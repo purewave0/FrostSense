@@ -277,6 +277,31 @@ def api_login():
     return '', 204
 
 
+@bp.route('/me/permanent-password', methods=['POST'])
+def api_set_permanent_password():
+    try:
+        password = str(request.json['password'])
+    except KeyError:
+        return jsonify({'error': 'field_error'}), 400
+
+    password_length = len(password)
+    if (
+        password_length < User.MIN_PASSWORD_LENGTH
+        or password_length > User.MAX_PASSWORD_LENGTH
+    ):
+        return jsonify({'error': 'invalid_password_length'}), 400
+
+    if not current_user.is_password_temporary:
+        return jsonify({'error': 'password_already_permanent'}), 409
+
+    if current_user.check_password(password):
+        return jsonify({'error': 'same_as_temporary'}), 400
+
+    update_user_password_by_id(current_user.id, password, False)
+
+    return '', 204
+
+
 @bp.route('/me/preferences', methods=['GET', 'PUT'])
 @login_required
 def api_own_preferences():
