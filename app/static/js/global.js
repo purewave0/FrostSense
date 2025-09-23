@@ -269,6 +269,10 @@ const ToastType = {
         'backgroundColor': 'var(--color-toast-error)',
         'iconURL': '/static/icon/error.svg',
     },
+    'NO_CHANGES': {
+        'backgroundColor': 'var(--color-toast-no-changes)',
+        'iconURL': '/static/icon/no-changes.svg',
+    }
 };
 
 
