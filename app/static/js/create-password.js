@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showToast(ToastType.SUCCESS, 'Password created successfully');
         setTimeout(() => {
+            // don't let the user navigate back to this page
             window.location.replace('/');
         }, 1000);
     });
