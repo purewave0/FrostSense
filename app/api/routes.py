@@ -278,7 +278,8 @@ def api_login():
 
 
 @bp.route('/me/permanent-password', methods=['POST'])
-def api_set_permanent_password():
+@login_required
+def api_create_permanent_password():
     try:
         password = str(request.json['password'])
     except KeyError:
