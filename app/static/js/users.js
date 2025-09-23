@@ -474,9 +474,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             || permissionsValue !== selectedUser.permissions
         );
         if (!wereChangesMade) {
-            // TODO: show proper toast
-            alert('no changes made')
             MicroModal.close('modal-edit');
+            showToast(
+                ToastType.NO_CHANGES, `No changes made`
+            );
             return;
         }
 
@@ -489,7 +490,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             selectedUser = null;
             return;
         }
-        // TODO: handle errors
+
         await fetchAndApplyTableUpdates();
         MicroModal.close('modal-edit');
         editModal.form.reset();
