@@ -86,17 +86,21 @@ document.addEventListener('DOMContentLoaded', () => {
             minimumGraphValue,
             maximumGraphValue,
         );
-        if (response.ok) {
-            leaveEditMode();
-            await SystemSettingsCacheUpdater.updateIfNeeded();
-            // also update our copy, used for reverting changes in fields
-            originalValues = SystemSettingsCache.get();
-            // TODO: notify success
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            showToast(
+                ToastType.ERROR, `Failed to apply changes (${error})`
+            );
             return;
         }
-        // TODO: properly handle errors
-        const result = await response.json();
-        alert(`error updating system settings: ${result.error}`);
+
+        leaveEditMode();
+        showToast(
+            ToastType.SUCCESS, 'Applied changes successfully'
+        );
+        await SystemSettingsCacheUpdater.updateIfNeeded();
+        // also update our copy, used for reverting changes in fields
+        originalValues = SystemSettingsCache.get();
     });
 
     const cancelEditButton = document.getElementById('cancel');
