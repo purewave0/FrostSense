@@ -303,6 +303,30 @@ def api_create_permanent_password():
     return '', 204
 
 
+@bp.route('/me/password', methods=['PUT'])
+@login_and_permanent_password_required
+def api_change_password():
+    try:
+        current_password = str(request.json['current_password'])
+        new_password = str(request.json['password'])
+    except KeyError:
+        return jsonify({'error': 'field_error'}), 400
+
+    if not current_user.check_password(current_password):
+        return jsonify({'error': 'incorrect_current_password'}), 401
+
+    password_length = len(new_password)
+    if (
+        password_length < User.MIN_PASSWORD_LENGTH
+        or password_length > User.MAX_PASSWORD_LENGTH
+    ):
+        return jsonify({'error': 'invalid_password_length'}), 400
+
+    update_user_password_by_id(current_user.id, new_password, False)
+
+    return '', 204
+
+
 @bp.route('/me/preferences', methods=['GET', 'PUT'])
 @login_and_permanent_password_required
 def api_own_preferences():
