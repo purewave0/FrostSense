@@ -81,3 +81,8 @@ def users():
 @permission_required(User.Permission.MANAGE_SYSTEM_SETTINGS)
 def system_settings():
     return render_template('main/system-settings.html')
+
+@bp.route('/change-temporary-password')
+@login_required
+def set_own_permanent_password():
+    return render_template('main/change-temporary-password.html')
