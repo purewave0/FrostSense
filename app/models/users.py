@@ -48,7 +48,7 @@ class User(UserMixin, db.Model):
 
     MIN_NAME_LENGTH = 2
     MAX_NAME_LENGTH = 32
-    MIN_PASSWORD_LENGTH = 6 # TODO: increase it
+    MIN_PASSWORD_LENGTH = 8
     MAX_PASSWORD_LENGTH = 100
     _TEMPORARY_PASSWORD_CHARSET = string.ascii_lowercase + string.digits
 
