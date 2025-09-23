@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/lib/micromodal.css" />
+    <link rel="stylesheet" href="/static/css/security.css" />
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/lib/micromodal.min.js"></script>
+    <script src="/static/js/security.js"></script>
+{% endblock %}
+
+{% block title %} Security {% endblock %}
+
+{% block content %}
+    <div id="security">
+        <div class="form-row">
+            <h3 class="form-section-title">Authentication</h3>
+            <p>Last password change: TODO</p>
+            <button id="button-change-password" type="button">
+                Change password
+            </button>
+        </div>
+    </div>
+
+    <div class="modal micromodal-slide" id="modal-change-password" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-change-password')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-change-password-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-change-password-title">
+                        Change password
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-change-password-content">
+                    <form id="modal-change-password-form">
+                        <div class="form-field">
+                            <label for="modal-change-password-current-password">
+                                Current password
+                            </label>
+                            <input
+                                id="modal-change-password-current-password"
+                                type="password"
+                                required
+                            >
+                        </div>
+
+                        <div id="new-password-section">
+                            <div class="form-field">
+                                <label for="modal-change-password-password">
+                                    New password
+                                </label>
+                                <input
+                                    id="modal-change-password-password"
+                                    type="password"
+                                    required
+                                    minlength="8"
+                                    maxlength="100"
+                                >
+                                <span class="form-field-helper">At least 8 characters</span>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="modal-change-password-password-confirm">
+                                    Confirm password
+                                </label>
+                                <input
+                                    id="modal-change-password-password-confirm"
+                                    type="password"
+                                    required
+                                    minlength="8"
+                                    maxlength="100"
+                                >
+                            </div>
+                        </div>
+                    </form>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-change-password-apply"
+                        class="modal__btn primary"
+                        type="submit"
+                        form="modal-change-password-form"
+                    >
+                        Apply
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+{% endblock %}

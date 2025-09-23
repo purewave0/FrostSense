@@ -1,0 +1,44 @@
+#security {
+    max-width: 512px;
+    background-color: var(--color-foreground);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+    font-size: 11pt;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+#button-change-password {
+    background-color: var(--color-dark-background);
+    border: none;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 auto 0 auto;
+    transition: opacity 0.2s ease;
+}
+
+#modal-change-password .modal__container {
+    width: 384px;
+}
+
+#modal-change-password form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+}
+
+#new-password-section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.modal__btn.primary {
+    background-color: var(--color-dark-background);
+    color: white;
+}

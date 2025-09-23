@@ -79,6 +79,17 @@ const Api = {
         });
     },
 
+    changePassword(currentPassword, newPassword) {
+        return fetch('/api/me/password', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'current_password': currentPassword,
+                'password': newPassword,
+            })
+        });
+    },
+
     fetchUsers(updatedAfter = null) {
         let url = '/api/users'
         if (updatedAfter) {

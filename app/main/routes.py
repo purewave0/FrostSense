@@ -64,6 +64,11 @@ def verify_reports():
 def own_preferences():
     return render_template('main/preferences.html')
 
+@bp.route('/security')
+@login_and_permanent_password_required
+def own_security_settings():
+    return render_template('main/sections/security.html')
+
 @bp.route('/logout')
 @login_required
 def main_logout():
