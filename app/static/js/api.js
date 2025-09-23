@@ -69,6 +69,16 @@ const Api = {
         });
     },
 
+    changeTemporaryPassword(newPassword) {
+        return fetch('/api/me/permanent-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'password': newPassword,
+            })
+        });
+    },
+
     fetchUsers(updatedAfter = null) {
         let url = '/api/users'
         if (updatedAfter) {
