@@ -101,9 +101,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             selectedSensor.name !== name
         );
         if (!wereChangesMade) {
-            // TODO: show proper alert
-            alert('no changes made')
             MicroModal.close('modal-edit');
+            showToast(
+                ToastType.NO_CHANGES, `No changes made`
+            );
             return;
         }
 
