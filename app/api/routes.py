@@ -30,18 +30,18 @@ from app.api.report import (
 from app.models.readings import Sensor
 from app.models.users import User
 from app.models.system_settings import defaultSystemSettings
-from app.util import permission_required
+from app.util import permission_required, login_and_permanent_password_required
 
 
 @bp.route('/sensors')
-@login_required
+@login_and_permanent_password_required
 def api_sensors():
     sensors = get_sensors()
     return jsonify(sensors)
 
 
 @bp.route('/sensors/last-readings')
-@login_required
+@login_and_permanent_password_required
 def api_last_readings():
     sensor_ids = get_sensor_ids()
 
@@ -64,7 +64,7 @@ def _parse_iso_datetimes(iso_datetimes: str) -> list[dt.datetime]:
 
 
 @bp.route('/sensors/readings')
-@login_required
+@login_and_permanent_password_required
 def api_readings_by_days():
     try:
         start_datetimes = _parse_iso_datetimes(request.args['start_dates'])
@@ -95,7 +95,7 @@ def api_readings_by_days():
 
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
-@login_required
+@login_and_permanent_password_required
 # TODO: require sensor key
 def api_sensor_readings(sensor_id):
     try:
@@ -126,7 +126,7 @@ def _parse_iso_datetime(iso_datetime: str) -> dt.datetime:
     return dt.datetime.strptime(iso_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
 
 @bp.route('/sensors/<int:sensor_id>/readings-count')
-@login_required
+@login_and_permanent_password_required
 def api_sensor_readings_count(sensor_id):
     try:
         range_start = _parse_iso_datetime(request.args['range_start'])
@@ -142,7 +142,7 @@ def api_sensor_readings_count(sensor_id):
 
 
 @bp.route('/sensors/readings-count/today')
-@login_required
+@login_and_permanent_password_required
 def api_sensors_today_readings_count():
     sensor_ids = get_sensor_ids()
     return jsonify(
@@ -151,7 +151,7 @@ def api_sensors_today_readings_count():
 
 
 @bp.route('/sensors/<int:sensor_id>', methods=['PUT'])
-@login_required
+@login_and_permanent_password_required
 @permission_required(User.Permission.EDIT_SENSORS)
 def api_update_sensor(sensor_id):
     try:
@@ -194,7 +194,7 @@ def _parse_ints(raw_ints: str, ignore_duplicates: bool = False) -> list[int]:
 
 
 @bp.route('/reports', methods=['POST'])
-@login_required
+@login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_REPORTS)
 def api_generate_report():
     try:
@@ -304,7 +304,7 @@ def api_create_permanent_password():
 
 
 @bp.route('/me/preferences', methods=['GET', 'PUT'])
-@login_required
+@login_and_permanent_password_required
 def api_own_preferences():
     if request.method == 'GET':
         user = get_user_by_id(current_user.id)
@@ -348,7 +348,7 @@ def api_own_preferences():
 
 
 @bp.route('/me/preferences/last-update-time')
-@login_required
+@login_and_permanent_password_required
 def api_own_preferences_timestamp():
     return jsonify(get_user_last_update_time(current_user.id))
 
@@ -363,7 +363,7 @@ def api_logout():
 # -- users --
 
 @bp.route('/users', methods=['GET', 'POST'])
-@login_required
+@login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_USERS)
 def api_users():
     if request.method == 'GET':
@@ -433,7 +433,7 @@ def api_users():
 
 
 @bp.route('/users/summary')
-@login_required
+@login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_USERS)
 def api_users_summary():
     try:
@@ -455,7 +455,7 @@ def api_users_summary():
 
 
 @bp.route('/users/<int:user_id>', methods=['PUT', 'DELETE'])
-@login_required
+@login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_USERS)
 def api_update_user(user_id: int):
     if request.method == 'DELETE':
@@ -503,7 +503,7 @@ def api_update_user(user_id: int):
 
 
 @bp.route('/users/<int:user_id>/reset-password', methods=['POST'])
-@login_required
+@login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_USERS)
 def api_user_reset_password(user_id: int):
     if user_id == current_user.id:
@@ -521,7 +521,7 @@ def api_user_reset_password(user_id: int):
 # -- system settings --
 
 @bp.route('/system-settings', methods=['GET', 'PUT'])
-@login_required
+@login_and_permanent_password_required
 def api_system_settings():
     if request.method == 'GET':
         return get_system_settings()
@@ -559,6 +559,6 @@ def api_system_settings():
 
 
 @bp.route('/system-settings/last-update-time')
-@login_required
+@login_and_permanent_password_required
 def api_system_settings_timestamp():
     return jsonify(get_system_settings_update_timestamp())
