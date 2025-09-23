@@ -85,4 +85,8 @@ def system_settings():
 @bp.route('/change-temporary-password')
 @login_required
 def set_own_permanent_password():
+    if not current_user.is_password_temporary:
+        # no use coming here if you already have a permanent password
+        return redirect(url_for('main.index'))
+
     return render_template('main/change-temporary-password.html')
