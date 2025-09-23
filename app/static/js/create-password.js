@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const passwordValue = formFields.password.value;
-        const response = await Api.changeTemporaryPassword(passwordValue);
+        const response = await Api.createPassword(passwordValue);
         if (!response.ok) {
             const error = (await response.json()).error;
             switch (error) {

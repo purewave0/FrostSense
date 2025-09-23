@@ -69,7 +69,7 @@ const Api = {
         });
     },
 
-    changeTemporaryPassword(newPassword) {
+    createPassword(newPassword) {
         return fetch('/api/me/permanent-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
