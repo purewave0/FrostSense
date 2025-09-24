@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="/static/css/lib/toastify.min.css" />
         {% block css %} {% endblock %}
     </head>
-    <body>
+    <body class="{% block body_classes %} {% endblock %}">
         <div id="content">
             <div id="sidebar">
                 <a href="/" id="sidebar-logo">
@@ -179,7 +179,7 @@
                                         <span>Preferences</span>
                                     </a>
                                 </li>
-                                
+
                                 <li>
                                     <a href="/security">
                                         <svg
