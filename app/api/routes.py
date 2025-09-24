@@ -6,6 +6,7 @@ from flask_login import current_user, login_user, login_required, logout_user
 from app.api import bp
 from app.dbapi import (
     get_sensors, get_sensor_ids, get_sensor_name, sensor_name_exists, sensor_id_exists,
+    get_sensor_key_by_id,
     update_sensor_by_id,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
@@ -96,7 +97,6 @@ def api_readings_by_days():
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
 @login_and_permanent_password_required
-# TODO: require sensor key
 def api_sensor_readings(sensor_id):
     try:
         temperature = float(request.json['temperature'])
@@ -105,6 +105,15 @@ def api_sensor_readings(sensor_id):
 
     if not sensor_id_exists(sensor_id):
         return jsonify({'error': 'unknown_sensor'}), 404
+
+    try:
+        given_key = str(request.headers['Authorization'])
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'authorization_missing'}), 401
+
+    sensor_key = get_sensor_key_by_id(sensor_id)
+    if sensor_key != given_key:
+        return jsonify({'error': 'incorrect_key'}), 401
 
     reading = create_reading(sensor_id, temperature)
 
