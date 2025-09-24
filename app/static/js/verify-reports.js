@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const codeInput = document.getElementById('code');
     const codeForm = document.getElementById('code-form');
+    const fetchReportButton = document.getElementById('fetch');
 
     const mask = IMask(codeInput, {
         mask: '####\\—####\\—##',
@@ -29,8 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast(
             ToastType.SUCCESS, 'Report fetched successfully'
         );
+        fetchReportButton.disabled = true;
         setTimeout(() => {
             window.open(`/reports/${codeValue}`, '_blank').focus();
+            fetchReportButton.disabled = false;
         }, 700);
     });
 });
