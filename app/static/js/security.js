@@ -1,5 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     const buttonChangePassword = document.getElementById('button-change-password');
+    const passwordChangeTimeValue = document.getElementById('password-changed-on');
+
+    async function updatePasswordChangeDate() {
+        return Api.getLastPasswordChangeDate()
+            .then((response) => response.json())
+            .then((passwordChangedDate) => {
+                if (passwordChangedDate === null) {
+                    passwordChangeTimeValue.textContent = 'never';
+                    return;
+                }
+                passwordChangeTimeValue.textContent =
+                    formatDateToCompactDatetime(new Date(passwordChangedDate));
+            });
+    }
+
+    updatePasswordChangeDate();
 
     buttonChangePassword.addEventListener('click', () => {
         openChangePasswordModal();
@@ -70,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         MicroModal.close('modal-change-password');
         changePasswordModal.form.reset();
         showToast(ToastType.SUCCESS, 'Password changed successfully');
+        updatePasswordChangeDate();
     });
 
     function openChangePasswordModal() {

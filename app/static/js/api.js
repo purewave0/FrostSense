@@ -90,6 +90,10 @@ const Api = {
         });
     },
 
+    getLastPasswordChangeDate() {
+        return fetch('/api/me/last-password-change-time');
+    },
+
     fetchUsers(updatedAfter = null) {
         let url = '/api/users'
         if (updatedAfter) {
