@@ -61,6 +61,7 @@ class User(UserMixin, db.Model):
     )
     password_hash: Mapped[str] = mapped_column(db.String(256))
     is_password_temporary: Mapped[bool] = mapped_column()
+    password_changed_on: Mapped[datetime | None] = mapped_column()
     permissions: Mapped[int] = mapped_column()
     created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
     updated_on: Mapped[datetime] = mapped_column(
@@ -88,6 +89,7 @@ class User(UserMixin, db.Model):
         self.temperature_unit = temperature_unit
         self.password_hash = generate_password_hash(password)
         self.is_password_temporary = is_password_temporary
+        self.password_changed_on = None
 
 
     def __repr__(self):

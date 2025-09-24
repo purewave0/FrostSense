@@ -556,10 +556,24 @@ def update_user_password_by_id(
             User.id == user_id
         ).values(
             password_hash=User.generate_password_hash(password),
-            is_password_temporary=is_temporary
+            is_password_temporary=is_temporary,
+            password_changed_on=datetime.utcnow()
         )
     )
     db.session.commit()
+
+
+def get_user_last_password_change_time(user_id: int) -> datetime:
+    """Return when the password of the User of id `user_id` was last changed."""
+    result = db.session.execute(
+        db.select(
+            User.password_changed_on
+        ).where(
+            User.id == user_id
+        )
+    ).scalar_one()
+
+    return result
 
 
 def delete_user_by_id(user_id: int) -> None:
