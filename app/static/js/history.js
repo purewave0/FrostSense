@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const isToday = newDate.getTime() === getStartOfToday().getTime();
             if (isToday) {
                 graphCard.getCardElement().classList.add('today');
-                // can't see the future!
+                // can't see into the future!
                 controls.nextDayButton.disabled = true;
             } else {
                 graphCard.getCardElement().classList.remove('today');
@@ -109,6 +109,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             graphCard.setInfoTextHTML('No readings')
         }
     }
+
+    document.body.classList.remove('loading-graph-cards');
 
     setInterval(() => {
         const sensorIdsToUpdate = [];

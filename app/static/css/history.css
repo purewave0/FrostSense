@@ -1,4 +1,5 @@
-#graph-cards {
+#graph-cards,
+#skeleton-graph-cards {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -116,4 +117,29 @@
     padding: 8px;
     border-radius: 4px;
     opacity: 0.8;
+}
+
+/* -- skeletons -- */
+
+.graph-card.skeleton {
+    box-sizing: border-box;
+    /* dimensions of a normal, filled graph card */
+    width: 512px;
+    height: 379px;
+    background-color: var(--color-skeleton-start);
+    animation: skeleton-loading 1s linear infinite alternate;
+    box-shadow: none;
+}
+
+body.loading-graph-cards #graph-cards {
+    /* can't use 'display: none' or else the graph SVGs won't be generated */
+    opacity: 0;
+    /* don't take up any space */
+    position: absolute;
+    top: -256px;
+    left: -256px;
+}
+
+body:not(.loading-graph-cards) #skeleton-graph-cards {
+    display: none;
 }
