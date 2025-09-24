@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     sensorsDestination.append(fragment);
+    document.body.classList.remove('loading-sensors');
 
     // -- edit modal --
 

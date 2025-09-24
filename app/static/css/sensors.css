@@ -1,4 +1,5 @@
-#sensors {
+#sensors,
+#skeleton-sensors {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -66,7 +67,28 @@
     font-size: 10pt;
 }
 
+/* -- skeletons -- */
+
+.sensor.skeleton {
+    box-sizing: border-box;
+    /* dimensions of a normal, filled sensor card */
+    width: 221.15px;
+    height: 95px;
+    background-color: var(--color-skeleton-start);
+    animation: skeleton-loading 1s linear infinite alternate;
+    box-shadow: none;
+}
+
+body.loading-sensors #sensors {
+    display: none;
+}
+
+body:not(.loading-sensors) #skeleton-sensors {
+    display: none;
+}
+
 /* -- edit modal -- */
+
 #modal-edit .modal__container {
     max-width: 350px;
 }
