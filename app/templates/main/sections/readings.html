@@ -13,6 +13,20 @@
 
 {% block title %} Readings {% endblock %}
 
+{% block body_classes %} loading-gauge-cards {% endblock %}
+
 {% block content %}
+    <div id="skeleton-gauge-cards">
+        <!-- approximately 2 card rows at 100% zoom -->
+        <div class="gauge-card skeleton"></div>
+        <div class="gauge-card skeleton"></div>
+        <div class="gauge-card skeleton"></div>
+        <div class="gauge-card skeleton"></div>
+        <div class="gauge-card skeleton"></div>
+        <div class="gauge-card skeleton"></div>
+        <div class="gauge-card skeleton"></div>
+        <div class="gauge-card skeleton"></div>
+    </div>
+
     <div id="gauge-cards"></div>
 {% endblock %}

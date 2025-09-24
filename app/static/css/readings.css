@@ -1,4 +1,5 @@
-#gauge-cards {
+#gauge-cards,
+#skeleton-gauge-cards {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -33,4 +34,29 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-wrap: nowrap;
+}
+
+/* -- skeletons -- */
+
+.gauge-card.skeleton {
+    box-sizing: border-box;
+    /* dimensions of a normal, filled gauge card */
+    width: 332px;
+    height: 223px;
+    background-color: var(--color-skeleton-start);
+    animation: skeleton-loading 1s linear infinite alternate;
+    box-shadow: none;
+}
+
+body.loading-gauge-cards #gauge-cards {
+    /* can't use 'display: none' or else the gauge SVGs won't be generated */
+    opacity: 0;
+    /* don't take up any space */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+body:not(.loading-gauge-cards) #skeleton-gauge-cards {
+    display: none;
 }

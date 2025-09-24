@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         gaugeCard.setReading(sensorReadings[sensor.id]);
     }
 
+    document.body.classList.remove('loading-gauge-cards');
+
     // TODO: tiny 'fetching readings' notification
     // TODO: handle errors
     setInterval(() => {
