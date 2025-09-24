@@ -103,7 +103,8 @@ input[type="radio"] {
     transition: opacity 0.2s ease;
 }
 
-#report-form:invalid #generate {
+#report-form:invalid #generate,
+#generate:disabled {
     opacity: 0.8;
     cursor: not-allowed;
 }

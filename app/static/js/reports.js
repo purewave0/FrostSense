@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const form = document.getElementById('report-form');
+    const generateReportButton = document.getElementById('generate');
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -191,13 +192,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const reportCode = await response.json();
         showToast(ToastType.SUCCESS, 'Report generated successfully');
+        generateReportButton.disabled = true;
         setTimeout(() => {
             window.open(`/reports/${reportCode}`, '_blank').focus();
+            generateReportButton.disabled = false;
         }, 700);
     });
 
     const readingsCountElement = document.getElementById('readings-count');
-    const generateReportButton = document.getElementById('generate');
 
     let readingsCount = null;
     for (const filterInput of filterInputs) {
