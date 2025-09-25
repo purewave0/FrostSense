@@ -19,8 +19,17 @@ class GraphCard {
      * @param {string} temperatureUnit The unit for displaying temperatures.
      * @param {number} minTemperature The lowest value this graph can show, in Celsius.
      * @param {number} maxTemperature The highest value this graph can show, in Celsius.
+     * @param {string} lineColour The colour (hex, rgb, etc.) for the temperature line.
      */
-    constructor(element, sensorId, sensorName, temperatureUnit, minTemperature, maxTemperature) {
+    constructor(
+        element,
+        sensorId,
+        sensorName,
+        temperatureUnit,
+        minTemperature,
+        maxTemperature,
+        lineColour
+    ) {
         this.#locales = getUserLocales();
         GraphCard.#prepareCard(element, sensorId, sensorName);
         this.#card = element;
@@ -40,6 +49,8 @@ class GraphCard {
             this.#card.querySelector('.graph'),
             [],  // empty data
             {
+                color: lineColour,
+                strokeWidth: 1.5,
                 visibility: [true, false],  // don't plot IDs
                 interactionModel: {},  // disable zooming, etc.
                 labels: null,  // we'll pass the proper values once the data is set
