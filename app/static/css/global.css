@@ -17,20 +17,20 @@ body {
     --color-border: #99a1bc;
     --color-border-light: #d2d6e2;
 
-    --color-dark-background: #384884;
-    --color-dark-background-text: #c7d0f2;
-    --color-dark-background-hover: #495996;
-    --color-dark-background-selected: #5768ac;
+    --color-dark-background: #1c4197;
+    --color-dark-background-text: #e4ebfb;
+    --color-dark-background-hover: #365db880;
+    --color-dark-background-selected: #365db8;
 
     --color-skeleton-start: #cddcec;
     --color-skeleton-end: #b9cadb;
 
-    --color-hover: #6e89f457;
+    --color-hover: #e2e4e9;
 
     --color-graph-line: #ff174d;
     --color-active: #28a745;
-    --color-negative: #db2929;
-    --color-negative-hover: #ef1b1b36;
+    --color-negative: #e93737;
+    --color-negative-hover: #ff424224;
 
     --color-toast-success: #4caf50;
     --color-toast-error: #f44336;
@@ -137,7 +137,8 @@ textarea {
 #sidebar-logo {
     font-size: 24pt;
     text-align: center;
-    background-color: lightsalmon;
+    background-color: var(--color-graph-line);
+    color: black;
     align-content: center;
     height: 70px;
 }
