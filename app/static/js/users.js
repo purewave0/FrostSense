@@ -225,6 +225,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         ],
         pageLength: 15,
         lengthChange: false,
+        layout: {
+            topStart: () => {
+                const createButton = document.createElement('button');
+                createButton.id = ('top-action-create');
+                createButton.className = ('top-action-button');
+                createButton.addEventListener('click', () => {
+                    openCreateModal();
+                });
+                createButton.innerHTML = `
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="24px"
+                        viewBox="0 -960 960 960"
+                        width="24px"
+                        fill="#e3e3e3"
+                    >
+                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                    </svg>
+                    <span>Create</span>
+                `;
+                return createButton;
+            },
+        },
         language: {
             'emptyTable': 'No users available',
             'info': 'Showing _START_ to _END_ of _TOTAL_ users',
@@ -350,10 +373,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // -- actions/modals --
 
     // -- Create modal --
-    const createButton = document.getElementById('top-action-create');
-    createButton.addEventListener('click', () => {
-        openCreateModal();
-    });
+    // (the button is in the table's topStart)
 
     /**
      * Return the given string without any whitespace characters.

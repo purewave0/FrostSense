@@ -15,13 +15,6 @@ body {
     border-radius: 8px;
 }
 
-#top-actions {
-    display: flex;
-    flex-direction: row;
-
-    --color-create: var(--color-dark-background);
-}
-
 .top-action-button {
     display: flex;
     flex-direction: row;
@@ -37,7 +30,7 @@ body {
 
 #top-action-create {
     color: white;
-    background-color: var(--color-create);
+    background-color: var(--color-dark-background);
 }
 
 #top-action-create svg {
