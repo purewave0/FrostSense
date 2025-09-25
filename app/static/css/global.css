@@ -123,6 +123,10 @@ button.with-loader.loading .button-text {
     opacity: 0;
 }
 
+button.with-loader:disabled {
+    opacity: 0.8;
+}
+
 /* -- modals -- */
 
 .modal__footer {

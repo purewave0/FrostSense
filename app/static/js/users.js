@@ -389,6 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'permissions': document.querySelectorAll(
             'input[type="checkbox"][name="create-permissions"]'
         ),
+        'createButton': document.getElementById('modal-create-create'),
     };
     createModal.displayName.addEventListener('input', () => {
         createModal.displayName.value =
@@ -409,6 +410,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
+        showButtonLoader(createModal.createButton);
         const response = await Api.createUser(
             displayName,
             username,
@@ -432,6 +434,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     );
                     break;
             }
+            hideButtonLoader(createModal.createButton);
             return;
         }
 
@@ -439,6 +442,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // we'll push the id into `tableUserIds` only once the new table row is added
 
         await fetchAndApplyTableUpdates();
+        hideButtonLoader(createModal.createButton);
         MicroModal.close('modal-create');
         createModal.form.reset();
         showToast(ToastType.SUCCESS, 'User created successfully');
@@ -486,6 +490,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'permissions': document.querySelectorAll(
             'input[type="checkbox"][name="edit-permissions"]'
         ),
+        'editButton': document.getElementById('modal-edit-edit'),
     };
     editModal.displayName.addEventListener('input', () => {
         editModal.displayName.value =
@@ -514,6 +519,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        showButtonLoader(editModal.editButton);
         const response = await Api.editUser(selectedUser.id, displayName, permissionsValue);
         if (!response.ok) {
             const error = (await response.json()).error;
@@ -521,10 +527,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             showToast(ToastType.ERROR, `Failed to edit user (${error})`);
             editModal.form.reset();
             selectedUser = null;
+
+            hideButtonLoader(editModal.editButton);
             return;
         }
 
         await fetchAndApplyTableUpdates();
+        hideButtonLoader(editModal.editButton);
         MicroModal.close('modal-edit');
         editModal.form.reset();
         showToast(ToastType.SUCCESS, 'User edited successfully');
@@ -563,17 +572,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         'confirmButton': document.getElementById('modal-reset-password-confirm'),
     };
     resetPasswordModal.confirmButton.addEventListener('click', async () => {
+        showButtonLoader(resetPasswordModal.confirmButton);
         const response = await Api.resetUserPassword(selectedUser.id);
         if (!response.ok) {
             const error = (await response.json()).error;
             MicroModal.close('modal-reset-password');
             showToast(ToastType.ERROR, `Failed to reset password (${error})`);
             selectedUser = null;
+            hideButtonLoader(resetPasswordModal.confirmButton);
             return;
         }
         await fetchAndApplyTableUpdates();  // just update the `updated_on` date
         const temporaryPassword = await response.json();
 
+        hideButtonLoader(resetPasswordModal.confirmButton);
         MicroModal.close('modal-reset-password');
         showToast(ToastType.SUCCESS, 'Password reset successfully');
         openTemporaryPasswordModal(
@@ -596,7 +608,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         'confirmButton': document.getElementById('modal-delete-confirm'),
     };
     deleteModal.confirmButton.addEventListener('click', async () => {
+        showButtonLoader(deleteModal.confirmButton);
         const response = await Api.deleteUser(selectedUser.id);
+        hideButtonLoader(deleteModal.confirmButton);
         showToast(ToastType.SUCCESS, 'User deleted successfully');
         await fetchAndApplyTableUpdates();
         MicroModal.close('modal-delete');
