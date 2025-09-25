@@ -85,6 +85,44 @@ textarea {
     width: 72px;
 }
 
+button.with-loader {
+    position: relative;
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+button.with-loader:not(.loading) .loader {
+    display: none;
+}
+
+button.with-loader.loading .button-text {
+    opacity: 0;
+}
+
 /* -- modals -- */
 
 .modal__footer {

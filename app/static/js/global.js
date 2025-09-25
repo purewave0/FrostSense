@@ -298,6 +298,23 @@ function showToast(type, text) {
 }
 
 
+/**
+ * Disable the given button, and switch its text for its loader.
+ */
+function showButtonLoader(button) {
+    button.disabled = true;
+    button.classList.add('loading');
+}
+
+
+/**
+ * Re-enable the given button, and switch its loader for its text.
+ */
+function hideButtonLoader(button) {
+    button.disabled = false;
+    button.classList.remove('loading');
+}
+
 /** Interval (in milliseconds) at which gauges and graphs will fetch updates. */
 const UPDATE_INTERVAL = 2_000;  // TODO: proper value. 2s is just for testing
 
