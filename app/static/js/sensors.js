@@ -63,25 +63,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let selectedSensor = null;
 
-    const fragment = new DocumentFragment();
-    for (const sensor of sensors) {
-        const sensorCard = createSensorCard(sensor, todayCounts[sensor.id], locales);
-        fragment.append(sensorCard);
-        sensorCards.push(sensorCard);
+    if (sensors.length === 0) {
+        document.body.classList.add('no-sensors');
+    } else {
+        const fragment = new DocumentFragment();
+        for (const sensor of sensors) {
+            const sensorCard = createSensorCard(
+                sensor, todayCounts[sensor.id], locales
+            );
+            fragment.append(sensorCard);
+            sensorCards.push(sensorCard);
 
-        const editButton = sensorCard.querySelector('.sensor-edit-button');
-        editButton.addEventListener('click', (event) => {
-            selectedSensor = {
-                id: sensor.id,
-                created_on: sensor.id,
-                // `sensor.name` may be outdated; always pull it from the card itself
-                name: sensorCard.dataset.name,
-            };
-            openEditModal(selectedSensor.name)
-        });
+            const editButton = sensorCard.querySelector('.sensor-edit-button');
+            editButton.addEventListener('click', (event) => {
+                selectedSensor = {
+                    id: sensor.id,
+                    created_on: sensor.id,
+                    // sensor.name may be outdated; always pull it from the card itself
+                    name: sensorCard.dataset.name,
+                };
+                openEditModal(selectedSensor.name)
+            });
+        }
+
+        sensorsDestination.append(fragment);
     }
-
-    sensorsDestination.append(fragment);
     document.body.classList.remove('loading-sensors');
 
     // -- edit modal --

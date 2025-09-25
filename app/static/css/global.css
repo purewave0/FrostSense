@@ -71,6 +71,20 @@ textarea {
     }
 }
 
+.info-empty {
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--color-text-secondary);
+}
+
+.info-empty svg {
+    fill: var(--color-text-secondary);
+    height: 72px;
+    width: 72px;
+}
+
 /* -- modals -- */
 
 .modal__footer {
