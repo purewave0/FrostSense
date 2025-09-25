@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        showButtonLoader(generateReportButton);
         const response = await Api.createReport(
             Number(sensorsSelect.value),
             getRangeStart(),
@@ -192,10 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const reportCode = await response.json();
         showToast(ToastType.SUCCESS, 'Report generated successfully');
-        generateReportButton.disabled = true;
         setTimeout(() => {
             window.open(`/reports/${reportCode}`, '_blank').focus();
-            generateReportButton.disabled = false;
+            hideButtonLoader(generateReportButton);
         }, 700);
     });
 
