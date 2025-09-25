@@ -223,6 +223,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         order: [
             [1, 'asc'],
         ],
+        pageLength: 15,
+        lengthChange: false,
         language: {
             'emptyTable': 'No users available',
             'info': 'Showing _START_ to _END_ of _TOTAL_ users',
