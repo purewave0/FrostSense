@@ -105,15 +105,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let width = null;
         let height = null;
+        let graphLineWidth = null;
         if (hasTable) {
             // 4:3
             width = 400;
             height = 300;
+            graphLineWidth = 1.5;
         } else {
             // 4:3
             width = 800;
             height = 600;
+            graphLineWidth = 2;
         }
+
+        const bodyStyle = window.getComputedStyle(document.body);
+        const graphLineColour = bodyStyle.getPropertyValue('--color-graph-line');
 
         const graph = new Dygraph(
             graphElement,
@@ -121,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 width: width,
                 height: height,
+                color: graphLineColour,
+                strokeWidth: graphLineWidth,
                 // make graph static/noninteractive
                 interactionModel: {},  // no zooming, etc.
                 drawHighlightPointCallback: () => { },  // no point highlight on hover
