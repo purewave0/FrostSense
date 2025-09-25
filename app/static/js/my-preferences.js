@@ -56,6 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const homepage = formFields.homepage.value;
         const temperatureUnit = formFields.temperatureUnit.value;
 
+        if (
+            displayName === originalPreferences.displayName
+            && username === originalPreferences.username
+            && homepage === originalPreferences.homepage
+            && temperatureUnit === originalPreferences.temperatureUnit
+        ) {
+            leaveEditMode();
+            revertFields();  // remove any trailing whitespace, etc.
+            showToast(ToastType.NO_CHANGES, `No changes made`);
+            return;
+        }
+
         // TODO: loading
         // TODO: disable Apply button while it's loading
         const response = await Api.editPreferences(
