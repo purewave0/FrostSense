@@ -2,12 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const preferencesForm = document.getElementById('preferences-form');
 
     const editButton = document.getElementById('edit-button');
+    const displayedDisplayName = document.getElementById('displayed-display-name');
     const displayedUsername = document.getElementById('displayed-username');
     const formFields = {
         'username': document.getElementById('username'),
         'homepage': document.getElementById('homepage'),
         'temperatureUnit': document.getElementById('temperature-unit'),
     };
+    if (document.body.classList.contains('is-admin')) {
+        formFields.displayName = document.getElementById('display-name');
+    }
 
     let originalPreferences = PreferencesCache.get();
     formFields.homepage.value = originalPreferences.homepage;
@@ -46,20 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     preferencesForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const displayName = document.getElementById('display-name').value.trim();
         const username = formFields.username.value.trim();
-        // TODO: check if username is unique
 
         const homepage = formFields.homepage.value;
         const temperatureUnit = formFields.temperatureUnit.value;
 
         // TODO: loading
+        // TODO: disable Apply button while it's loading
         const response = await Api.editPreferences(
+            displayName,
             username,
             homepage,
             temperatureUnit
         );
+        // TODO: check if username is unique
         if (response.ok) {
             leaveEditMode();
+            displayedDisplayName.textContent = displayName;
             displayedUsername.textContent = username;
             await PreferencesCacheUpdater.updateIfNeeded();
             // also update our copy, used for reverting changes in fields

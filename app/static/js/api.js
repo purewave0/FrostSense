@@ -138,11 +138,12 @@ const Api = {
         return fetch(`/api/users/${userId}`, { method: 'DELETE', });
     },
 
-    editPreferences(username, homepage, temperatureUnit) {
+    editPreferences(displayName, username, homepage, temperatureUnit) {
         return fetch('/api/me/preferences', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                'display_name': displayName,
                 'username': username,
                 'homepage': homepage,
                 'temperature_unit': temperatureUnit,

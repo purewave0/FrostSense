@@ -70,7 +70,7 @@
     flex: 1;
 }
 
-.editable {
+#preferences-form input {
     transition: color 0.1s ease;
 }
 
@@ -81,7 +81,10 @@
 #display-name {
     width: 100%;
     box-sizing: border-box;
-    padding-right: 24px;
+}
+
+body:not(.is-admin) #display-name {
+    padding-right: 24px; /* padding for the icon */
 }
 
 #display-name-wrapper svg {
@@ -93,6 +96,10 @@
     bottom: 0;
     margin: auto 0;
     fill: var(--color-border);
+}
+
+body.is-admin #display-name-wrapper svg {
+    display: none;
 }
 
 #edit-controls {

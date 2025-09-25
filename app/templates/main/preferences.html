@@ -10,6 +10,12 @@
 
 {% block title %} Preferences {% endblock %}
 
+{% block body_classes %}
+    {% if current_user.has_permission(UserPermission.ADMIN) %}
+        is-admin
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <form id="preferences-form">
         <div id="preferences-header">
@@ -42,7 +48,7 @@
             </button>
         </div>
 
-        <!-- autocomplete=off on inputs so they start disabled on page restart -->
+        <!-- autocomplete=off on inputs so they start disabled on page reload -->
 
         <div class="form-row">
             <h3 class="form-section-title">Your Information</h3>
@@ -75,7 +81,6 @@
                     <label for="username">Username</label>
                     <input
                         id="username"
-                        class="editable"
                         type="text"
                         value="{{ current_user.username }}"
                         placeholder="{{ current_user.username }}"
@@ -94,7 +99,6 @@
                     <label for="homepage">Home Page</label>
                     <select
                         id="homepage"
-                        class="editable"
                         disabled
                         autocomplete="off"
                         required
@@ -117,7 +121,6 @@
                     </label>
                     <select
                         id="temperature-unit"
-                        class="editable"
                         disabled
                         autocomplete="off"
                         required
