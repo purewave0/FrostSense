@@ -44,7 +44,7 @@ class User(UserMixin, db.Model):
         """Permissions that can be granted through the web interface."""
 
         def has_permission(self, other: 'User.Permission') -> bool:
-            return (self & other).value != 0
+            return (self & other).value == other.value
 
     MIN_NAME_LENGTH = 2
     MAX_NAME_LENGTH = 32
