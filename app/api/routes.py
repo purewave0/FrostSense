@@ -373,7 +373,7 @@ def api_own_preferences():
     if any(char.isspace() for char in username):
         return jsonify({'error': 'invalid_username'}), 400
 
-    if get_user_by_username(username):
+    if username != current_user.username and get_user_by_username(username):
         return jsonify({'error': 'username_already_exists'}), 400
 
     update_user_by_id(
