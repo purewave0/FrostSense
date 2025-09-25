@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             {
                 name: 'updated_on',
                 data: 'updated_on',
+                searchable: false,
                 width: DATETIME_COLUMN_WIDTH,
                 render: (data, type) => {
                     if (type === 'display') {
@@ -125,6 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             {
                 name: 'created_on',
                 data: 'created_on',
+                searchable: false,
                 width: DATETIME_COLUMN_WIDTH,
                 render: (data, type) => {
                     if (type === 'display') {
@@ -227,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             'infoEmpty': 'Showing 0 to 0 of 0 users',
             'infoFiltered': '(filtered from _MAX_ total users)',
             'lengthMenu': 'Show _MENU_ users',
-            'search': 'Search by name:', // TODO
+            'search': 'Search by name:',
             'zeroRecords': 'No matching users found',
         },
     });
