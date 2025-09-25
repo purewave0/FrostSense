@@ -351,12 +351,14 @@ def api_own_preferences():
         if not user:
             return jsonify({'error': 'user_not_found'}), 404
         return jsonify({
+            'display_name': user.display_name,
             'username': user.username,
             'homepage': user.homepage,
             'temperature_unit': user.temperature_unit,
         })
 
     try:
+        display_name = str(request.json['display_name']).strip()
         username = str(request.json['username']).strip()
         homepage = User.WebPage(request.json['homepage'])
         temperature_unit = User.TemperatureUnit(request.json['temperature_unit'])
@@ -376,9 +378,24 @@ def api_own_preferences():
     if username != current_user.username and get_user_by_username(username):
         return jsonify({'error': 'username_already_exists'}), 400
 
+    final_display_name = None
+    # the admin is the only one who can edit their own Display Name. for other users,
+    # the received value for this field is just ignored
+    if not current_user.has_permission(User.Permission.ADMIN):
+        final_display_name = current_user.display_name
+    else:
+        display_name_length = len(display_name)
+        if (
+            display_name_length < User.MIN_NAME_LENGTH
+            or display_name_length > User.MAX_NAME_LENGTH
+        ):
+            return jsonify({'error': 'invalid_display_name'}), 400
+
+        final_display_name = display_name
+
     update_user_by_id(
         current_user.id,
-        current_user.display_name,
+        final_display_name,
         username,
         User.Permission(current_user.permissions),
         homepage,
