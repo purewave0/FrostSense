@@ -19,35 +19,37 @@
 {% block title %} Users {% endblock %}
 
 {% block content %}
-    <div id="top-actions">
-        <button id="top-action-create" class="top-action-button">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-            >
-                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
-            </svg>
-            <span>Create</span>
-        </button>
+    <div id="content-wrapper">
+        <div id="top-actions">
+            <button id="top-action-create" class="top-action-button">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                >
+                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                </svg>
+                <span>Create</span>
+            </button>
+        </div>
+        <table id="users-table" class="display">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>username</th>
+                    <th>Permissions</th>
+                    <th>Updated on</th>
+                    <th>Created on</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-    <table id="users-table" class="display">
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>Name</th>
-                <th>username</th>
-                <th>Permissions</th>
-                <th>Updated on</th>
-                <th>Created on</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
 
     <!-- modals -->
 

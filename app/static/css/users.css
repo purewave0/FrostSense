@@ -8,6 +8,13 @@ body {
     row-gap: 16px;
 }
 
+#content-wrapper {
+    background-color: var(--color-foreground);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 16px;
+    border-radius: 8px;
+}
+
 #top-actions {
     display: flex;
     flex-direction: row;
@@ -74,6 +81,28 @@ body {
     text-align: center;
     user-select: none;
 }
+
+div.dt-container .dt-paging .dt-paging-button {
+    border-radius: 4px;
+    transition: background 0.075s ease;
+}
+
+div.dt-container .dt-paging .dt-paging-button:hover {
+    background: var(--color-hover);
+    color: black !important;
+    border-color: var(--color-hover);
+}
+
+div.dt-container .dt-paging .dt-paging-button.current,
+div.dt-container .dt-paging .dt-paging-button.current:hover {
+    background: var(--color-foreground);
+}
+
+div.dt-container .dt-paging .dt-paging-button:active {
+    box-shadow: none;
+}
+
+/* -- modals -- */
 
 #modal-create form,
 #modal-edit form {
