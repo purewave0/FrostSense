@@ -62,7 +62,7 @@ def verify_reports():
 @bp.route('/preferences')
 @login_and_permanent_password_required
 def own_preferences():
-    return render_template('main/preferences.html')
+    return render_template('main/sections/preferences.html')
 
 @bp.route('/security')
 @login_and_permanent_password_required
@@ -85,7 +85,7 @@ def users():
 @login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_SYSTEM_SETTINGS)
 def system_settings():
-    return render_template('main/system-settings.html')
+    return render_template('main/sections/system-settings.html')
 
 @bp.route('/create-password')
 @login_required
