@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const response = await Api.fetchSensors();
     const sensors = await response.json();
+
+    if (sensors.length === 0) {
+        document.body.classList.remove('loading-graph-cards');
+        document.body.classList.add('no-sensors');
+        return;
+    }
+
     const sensorIds = sensors.map((sensor) => sensor.id);
 
     const graphCards = {};

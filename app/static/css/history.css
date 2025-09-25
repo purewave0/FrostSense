@@ -6,6 +6,14 @@
     gap: 16px;
 }
 
+body:not(.no-sensors) .info-empty {
+    display: none;
+}
+
+body.no-sensors #graph-cards {
+    display: none;
+}
+
 .graph-card {
     width: fit-content;
     position: relative;
