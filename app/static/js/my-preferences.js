@@ -64,19 +64,34 @@ document.addEventListener('DOMContentLoaded', () => {
             homepage,
             temperatureUnit
         );
-        // TODO: check if username is unique
-        if (response.ok) {
-            leaveEditMode();
-            displayedDisplayName.textContent = displayName;
-            displayedUsername.textContent = username;
-            await PreferencesCacheUpdater.updateIfNeeded();
-            // also update our copy, used for reverting changes in fields
-            originalPreferences = PreferencesCache.get();
-            // TODO: notify success
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            switch (error) {
+                case 'username_already_exists':
+                    formFields.username
+                        .setCustomValidity('This username already exists.');
+                    formFields.username.reportValidity();
+                    formFields.username.focus();
+                    formFields.username.setCustomValidity('');
+                    break;
+                default:
+                    showToast(
+                        ToastType.ERROR, `Failed to apply preferences (${error})`
+                    );
+                    break;
+            }
             return;
         }
-        // TODO: properly handle errors
-        const result = await response.json();
-        alert(`error updating preferences: ${result.error}`);
+
+        leaveEditMode();
+        displayedDisplayName.textContent = displayName;
+        displayedUsername.textContent = username;
+        await PreferencesCacheUpdater.updateIfNeeded();
+        // also update our copy, used for reverting changes in fields
+        originalPreferences = PreferencesCache.get();
+
+        showToast(
+            ToastType.SUCCESS, `Applied preferences successfully`
+        );
     });
 });
