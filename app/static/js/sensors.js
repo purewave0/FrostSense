@@ -54,6 +54,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const sensorsResponse = await Api.fetchSensors();
     const sensors = await sensorsResponse.json();
+
+    if (sensors.length === 0) {
+        document.body.classList.remove('loading-sensors');
+        document.body.classList.add('no-sensors');
+        return;
+    }
+
     const sensorCards = [];
 
     const todayCountsResponse = await Api.fetchTodayReadingsCounts();
@@ -63,31 +70,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let selectedSensor = null;
 
-    if (sensors.length === 0) {
-        document.body.classList.add('no-sensors');
-    } else {
-        const fragment = new DocumentFragment();
-        for (const sensor of sensors) {
-            const sensorCard = createSensorCard(
-                sensor, todayCounts[sensor.id], locales
-            );
-            fragment.append(sensorCard);
-            sensorCards.push(sensorCard);
+    const fragment = new DocumentFragment();
+    for (const sensor of sensors) {
+        const sensorCard = createSensorCard(
+            sensor, todayCounts[sensor.id], locales
+        );
+        fragment.append(sensorCard);
+        sensorCards.push(sensorCard);
 
-            const editButton = sensorCard.querySelector('.sensor-edit-button');
-            editButton.addEventListener('click', (event) => {
-                selectedSensor = {
-                    id: sensor.id,
-                    created_on: sensor.id,
-                    // sensor.name may be outdated; always pull it from the card itself
-                    name: sensorCard.dataset.name,
-                };
-                openEditModal(selectedSensor.name)
-            });
-        }
-
-        sensorsDestination.append(fragment);
+        const editButton = sensorCard.querySelector('.sensor-edit-button');
+        editButton.addEventListener('click', (event) => {
+            selectedSensor = {
+                id: sensor.id,
+                created_on: sensor.id,
+                // sensor.name may be outdated; always pull it from the card itself
+                name: sensorCard.dataset.name,
+            };
+            openEditModal(selectedSensor.name)
+        });
     }
+
+    sensorsDestination.append(fragment);
     document.body.classList.remove('loading-sensors');
 
     // -- edit modal --
