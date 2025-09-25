@@ -6,6 +6,14 @@
     gap: 16px;
 }
 
+body:not(.no-sensors) .info-empty {
+    display: none;
+}
+
+body.no-sensors #gauge-cards {
+    display: none;
+}
+
 .gauge-card {
     width: fit-content;
     background-color: var(--color-foreground);

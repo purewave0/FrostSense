@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sensorsResponse = await Api.fetchSensors();
     const sensors = await sensorsResponse.json();
 
+    if (sensors.length === 0) {
+        document.body.classList.remove('loading-gauge-cards');
+        document.body.classList.add('no-sensors');
+        return;
+    }
+
     const gaugeCards = {};
     const readingsResponse = await Api.fetchLastSensorReadings();
     const sensorReadings = await readingsResponse.json();
