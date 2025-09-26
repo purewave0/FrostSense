@@ -8,7 +8,8 @@ from time import sleep
 import click
 
 from app.dbapi import (
-    create_sensor, get_sensors, sensor_name_exists,
+    create_sensor, get_sensors, sensor_name_exists, delete_sensor_by_id,
+    sensor_id_exists,
     create_reading, create_readings,
     create_user,
 )
@@ -165,12 +166,11 @@ def register_commands(app: Flask):
             raise click.ClickException('a sensor with that name already exists.')
 
         sensor = create_sensor(name)
-        click.echo(f'created sensor with id={sensor["id"]}')
+        click.echo(f'created sensor with id={sensor["id"]}.')
 
     def _format_datetime(datetime: dt.datetime) -> str:
         """Return the given datetime in a human-friendly format."""
         return datetime.strftime("%Y-%m-%d %H:%M")
-
 
     @sensor.command('list')
     def cli_list_sensors() -> None:
@@ -180,3 +180,12 @@ def register_commands(app: Flask):
         for sensor in sensors:
             created_on = _format_datetime(sensor['created_on'])
             click.echo(f'{sensor["id"]} | {sensor["name"]} | {created_on}')
+
+    @sensor.command('delete')
+    @click.argument('id')
+    def cli_delete_sensor(id: int) -> None:
+        if not sensor_id_exists(id):
+            raise click.ClickException('no sensor with the given ID.')
+
+        delete_sensor_by_id(id)
+        click.echo(f'deleted sensor with id={id}.')

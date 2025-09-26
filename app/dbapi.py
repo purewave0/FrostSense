@@ -34,7 +34,18 @@ def create_sensor(name: str) -> dict[str, Any]:
         'name': sensor.name,
         'created_on': sensor.created_on,
     }
-# TODO: edit sensor, delete sensor
+
+
+def delete_sensor_by_id(sensor_id: int) -> None:
+    """Delete the sensor with the given id."""
+    db.session.execute(
+        db.delete(
+            Sensor
+        ).where(
+            Sensor.id == sensor_id
+        )
+    )
+    db.session.commit()
 
 
 def get_sensors() -> tuple[dict[str, Any], ...]:
