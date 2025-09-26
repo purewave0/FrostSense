@@ -245,6 +245,7 @@ def api_generate_report():
         utc_now,
         range_start,
         range_end,
+        current_user.temperature_unit,
         readings,
         data_format,
         notes

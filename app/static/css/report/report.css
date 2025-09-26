@@ -59,7 +59,6 @@ header {
     margin-left: 8px; /* align it with the start of the range */
 }
 
-/* TODO: differently-coloured letters and numbers for readability? */
 #code-value {
     font-family: monospace;
     background-color: #efefef;
@@ -77,6 +76,21 @@ header {
     width: 72px;
     height: 72px;
     background-color: whitesmoke;
+}
+
+#unit-value {
+    font-size: 6pt;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: white;
+}
+
+#unit-value.celsius {
+    background-color: #3d4eb8;
+}
+
+#unit-value.fahrenheit {
+    background-color: #db4800;
 }
 
 #qr-code {

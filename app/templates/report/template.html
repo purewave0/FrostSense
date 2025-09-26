@@ -59,9 +59,11 @@
 
                         <div class="header-row">
                             <b>Unit:</b>
-                            <!-- TODO: support Fahrenheit -->
-                            <!-- TODO: put this in a pill? -->
-                            <span id="unit-value">Celsius (°C)</span>
+                            {% if temperature_unit == 'celsius' %}
+                                <span id="unit-value" class="celsius">Celsius (°C)</span>
+                            {% elif temperature_unit == 'fahrenheit' %}
+                                <span id="unit-value" class="fahrenheit">Fahrenheit (°F)</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

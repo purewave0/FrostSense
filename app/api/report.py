@@ -6,6 +6,8 @@ import random
 from string import ascii_lowercase, digits
 from typing import Any
 
+from app.models.users import User
+
 from flask import render_template
 
 
@@ -34,6 +36,7 @@ def generate_report_html(
     created_on: datetime,
     range_start: datetime,
     range_end: datetime,
+    temperature_unit: User.TemperatureUnit,
     readings: Collection[dict[str, Any]],
     data_format: DataFormat,
     notes: str | None
@@ -47,6 +50,7 @@ def generate_report_html(
         created_on=created_on,
         range_start=range_start,
         range_end=range_end,
+        temperature_unit=temperature_unit,
         readings=readings,
         total_readings=len(readings),
         data_format=data_format.value,
