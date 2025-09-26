@@ -246,6 +246,7 @@ def api_generate_report():
         range_start,
         range_end,
         current_user.temperature_unit,
+        current_user.display_name,
         readings,
         data_format,
         notes

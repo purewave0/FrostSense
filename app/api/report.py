@@ -37,6 +37,7 @@ def generate_report_html(
     range_start: datetime,
     range_end: datetime,
     temperature_unit: User.TemperatureUnit,
+    user_display_name: str,
     readings: Collection[dict[str, Any]],
     data_format: DataFormat,
     notes: str | None
@@ -51,6 +52,7 @@ def generate_report_html(
         range_start=range_start,
         range_end=range_end,
         temperature_unit=temperature_unit,
+        user_display_name=user_display_name,
         readings=readings,
         total_readings=len(readings),
         data_format=data_format.value,
