@@ -52,6 +52,7 @@ body {
     width: 24px;
     height: 24px;
     font-size: 10pt;
+    flex-shrink: 0;
 }
 
 #users-table tr.recently-updated {
