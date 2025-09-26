@@ -19,10 +19,12 @@
 {% block content %}
     <form id="preferences-form">
         <div id="preferences-header">
-            <img
-                id="avatar"
-                src="/static/img/avatars/default-avatar.jpg"
-            />
+            <div
+                class="avatar"
+                style="background-color: {{ current_user.avatar_colour}}"
+            >
+                <span>{{ current_user.display_name[0] }}</span>
+            </div>
             <div id="names">
                 <h1 id="displayed-display-name">
                     {{ current_user.display_name }}
