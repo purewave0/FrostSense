@@ -317,6 +317,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchAndApplyTableUpdates() {
         console.log(`users.js: fetching updates after ${latestUpdateDate}`)
         const response = await Api.fetchUsersSummary(latestUpdateDate);
+        if (!response.ok) {
+            showToast(ToastType.ERROR, 'Failed to get table updates');
+            return;
+        }
+
         const usersSummary = await response.json();
         const updatedRowIndices = [];
         let deletedUserIds = [];
