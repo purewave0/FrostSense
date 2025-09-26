@@ -1,4 +1,5 @@
 from datetime import datetime, date
+import logging
 from os import makedirs
 
 from flask import Flask, redirect, url_for, request, abort
@@ -27,6 +28,7 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.json = UpdatedJSONProvider(app)
     app.config.from_object(config_class)
+    app.logger.setLevel(logging.INFO)  # hide DEBUG messages
 
     # -- extensions --
     db.init_app(app)
