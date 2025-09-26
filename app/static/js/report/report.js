@@ -1,10 +1,13 @@
-function formatReadingsForGraph(rawReadings) {
+function formatAndConvertReadingsForGraph(rawReadings, temperatureUnit) {
     // the format dygraphs expects is:
     // [
     //     [x,y], [x,y], [x,y]...
     // ] for data x and y.
     return rawReadings.map((reading) => {
-        return [new Date(reading.created_on), reading.temperature]
+        return [
+            new Date(reading.created_on),
+            temperatureValue(reading.temperature, temperatureUnit),
+        ]
     });
 }
 
@@ -81,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td class="datetime"></td>
-                <td class="temperature">°C</td>
+                <td class="temperature"></td>
             `;
             let formattedTime = formatDateToCompactTime(currentDate, locales);
             previousDate = currentDate;
@@ -121,9 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const bodyStyle = window.getComputedStyle(document.body);
         const graphLineColour = bodyStyle.getPropertyValue('--color-graph-line');
 
+        const minimumGraphValue = temperatureValue(minimumGraphValueRaw, temperatureUnit);
+        const maximumGraphValue = temperatureValue(maximumGraphValueRaw, temperatureUnit);
+        const unitString = TemperatureUnitStrings[temperatureUnit];
+
         const graph = new Dygraph(
             graphElement,
-            formatReadingsForGraph(readings),
+            formatAndConvertReadingsForGraph(readings, temperatureUnit),
             {
                 width: width,
                 height: height,
@@ -135,14 +142,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 showLabelsOnHighlight: false,  // no legend on hover
                 // no ID column needed
                 labels: ['Time', 'Temperature'],
-                valueRange: [-30, 30],
+                valueRange: [minimumGraphValue, maximumGraphValue],
                 axes: {
                     y: {
                         valueFormatter(temperature) {
                             return formatTemperature(temperature)
                         },
                         axisLabelFormatter(temperature) {
-                            return formatTemperature(temperature, 0);
+                            // temperature already in the proper unit
+                            return `${temperature} ${unitString}`;
                         },
                     },
                 }

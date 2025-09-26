@@ -239,6 +239,8 @@ def api_generate_report():
     code = generate_report_code()
     utc_now = dt.datetime.now(dt.timezone.utc)
 
+    system_settings = get_system_settings()
+
     report_html = generate_report_html(
         sensor_name,
         code,
@@ -247,6 +249,8 @@ def api_generate_report():
         range_end,
         current_user.temperature_unit,
         current_user.display_name,
+        float(system_settings['minimum_graph_value']),
+        float(system_settings['maximum_graph_value']),
         readings,
         data_format,
         notes
