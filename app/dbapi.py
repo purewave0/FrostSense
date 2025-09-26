@@ -106,6 +106,19 @@ def sensor_name_exists(name: str) -> bool:
     return result
 
 
+def get_sensor_by_id(sensor_id: int) -> Sensor:
+    """Return the sensor with the given ID."""
+    result = db.session.execute(
+        db.select(
+            Sensor
+        ).where(
+            Sensor.id == sensor_id
+        )
+    ).scalar_one()
+
+    return result
+
+
 def get_sensor_key_by_id(sensor_id: int) -> str:
     """Return the key of the sensor with the given ID."""
     result = db.session.execute(

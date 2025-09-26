@@ -8,8 +8,8 @@ from time import sleep
 import click
 
 from app.dbapi import (
-    create_sensor, get_sensors, sensor_name_exists, delete_sensor_by_id,
-    sensor_id_exists,
+    create_sensor, get_sensors, get_sensor_by_id, sensor_name_exists,
+    delete_sensor_by_id, get_sensor_key_by_id, sensor_id_exists,
     create_reading, create_readings,
     create_user,
 )
@@ -176,6 +176,7 @@ def register_commands(app: Flask):
     def cli_list_sensors() -> None:
         sensors = get_sensors()
         click.echo(f'{len(sensors)} sensors in total.')
+        # TODO: pretty table?
         click.echo('id | name | created_on')
         for sensor in sensors:
             created_on = _format_datetime(sensor['created_on'])
@@ -189,3 +190,15 @@ def register_commands(app: Flask):
 
         delete_sensor_by_id(id)
         click.echo(f'deleted sensor with id={id}.')
+
+    @sensor.command('show')
+    @click.argument('id')
+    def cli_show_sensor_info(id: int) -> None:
+        if not sensor_id_exists(id):
+            raise click.ClickException('no sensor with the given ID.')
+
+        sensor = get_sensor_by_id(id)
+        click.echo(f'id: {id}')
+        click.echo(f'name: {sensor.name}')
+        click.echo(f'key: {sensor.key}')
+        click.echo(f'created_on: {sensor.created_on}')
