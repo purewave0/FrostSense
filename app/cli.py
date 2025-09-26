@@ -166,3 +166,17 @@ def register_commands(app: Flask):
 
         sensor = create_sensor(name)
         click.echo(f'created sensor with id={sensor["id"]}')
+
+    def _format_datetime(datetime: dt.datetime) -> str:
+        """Return the given datetime in a human-friendly format."""
+        return datetime.strftime("%Y-%m-%d %H:%M")
+
+
+    @sensor.command('list')
+    def cli_list_sensors() -> None:
+        sensors = get_sensors()
+        click.echo(f'{len(sensors)} sensors in total.')
+        click.echo('id | name | created_on')
+        for sensor in sensors:
+            created_on = _format_datetime(sensor['created_on'])
+            click.echo(f'{sensor["id"]} | {sensor["name"]} | {created_on}')
