@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.querySelector('.datetime').textContent = formattedTime;
             row.querySelector('.temperature').textContent = (
                 (reading.temperature !== null)
-                    ? reading.temperature.toFixed(1)
+                    ? temperatureValue(reading.temperature, temperatureUnit).toFixed(1)
                     : 'N/A'
             );
 
