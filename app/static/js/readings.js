@@ -38,11 +38,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // TODO: handle errors
     setInterval(() => {
         Api.fetchLastSensorReadings()
-            .then((response) => response.json())
-            .then((sensorReadings) => {
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error();
+            }).then((sensorReadings) => {
                 for (const sensor of sensors) {
                     gaugeCards[sensor.id].setReading(sensorReadings[sensor.id]);
                 }
+            }).catch(() => {
+                showToast(ToastType.ERROR, 'Failed to get new readings');
             });
     }, UPDATE_INTERVAL);
 });
