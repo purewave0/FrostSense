@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await Api.fetchUsersSummary(latestUpdateDate);
         const usersSummary = await response.json();
         const updatedRowIndices = [];
-        let deletedAnyRows = false;
+        let deletedUserIds = [];
 
         for (const userId of tableUserIds) {
             const wasUserDeleted = !usersSummary.all_user_ids.includes(userId);
@@ -327,12 +327,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log(
                     `users.js: user with id=${userId} no longer exists. deleting`
                 );
-                // TODO: if the soon-to-be-deleted user is selected, close whatever
-                // modal is open and show a warning
                 table
                     .row((_, userData) => userData.id === userId)
                     .remove()
-                deletedAnyRows = true;
+                deletedUserIds.push(userId);
+
+                const isViewingThisUser = selectedUser && selectedUser.id === userId;
+                if (isViewingThisUser) {
+                    selectedUser = null;
+                    // a modal for this now-deleted user is open. close it
+                    const modalId = document.querySelector('.modal.is-open').id;
+                    MicroModal.close(modalId);
+                    showToast(
+                        ToastType.ERROR, 'The user you were viewing has been deleted'
+                    );
+                }
             }
         }
 
@@ -384,9 +393,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        if (deletedAnyRows || updatedRowIndices.length > 0) {
+        if (deletedUserIds.length > 0 || updatedRowIndices.length > 0) {
             console.log('users.js: changes were made. redrawing table')
             table.draw();
+            tableUserIds = tableUserIds.filter(id => !deletedUserIds.includes(id));
             for (const index of updatedRowIndices) {
                 const rowElement = table.row(index).node();
                 animateRowUpdate(rowElement, UPDATED_ROW_COLOUR_DURATION);
@@ -559,9 +569,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        MicroModal.close('modal-edit');
         await fetchAndApplyTableUpdates();
         hideButtonLoader(editModal.editButton);
-        MicroModal.close('modal-edit');
         editModal.form.reset();
         showToast(ToastType.SUCCESS, 'User edited successfully');
         selectedUser = null;
@@ -589,7 +599,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 permissionCheckbox.checked = false;
             }
         }
-        MicroModal.show('modal-edit');
+        MicroModal.show('modal-edit', {
+            onClose() {
+                selectedUser = null;
+            },
+        });
     }
 
 
@@ -609,11 +623,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             hideButtonLoader(resetPasswordModal.confirmButton);
             return;
         }
+
+        MicroModal.close('modal-reset-password');
         await fetchAndApplyTableUpdates();  // just update the `updated_on` date
         const temporaryPassword = await response.json();
 
         hideButtonLoader(resetPasswordModal.confirmButton);
-        MicroModal.close('modal-reset-password');
         showToast(ToastType.SUCCESS, 'Password reset successfully');
         openTemporaryPasswordModal(
             selectedUser.display_name, selectedUser.username, temporaryPassword
@@ -639,8 +654,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await Api.deleteUser(selectedUser.id);
         hideButtonLoader(deleteModal.confirmButton);
         showToast(ToastType.SUCCESS, 'User deleted successfully');
-        await fetchAndApplyTableUpdates();
         MicroModal.close('modal-delete');
+        await fetchAndApplyTableUpdates();
     });
 
     function openDeleteModal(displayName, username, updatedOn, createdOn) {
@@ -648,6 +663,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         deleteModal.username.textContent = username;
         deleteModal.updated_on.textContent = formatDateToCompactDatetime(updatedOn);
         deleteModal.created_on.textContent = formatDateToCompactDatetime(createdOn);
-        MicroModal.show('modal-delete');
+        MicroModal.show('modal-delete', {
+            onClose() {
+                selectedUser = null;
+            },
+        });
     }
 });
