@@ -3,7 +3,8 @@ class GaugeCard {
     #gauge = null;
     #datetimeValue = null;
     #locales = null;
-    static #INVALID_READING = -404;
+    static #INVALID_TEMPERATURE = -404;
+    static #NO_READING = -505;
 
     /**
      * Create a new GaugeCard.
@@ -29,8 +30,10 @@ class GaugeCard {
             max: temperatureValue(maxTemperature, temperatureUnit),
             gaugeWidthScale: 0.75,
             textRenderer: (value) => {
-                if (value === GaugeCard.#INVALID_READING) {
+                if (value === GaugeCard.#INVALID_TEMPERATURE) {
                     return 'N/A';
+                } else if (value === GaugeCard.#NO_READING) {
+                    return 'Empty';
                 }
                 return formattedTemperature(value, temperatureUnit);
             },
@@ -79,12 +82,19 @@ class GaugeCard {
     }
 
     /**
-     * Display the given reading.
+     * Display the given reading. If `null`, display an "Empty" text.
      *
-     * @param {object} reading The reading object returned by the API, containing `id`
-     *     (unused), `temperature` in Celsius and `created_on`.
+     * @param {object?} reading The reading object returned by the API, containing `id`
+     *     (unused), `temperature` in Celsius and `created_on`. If `temperature` is
+     *     `null`, display a "N/A" text indicating the temperature is invalid.
      */
     setReading(reading) {
+        if (reading === null) {
+            this.#datetimeValue.textContent = '';
+            this.#gauge.refresh(GaugeCard.#NO_READING);
+            return;
+        }
+
         this.#datetimeValue.textContent = formatDateToCompactDatetime(
             new Date(reading.created_on),
             this.#locales
@@ -92,7 +102,7 @@ class GaugeCard {
 
         const temperature = (reading.temperature !== null)
             ? reading.temperature
-            : GaugeCard.#INVALID_READING;
+            : GaugeCard.#INVALID_TEMPERATURE;
         this.#gauge.refresh(temperature);
     }
 }
