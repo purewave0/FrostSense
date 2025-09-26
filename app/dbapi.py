@@ -432,6 +432,19 @@ def get_user_by_username(username: str) -> User | None:
     return user
 
 
+def get_admin() -> User | None:
+    """Return the User with admin permissions, or None."""
+    user = db.session.execute(
+        db.select(
+            User
+        ).where(
+            User.permissions == User.Permission.ADMIN.value
+        )
+    ).scalar_one_or_none()
+
+    return user
+
+
 def get_user_ids() -> Sequence[int]:
     """Return all user IDs."""
     result = db.session.execute(

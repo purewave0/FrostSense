@@ -6,7 +6,9 @@ from flask.json.provider import DefaultJSONProvider
 from flask_login import LoginManager
 
 from app.dbapi import (
-    create_missing_system_settings, create_system_settings_timestamp_if_needed
+    get_admin,
+    create_user, create_missing_system_settings,
+    create_system_settings_timestamp_if_needed
 )
 from app.extensions import db
 from app.api.report import REPORTS_DIRECTORY
@@ -38,6 +40,47 @@ def create_app(config_class=Config):
 
         create_system_settings_timestamp_if_needed()
         create_missing_system_settings()
+
+        admin_exists = get_admin() is not None
+        if not admin_exists:
+            app.logger.info('creating missing admin user…')
+            temporary_password = User.generate_temporary_password()
+            create_user(
+                'Administrator',
+                'admin',
+                temporary_password,
+                True,
+                User.Permission.ADMIN
+            )
+
+            app.logger.info('done.')
+
+            try:
+                with open('ADMIN-ACCOUNT.txt', 'w') as file:
+                    file.writelines(
+                        (
+                            '# this file was generated automatically.\n',
+                            '\n',
+                            'username: admin\n',
+                            f'temporary password: {temporary_password}\n'
+                        )
+                    )
+            except OSError as error:
+                app.logger.error(f'error: {error}')
+                app.logger.info(
+                    "couldn't write the credentials to a file. here they are then:"
+                )
+                app.logger.info('    username: admin')
+                app.logger.info(f'    temporary password: {temporary_password}')
+            else:
+                app.logger.info(
+                    'credentials written to the `ADMIN-ACCOUNT.txt` file located'
+                    + ' at the project root.'
+                )
+
+            app.logger.info(
+                'once signed in, you will be prompted to create a new password.'
+            )
 
         @app.context_processor
         def inject_permission():

@@ -17,3 +17,4 @@ build/
 *.egg-info/
 
 app/generated_reports
+ADMIN-ACCOUNT.txt
