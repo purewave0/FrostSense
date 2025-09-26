@@ -1,18 +1,22 @@
 """Useful CLI commands for populating the database."""
 
 import datetime as dt
+from flask import Flask
 from random import randrange
 from time import sleep
 
 import click
 
 from app.dbapi import (
-    create_sensor, get_sensors, create_reading, create_readings, create_user
+    create_sensor, get_sensors, sensor_name_exists,
+    create_reading, create_readings,
+    create_user,
 )
 from app.models.users import User
+from app.models.readings import Sensor
 
 
-def register_commands(app):
+def register_commands(app: Flask):
     @app.cli.command('seed-sensors')
     @click.option(
         '--count',
@@ -139,3 +143,26 @@ def register_commands(app):
         )
 
         click.echo('created 1 default user. {Felix Sullivan|felix|default}')
+
+    @app.cli.group()
+    def sensor():
+        pass
+
+    @sensor.command('create')
+    @click.argument('name')
+    def cli_create_sensor(name: str) -> None:
+        name_length = len(name)
+        if (
+            name_length < Sensor.MIN_NAME_LENGTH
+            or name_length > Sensor.MAX_NAME_LENGTH
+        ):
+            raise click.UsageError(
+                f'sensor names must have {Sensor.MIN_NAME_LENGTH}'
+                + f'-{Sensor.MAX_NAME_LENGTH} characters.',
+            )
+
+        if sensor_name_exists(name):
+            raise click.ClickException('a sensor with that name already exists.')
+
+        sensor = create_sensor(name)
+        click.echo(f'created sensor with id={sensor["id"]}')
