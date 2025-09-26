@@ -132,6 +132,23 @@ def get_sensor_key_by_id(sensor_id: int) -> str:
     return result
 
 
+def reset_sensor_key_by_id(sensor_id: int) -> str:
+    """Reset the key of the sensor with the given ID and return the new key."""
+    new_key = Sensor.generate_key()
+    db.session.execute(
+        db.update(
+            Sensor
+        ).where(
+            Sensor.id == sensor_id
+        ).values(
+            key=new_key
+        )
+    )
+    db.session.commit()
+
+    return new_key
+
+
 def update_sensor_by_id(
     sensor_id: int,
     name: str,

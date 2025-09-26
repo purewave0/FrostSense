@@ -24,10 +24,10 @@ class Sensor(db.Model):
 
     def __init__(self, name):
         self.name = name
-        self.key = Sensor._generate_key()
+        self.key = Sensor.generate_key()
 
     @staticmethod
-    def _generate_key() -> str:
+    def generate_key() -> str:
         """Return a 24-character-long key made of lower+uppercase letters and digits."""
         return ''.join(
             secrets.choice(Sensor._KEY_CHARSET)
