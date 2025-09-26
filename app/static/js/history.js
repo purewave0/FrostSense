@@ -69,8 +69,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             Api.fetchSensorReadingsByDays([sensor.id], [newDate])
-                .then((response) => response.json())
-                .then((sensorReadings) => {
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error();
+                }).then((sensorReadings) => {
                     const readings = sensorReadings[sensor.id];
                     graphCard.setReadings(readings);
                     if (readings.length > 0) {
@@ -83,6 +87,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     } else {
                         graphCard.setInfoTextHTML('No readings')
                     }
+                }).catch(() => {
+                    showToast(ToastType.ERROR, 'Failed to get readings for this day');
                 });
         })
 
@@ -158,9 +164,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             // none of the sensors are viewing Today's readings
             return;
         }
+
         Api.fetchSensorReadingsByDays(sensorIdsToUpdate, startDates, offsetIds)
-            .then((response) => response.json())
-            .then((sensorReadings) => {
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error();
+            }).then((sensorReadings) => {
                 for (const sensorId in sensorReadings) {
                     const readings = sensorReadings[sensorId];
                     if (readings.length === 0) {
@@ -174,6 +185,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         )
                     );
                 }
+            }).catch(() => {
+                showToast(ToastType.ERROR, 'Failed to get new readings');
             });
     }, UPDATE_INTERVAL);
 });
