@@ -19,13 +19,13 @@ def _rows_to_dicts(rows):
 
 # -- sensors --
 
-def create_sensor(name: str) -> dict:
+def create_sensor(name: str) -> dict[str, Any]:
     """Create a sensor with the given name."""
     sensor = Sensor(name)
     db.session.add(sensor)
     db.session.commit()
 
-    current_app.logger.info(
+    current_app.logger.debug(
         f'creating sensor name="{name}"',
     )
 
@@ -139,7 +139,7 @@ def create_reading(sensor_id: int, temperature: float) -> dict:
     db.session.add(reading)
     db.session.commit()
 
-    current_app.logger.info(
+    current_app.logger.debug(
         f'creating reading sensor_id={sensor_id} temperature={temperature}°C',
     )
 
@@ -166,7 +166,7 @@ def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
             )
         )
 
-    current_app.logger.info(f'mass-creating readings for sensor_id={sensor_id}')
+    current_app.logger.debug(f'mass-creating readings for sensor_id={sensor_id}')
 
     db.session.commit()
 
@@ -640,7 +640,7 @@ def create_system_settings_timestamp_if_needed() -> None:
 
     timestamp = SystemSettingsTimestamp(updated_on=datetime.utcnow())
     db.session.add(timestamp)
-    current_app.logger.info('creating missing system settings update timestamp.')
+    current_app.logger.debug('creating missing system settings update timestamp.')
 
 
 def _update_system_settings_timestamp() -> None:
@@ -690,7 +690,7 @@ def create_missing_system_settings() -> None:
         default_value = to_be_created[key]
         setting = SystemSetting(key=key, value=default_value)
         db.session.add(setting)
-        current_app.logger.info(f'creating missing SystemSetting "{key}"')
+        current_app.logger.debug(f'creating missing SystemSetting "{key}"')
 
     if to_be_created:
         # something was created. must update the timestamp
