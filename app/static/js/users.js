@@ -89,10 +89,34 @@ document.addEventListener('DOMContentLoaded', async () => {
             {
                 name: 'display_name',
                 data: 'display_name',
+                render: (data, type, user) => {
+                    if (type === 'display') {
+                        const avatar = document.createElement('div');
+                        avatar.className = 'avatar';
+                        avatar.style.backgroundColor = user.avatar_colour;
+                        avatar.textContent = data[0];
+
+                        const displayName = document.createElement('span');
+                        displayName.textContent = data;
+
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'display-name-wrapper';
+                        wrapper.append(avatar, displayName);
+                        return wrapper;
+                    }
+                    return data;
+                }
             },
             {
                 name: 'username',
                 data: 'username',
+                visible: false,
+                searchable: false,
+            },
+            {
+                name: 'avatar_colour',
+                data: 'avatar_colour',
+                orderable: false,
                 visible: false,
                 searchable: false,
             },
@@ -280,6 +304,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'id': user.id,
                 'display_name': user.display_name,
                 'username': user.username,
+                'avatar_colour': user.avatar_colour,
                 'permissions': user.permissions,
                 'updated_on': user.updated_on,
                 'created_on': user.created_on,
@@ -330,6 +355,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         'id': user.id,
                         'display_name': user.display_name,
                         'username': user.username,
+                        'avatar_colour': user.avatar_colour,
                         'permissions': user.permissions,
                         'updated_on': user.updated_on,
                         'created_on': user.created_on,
@@ -348,6 +374,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             'id': user.id,
                             'display_name': user.display_name,
                             'username': user.username,
+                            'avatar_colour': user.avatar_colour,
                             'permissions': user.permissions,
                             'updated_on': user.updated_on,
                             'created_on': user.created_on,

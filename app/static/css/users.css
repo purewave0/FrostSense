@@ -41,6 +41,19 @@ body {
     transition: background-color 0.3s ease;
 }
 
+#users-table .display-name-wrapper {
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+    align-items: center;
+}
+
+#users-table .display-name-wrapper .avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 10pt;
+}
+
 #users-table tr.recently-updated {
     background-color: var(--color-row-updated);
 }
@@ -113,7 +126,8 @@ div.dt-container .dt-paging .dt-paging-button:active {
     color: white;
 }
 
-#modal-create-permissions {
+#modal-create-permissions,
+#modal-edit-permissions {
     display: flex;
     flex-direction: column;
     row-gap: 8px;
