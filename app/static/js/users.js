@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             permissionsCell.title = formatPermissionsValue(userData.permissions);
         },
         order: [
-            [1, 'asc'],
+            [5, 'desc'],
         ],
         pageLength: 15,
         lengthChange: false,
