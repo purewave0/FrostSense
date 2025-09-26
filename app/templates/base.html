@@ -141,17 +141,22 @@
                 <header id="header">
                     <h1 id="page-title">{{ self.title() }}</h1>
                     <div id="header-user">
-                        <!-- TODO: proper user's avatar -->
-                        <img
+                        <div
                             id="header-avatar"
-                            src="/static/img/avatars/default-avatar.jpg"
-                        />
+                            class="avatar"
+                            style="background-color: {{ current_user.avatar_colour}}"
+                        >
+                            <span>{{ current_user.display_name[0] }}</span>
+                        </div>
 
                         <div id="profile-dropdown">
                             <div id="mini-profile">
-                                <img
-                                    src="/static/img/avatars/default-avatar.jpg"
-                                />
+                                <div
+                                    class="avatar"
+                                    style="background-color: {{ current_user.avatar_colour}}"
+                                >
+                                    <span>{{ current_user.display_name[0] }}</span>
+                                </div>
                                 <div id="mini-info">
                                     <p id="mini-name">
                                         {{ current_user.display_name }}

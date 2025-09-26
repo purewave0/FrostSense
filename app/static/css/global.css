@@ -71,6 +71,14 @@ textarea {
     }
 }
 
+.avatar {
+    border-radius: 50%;
+    text-align: center;
+    align-content: center;
+    color: white;
+    user-select: none;
+}
+
 .info-empty {
     user-select: none;
     display: flex;
@@ -274,11 +282,9 @@ button.with-loader:disabled {
 }
 
 #header-avatar {
-    user-select: none;
     cursor: pointer;
     width: var(--header-avatar-size);
     height: var(--header-avatar-size);
-    border-radius: 100%;
 }
 
 #profile-dropdown {
@@ -308,10 +314,10 @@ button.with-loader:disabled {
     margin: 8px 0;
 }
 
-#mini-profile img {
+#mini-profile .avatar {
     width: 42px;
     height: 42px;
-    border-radius: 100%;
+    font-size: 14pt;
 }
 
 #mini-info {
