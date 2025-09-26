@@ -386,12 +386,12 @@ def get_users(
 
     If `updated_after` is given, return only users that were updated after the given
     date.
-
     """
     query =  db.select(
         User.id,
         User.display_name,
         User.username,
+        User.avatar_colour,
         User.permissions,
         User.created_on,
         User.updated_on,

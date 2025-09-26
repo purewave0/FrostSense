@@ -1,5 +1,7 @@
 from datetime import datetime
 from enum import Enum, Flag
+from random import randint
+from colorsys import hls_to_rgb
 import string, secrets
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -59,6 +61,7 @@ class User(UserMixin, db.Model):
     username: Mapped[str] = mapped_column(
         db.String(MAX_NAME_LENGTH), unique=True, index=True
     )
+    avatar_colour: Mapped[str] = mapped_column(db.String(7))
     password_hash: Mapped[str] = mapped_column(db.String(256))
     is_password_temporary: Mapped[bool] = mapped_column()
     password_changed_on: Mapped[datetime | None] = mapped_column()
@@ -84,6 +87,7 @@ class User(UserMixin, db.Model):
     ):
         self.display_name = display_name
         self.username = username
+        self.avatar_colour = User._generate_random_avatar_colour()
         self.permissions = permissions.value
         self.homepage = homepage
         self.temperature_unit = temperature_unit
@@ -100,6 +104,27 @@ class User(UserMixin, db.Model):
 
     def has_permission(self, permission_value: Permission) -> bool:
         return User.Permission(self.permissions).has_permission(permission_value)
+
+    @staticmethod
+    def _generate_random_avatar_colour() -> str:
+        """Return a random, slightly dark colour meant for avatar backgrounds.
+        The colour is returned as a HEX string (#abc123).
+        """
+        def rgb_to_hex(r: int, g: int, b: int) -> int:
+            return (r << 16) | (g << 8) | b
+
+        HUE_LIMIT = 1  # 100% in decimal
+        LIGHTNESS = 0.35  # slightly dark so we can use white text
+        SATURATION = 0.8
+        hue = randint(0, HUE_LIMIT*100) / 100
+        rgb_colour_floats = hls_to_rgb(hue, LIGHTNESS, SATURATION)
+        # hls_to_rgb returns floats between 0 and 1. convert them
+        # to 8-bit values (0-255)
+        colour_rgb = tuple(
+            int(value*255) for value in rgb_colour_floats
+        )
+        colour_hex = rgb_to_hex(*colour_rgb)
+        return f'#{colour_hex:06x}'
 
     @staticmethod
     def generate_password_hash(password: str) -> str:
