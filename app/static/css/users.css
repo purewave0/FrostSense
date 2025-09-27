@@ -13,6 +13,29 @@ body {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     padding: 16px;
     border-radius: 8px;
+    position: relative;
+}
+
+#table-loader {
+    z-index: 1;
+    border-color: var(--color-dark-background);
+    border-bottom-color: transparent;
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+}
+
+body.loading-users #users-table_wrapper {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+body:not(.loading-users) #table-loader {
+    display: none;
+}
+
+#users-table_wrapper {
+    transition: opacity 0.2s ease;
 }
 
 .top-action-button {

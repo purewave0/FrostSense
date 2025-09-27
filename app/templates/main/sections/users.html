@@ -18,8 +18,11 @@
 
 {% block title %} Users {% endblock %}
 
+{% block body_classes %} loading-users {% endblock %}
+
 {% block content %}
     <div id="content-wrapper">
+        <div id="table-loader" class="loader"></div>
         <table id="users-table" class="display">
             <thead>
                 <tr>

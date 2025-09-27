@@ -77,6 +77,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let selectedUser = null;
 
+    function stopTableLoading() {
+        document.body.classList.remove('loading-users');
+        const createButton = document.getElementById('top-action-create');
+        createButton.disabled = false;
+    }
+
     const table = new DataTable('#users-table', {
         columns: [
             {
@@ -257,6 +263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 createButton.addEventListener('click', () => {
                     openCreateModal();
                 });
+                createButton.disabled = true;
                 createButton.innerHTML = `
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -286,6 +293,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     let latestUpdateDate = null;
     let tableUserIds = [];
     const response = await Api.fetchUsers();
+    if (!response.ok) {
+        showToast(ToastType.ERROR, 'Failed to load users');
+        hideTableLoader();
+        return;
+    }
     const users = await response.json();
 
     for (const user of users) {
@@ -313,6 +325,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         tableUserIds.push(user.id);
     }
     table.draw();
+
+    stopTableLoading();
 
     async function fetchAndApplyTableUpdates() {
         console.log(`users.js: fetching updates after ${latestUpdateDate}`)
