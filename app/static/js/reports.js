@@ -188,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast(
                 ToastType.ERROR, `Failed to generate report (${error})`
             );
+            hideButtonLoader(generateReportButton);
             return;
         }
 
