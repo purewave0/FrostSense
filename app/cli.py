@@ -9,9 +9,9 @@ import click
 
 from app.dbapi import (
     create_sensor, get_sensors, get_sensor_by_id, sensor_name_exists,
-    delete_sensor_by_id, get_sensor_key_by_id, sensor_id_exists, reset_sensor_key_by_id,
+    delete_sensor_by_id, sensor_id_exists, reset_sensor_key_by_id,
     create_reading, create_readings,
-    create_user,
+    create_user, get_admin, update_user_password_by_id,
 )
 from app.models.users import User
 from app.models.readings import Sensor
@@ -145,6 +145,8 @@ def register_commands(app: Flask):
 
         click.echo('created 1 default user. {Felix Sullivan|felix|default}')
 
+    # -- sensors --
+
     @app.cli.group()
     def sensor():
         pass
@@ -212,3 +214,20 @@ def register_commands(app: Flask):
         new_key = reset_sensor_key_by_id(id)
         click.echo(f'reset key of sensor with id={id}.')
         click.echo(f'new key: {new_key}')
+
+    # -- admin --
+
+    @app.cli.group()
+    def admin():
+        pass
+
+    @admin.command('reset-password')
+    def cli_reset_admin_password() -> None:
+        admin = get_admin()
+        if not admin:
+            raise click.ClickException("the admin account hasn't been created.")
+
+        temporary_password = User.generate_temporary_password()
+        update_user_password_by_id(admin.id, temporary_password, True)
+        click.echo('reset the admin password.')
+        click.echo(f'new temporary password: {temporary_password}')
