@@ -8,96 +8,113 @@
     </head>
 
     <body data-format="{{ data_format }}">
-        <header>
-            <div id="header-logo">
-                <!-- TODO: -->
-                <!-- <img id="/static/img/logo.svg"> -->
-                <h1>logo</h1>
-            </div>
-            <div id="header-center">
-                <h1 id="title">Readings Report</h1>
-                <div id="header-info">
-                    <div class="header-column">
-                        <div class="header-row">
-                            <b>Generated on:</b>
-                            <span class="datetime">{{ created_on }}</span>
+        <div id="controls">
+            <button id="print-button" title="Print report">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                >
+                    <path d="M720-680H240v-160h480v160Zm0 220q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Z"/>
+                </svg>
+                <span>Print report</span>
+            </button>
+        </div>
+
+        <div id="document">
+            <header>
+                <div id="header-logo">
+                    <!-- TODO: -->
+                    <!-- <img id="/static/img/logo.svg"> -->
+                    <h1>logo</h1>
+                </div>
+                <div id="header-center">
+                    <h1 id="title">Readings Report</h1>
+                    <div id="header-info">
+                        <div class="header-column">
+                            <div class="header-row">
+                                <b>Generated on:</b>
+                                <span class="datetime">{{ created_on }}</span>
+                            </div>
+
+                            <div class="header-row">
+                                <b>Sensor:</b>
+                                <span>{{ sensor_name }}</span>
+                            </div>
+
+                            <div class="header-row">
+                                <b>Code:</b>
+                                <span id="code-value">{{ formatted_code }}</span>
+                            </div>
                         </div>
 
-                        <div class="header-row">
-                            <b>Sensor:</b>
-                            <span>{{ sensor_name }}</span>
+                        <div class="header-column">
+                            <div class="header-row">
+                                <b>Start:</b>
+                                <span class="datetime">{{ range_start }}</span>
+                            </div>
+
+                            <div class="header-row">
+                                <b>End:</b>
+                                <span id="range-end-value" class="datetime">{{ range_end }}</span>
+                            </div>
+
+                            <div class="header-row">
+                                <b>Total readings:</b>
+                                <span>{{ total_readings }}</span>
+                            </div>
                         </div>
 
-                        <div class="header-row">
-                            <b>Code:</b>
-                            <span id="code-value">{{ formatted_code }}</span>
-                        </div>
-                    </div>
+                        <div class="header-column">
+                            <div class="header-row">
+                                <b>Timezone:</b>
+                                <span id="timezone-value"></span>
+                            </div>
 
-                    <div class="header-column">
-                        <div class="header-row">
-                            <b>Start:</b>
-                            <span class="datetime">{{ range_start }}</span>
-                        </div>
+                            <div class="header-row">
+                                <b>Unit:</b>
+                                {% if temperature_unit == 'celsius' %}
+                                    <span id="unit-value" class="celsius">Celsius (°C)</span>
+                                {% elif temperature_unit == 'fahrenheit' %}
+                                    <span id="unit-value" class="fahrenheit">Fahrenheit (°F)</span>
+                                {% endif %}
+                            </div>
 
-                        <div class="header-row">
-                            <b>End:</b>
-                            <span id="range-end-value" class="datetime">{{ range_end }}</span>
-                        </div>
-
-                        <div class="header-row">
-                            <b>Total readings:</b>
-                            <span>{{ total_readings }}</span>
-                        </div>
-                    </div>
-
-                    <div class="header-column">
-                        <div class="header-row">
-                            <b>Timezone:</b>
-                            <span id="timezone-value"></span>
-                        </div>
-
-                        <div class="header-row">
-                            <b>Unit:</b>
-                            {% if temperature_unit == 'celsius' %}
-                                <span id="unit-value" class="celsius">Celsius (°C)</span>
-                            {% elif temperature_unit == 'fahrenheit' %}
-                                <span id="unit-value" class="fahrenheit">Fahrenheit (°F)</span>
-                            {% endif %}
-                        </div>
-
-                        <div class="header-row" id="user-cell">
-                            <b>User:</b>
-                            <span id="user-value">{{ user_display_name }}</span>
+                            <div class="header-row" id="user-cell">
+                                <b>User:</b>
+                                <span id="user-value">{{ user_display_name }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="header-code" class="header-column">
-                <div id="qr-code" />
-            </div>
-        </header>
+                <div id="header-code" class="header-column">
+                    <div id="qr-code" />
+                </div>
+            </header>
 
-        <section id="data-section">
-            {% if data_format == 'table' or data_format == 'table-and-graph' %}
-                <section id="tables-section">
-                </section>
-            {% endif %}
+            <section id="data-section">
+                {% if data_format == 'table' or data_format == 'table-and-graph' %}
+                    <section id="tables-section">
+                    </section>
+                {% endif %}
 
-            {% if data_format == 'graph' or data_format == 'table-and-graph' %}
-                <section id="graph-section">
-                    <div id="graph"></div>
-                </section>
-            {% endif %}
-        </section>
-
-        {% if notes %}
-            <section id="notes-section">
-                <span id="notes-title">Notes:</span>
-                <span id="notes">{{ notes }}</span>
+                {% if data_format == 'graph' or data_format == 'table-and-graph' %}
+                    <section id="graph-section">
+                        <div id="graph"></div>
+                    </section>
+                {% endif %}
             </section>
-        {% endif %}
+        </div>
+
+            {% if notes %}
+                <section id="notes-section">
+                    <span id="notes-title">Notes:</span>
+                    <span id="notes">{{ notes }}</span>
+                </section>
+            {% endif %}
 
         <script src="/static/js/global.js"></script>
         {% if data_format == 'graph' or data_format == 'table-and-graph' %}

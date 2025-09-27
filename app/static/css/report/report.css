@@ -6,6 +6,70 @@ body {
     --border-color: #aaaaaa;
     --color-graph-line: #ff174d;
     --header-spacing: 4px;
+    --color-dark-background: #1c4197;
+}
+
+#controls {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+#controls button {
+    background-color: black;
+    padding: 8px 24px 8px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color: white;
+    justify-content: start;
+}
+
+#controls button svg {
+    fill: white;
+    width: 24px;
+    height: 24px;
+}
+
+#controls #print-button {
+    background-color: var(--color-dark-background);
+}
+
+@media print {
+    #controls {
+        display: none;
+    }
+}
+
+/* simulate A4 paper on a background */
+@media not print {
+    body {
+        background-color: #424242;
+    }
+
+    #document {
+        margin: 16px auto;
+        background-color: white;
+        box-shadow:
+            rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+            rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
+        /* a4 ratio */
+        /* 810px = approximate print width */
+        --report-width: 810px;
+        --report-height: calc(var(--report-width) * sqrt(2));
+
+        width: var(--report-width);
+        height: var(--report-height);
+    }
 }
 
 header {

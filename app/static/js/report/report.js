@@ -15,6 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerTimezone = document.getElementById('timezone-value');
     headerTimezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+    const printButton = document.getElementById('print-button');
+    printButton.addEventListener('click', () => {
+        print();
+    });
+
     // datetimes that will be adjusted and formatted
     const datetimes = document.querySelectorAll('.datetime');
     for (const datetime of Array.from(datetimes)) {
