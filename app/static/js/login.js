@@ -14,19 +14,36 @@ document.addEventListener('DOMContentLoaded', () => {
         passwordVisibilityToggle.classList.toggle('visible');
     });
 
+    function showLoginError() {
+        document.body.classList.add('incorrect-login');
+    }
+
+    function hideLoginError() {
+        document.body.classList.remove('incorrect-login');
+    }
+
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        hideLoginError();
 
         const username = usernameInput.value.trim();
         const password = passwordInput.value.trim();
         const response = await Api.login(
             username, password, rememberLoginCheckbox.checked
         );
-        if (response.ok) {
-            document.location.href = '/';
-        } else {
-            // TODO: proper error
-            alert('incorrect username or password.');
+        if (!response.ok) {
+            const error = (await response.json()).error;
+            switch (error) {
+                case 'incorrect_login':
+                    showLoginError();
+                    break;
+                default:
+                    showToast(ToastType.ERROR, `Failed to log in (${error})`);
+                    break;
+            }
+            return;
         }
+
+        document.location.href = '/';
     });
 });

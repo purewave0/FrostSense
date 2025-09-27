@@ -45,6 +45,28 @@
     row-gap: 32px;
 }
 
+#login-error {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+    background-color: var(--color-error-hover);
+    color: var(--color-error);
+    padding: 8px 16px 8px 8px;
+    border-radius: 4px;
+    align-items: center;
+    font-size: 12pt;
+    transition: opacity 0.075s ease;
+}
+
+#login-error svg {
+    fill: var(--color-error);
+}
+
+body:not(.incorrect-login) #login-error {
+    opacity: 0;
+    pointer-events: none;
+}
+
 #login-form input {
     font-size: inherit;
     padding: 8px 40px 8px 8px;

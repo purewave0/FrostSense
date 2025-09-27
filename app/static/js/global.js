@@ -262,11 +262,11 @@ function getStartOfToday() {
 
 const ToastType = {
     'SUCCESS': {
-        'backgroundColor': 'var(--color-toast-success)',
+        'backgroundColor': 'var(--color-success)',
         'iconURL': '/static/icon/success.svg',
     },
     'ERROR': {
-        'backgroundColor': 'var(--color-toast-error)',
+        'backgroundColor': 'var(--color-error)',
         'iconURL': '/static/icon/error.svg',
     },
     'NO_CHANGES': {

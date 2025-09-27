@@ -32,8 +32,9 @@ body {
     --color-negative: #e93737;
     --color-negative-hover: #ff424224;
 
-    --color-toast-success: #4caf50;
-    --color-toast-error: #f44336;
+    --color-success: #4caf50;
+    --color-error: #f44336;
+    --color-error-hover: #ff2b1b24;
     --color-toast-no-changes: #3f51b5;
 
     background-color: var(--color-background);
