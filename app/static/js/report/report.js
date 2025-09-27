@@ -162,4 +162,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    // we don't want to auto-print the report if the user came from, e.g. the Verify
+    // Reports page
+    const cameFromGenerateReportsPage = urlParams.get('should_print');
+    if (cameFromGenerateReportsPage) {
+        // we need to wait a little bit, or else the page behind the Print dialog will
+        // be missing
+        setTimeout(print, 50);
+    }
+
 });

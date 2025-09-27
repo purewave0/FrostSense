@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const reportCode = await response.json();
         showToast(ToastType.SUCCESS, 'Report generated successfully');
         setTimeout(() => {
-            window.open(`/reports/${reportCode}`, '_blank').focus();
+            window.open(`/reports/${reportCode}?should_print=1`, '_blank').focus();
             hideButtonLoader(generateReportButton);
         }, 700);
     });
