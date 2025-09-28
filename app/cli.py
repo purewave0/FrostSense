@@ -104,10 +104,11 @@ def register_commands(app: Flask):
             f'total: {total_seeded} readings.'
         )
 
+    # -- users --
 
-    @app.cli.command('seed-user')
-    def seed_user():
-        """Seed the database with a default user.
+    @app.cli.group()
+    def user():
+        pass
 
         Display name: "Felix Sullivan"; Username: "felix"; password: "default".
         """
@@ -226,4 +227,5 @@ def register_commands(app: Flask):
         temporary_password = User.generate_temporary_password()
         update_user_password_by_id(admin.id, temporary_password, True)
         click.echo('reset the admin password.')
+        click.echo(f'username: {admin.username}')
         click.echo(f'new temporary password: {temporary_password}')
