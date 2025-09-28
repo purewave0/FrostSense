@@ -18,13 +18,19 @@ from app.models.readings import Sensor
 
 
 def register_commands(app: Flask):
-    @app.cli.command('seed-readings')
+    # -- readings --
+
+    @app.cli.group()
+    def reading():
+        pass
+
+    @reading.command('seed')
     @click.option(
         '--count',
         type=int,
         default=120,
         show_default=True,
-        help='How many readings per sensor to insert'
+        help='How many readings per sensor to add'
     )
     @click.option(
         '--interval',
@@ -42,12 +48,12 @@ def register_commands(app: Flask):
         # TODO: configurable interval for --continuous
     )
     def seed_readings(count, interval, continuous):
-        """Seed the database sensors with `count` random readings.
+        """Seed the database sensors with the given amount of random readings.
 
         Starting from `interval` * `count` seconds before now, readings will have
         `interval` seconds between each other.
 
-        If --continuous, then readings will be sent one by one instead.
+        If --continuous, new readings will be added repeatedly until stopped.
         """
         all_sensors = get_sensors()
         start_time = dt.datetime.utcnow() - dt.timedelta(seconds=interval*count)
