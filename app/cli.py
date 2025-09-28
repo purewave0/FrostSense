@@ -48,7 +48,7 @@ def register_commands(app: Flask):
         show_default=True,
         help='Send readings continuously, one by one, instead of all at once'
     )
-    def seed_readings(count, interval, continuous):
+    def cli_seed_readings(count, interval, continuous):
         """Seed the database sensors with the given amount of random readings.
 
         Starting from `interval` * `count` seconds before now, readings will have
@@ -120,7 +120,7 @@ def register_commands(app: Flask):
         show_default=True,
         help='How many users to add'
     )
-    def seed_users(count):
+    def cli_seed_users(count):
         """Seed the database with the given amount of users.
 
         All users will have the most basic permission level (0) and the temporary
@@ -239,7 +239,7 @@ def register_commands(app: Flask):
         show_default=True,
         help='How many sensors to add'
     )
-    def seed_sensors(count):
+    def cli_seed_sensors(count):
         """Seed the database with the given amount of sensors."""
 
         seeded_count = 0
