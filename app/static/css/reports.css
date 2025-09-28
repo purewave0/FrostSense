@@ -175,8 +175,7 @@ input[type="radio"] {
 }
 
 #preview:not(.has-notes) #preview-notes {
-    /* still occupy space */
-    opacity: 0;
+    display: none;
 }
 
 /* section texts */
