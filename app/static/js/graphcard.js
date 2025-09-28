@@ -20,6 +20,8 @@ class GraphCard {
      * @param {number} minTemperature The lowest value this graph can show, in Celsius.
      * @param {number} maxTemperature The highest value this graph can show, in Celsius.
      * @param {string} lineColour The colour (hex, rgb, etc.) for the temperature line.
+     * @param {number} [width=480] The graph width.
+     * @param {number} [height=320] The graph height.
      */
     constructor(
         element,
@@ -28,7 +30,9 @@ class GraphCard {
         temperatureUnit,
         minTemperature,
         maxTemperature,
-        lineColour
+        lineColour,
+        width = 480,
+        height = 320
     ) {
         this.#locales = getUserLocales();
         GraphCard.#prepareCard(element, sensorId, sensorName);
@@ -41,7 +45,7 @@ class GraphCard {
             'previousDayButton': this.#card.querySelector('.button-previous'),
             'currentDate': this.#card.querySelector('.current-date'),
             'nextDayButton': this.#card.querySelector('.button-next'),
-        }
+        };
 
         const unitString = TemperatureUnitStrings[temperatureUnit];
 
@@ -49,6 +53,8 @@ class GraphCard {
             this.#card.querySelector('.graph'),
             [],  // empty data
             {
+                width: width,
+                height: height,
                 color: lineColour,
                 strokeWidth: 1.5,
                 visibility: [true, false],  // don't plot IDs

@@ -151,3 +151,37 @@ body.loading-graph-cards #graph-cards {
 body:not(.loading-graph-cards) #skeleton-graph-cards {
     display: none;
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    #graph-cards,
+    #skeleton-graph-cards {
+        justify-content: center;
+    }
+
+    .graph-card .header {
+        flex-direction: column;
+        row-gap: 4px;
+    }
+
+    .graph-card .sensor-name {
+        max-width: 265px;
+    }
+
+    .readings-count {
+        display: none;
+    }
+
+    .graph-card .controls button:enabled:hover {
+        background-color: var(--color-dark-background);
+    }
+
+    .dygraph-legend {
+        width: 184px;
+    }
+
+    .graph-card.skeleton {
+        width: 302px;
+    }
+}

@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const bodyStyle = window.getComputedStyle(document.body);
     const graphLineColour = bodyStyle.getPropertyValue('--color-graph-line');
 
+    const mediaQuery = window.matchMedia("screen and (max-width: 768px)");
+    const isMobile = mediaQuery.matches;
+    const MOBILE_GRAPH_WIDTH = 270;
+    const MOBILE_GRAPH_HEIGHT = 300;
+
     for (const sensor of sensors) {
         const card = document.createElement('div');
         graphCardsDestination.append(card);
@@ -37,7 +42,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             temperatureUnit,
             minTemperature,
             maxTemperature,
-            graphLineColour
+            graphLineColour,
+            isMobile ? (MOBILE_GRAPH_WIDTH) : 480,
+            isMobile ? (MOBILE_GRAPH_HEIGHT) : 320,
         );
         graphCards[sensor.id] = graphCard;
         graphCard.getCardElement().classList.add('today');
