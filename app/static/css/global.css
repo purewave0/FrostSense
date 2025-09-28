@@ -387,3 +387,24 @@ button.with-loader:disabled {
 #page-content {
     padding: 16px 16px 16px 32px;
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    /* TODO: handle sidebar */
+    #sidebar {
+        display: none;
+    }
+
+    #section-content {
+        margin-left: 0;
+    }
+
+    #header {
+        margin: 16px 8px 0 8px;
+    }
+
+    #page-content {
+        padding: 16px 8px 8px 8px;
+    }
+}
