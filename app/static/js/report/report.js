@@ -12,6 +12,18 @@ function formatAndConvertReadingsForGraph(rawReadings, temperatureUnit) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    function printReportIfNeeded() {
+        const urlParams = new URLSearchParams(window.location.search);
+        // we don't want to auto-print the report if the user came from, e.g. the Verify
+        // Reports page
+        const cameFromGenerateReportsPage = urlParams.get('should_print');
+        if (cameFromGenerateReportsPage) {
+            // we need to wait a little bit, or else the page behind the Print dialog
+            // will be missing
+            setTimeout(print, 50);
+        }
+    }
+
     const headerTimezone = document.getElementById('timezone-value');
     headerTimezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -40,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     if (readings.length === 0) {
+        printReportIfNeeded();
         return;
     }
 
@@ -173,14 +186,5 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    // we don't want to auto-print the report if the user came from, e.g. the Verify
-    // Reports page
-    const cameFromGenerateReportsPage = urlParams.get('should_print');
-    if (cameFromGenerateReportsPage) {
-        // we need to wait a little bit, or else the page behind the Print dialog will
-        // be missing
-        setTimeout(print, 50);
-    }
-
+    printReportIfNeeded();
 });
