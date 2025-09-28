@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
             drawer: 'svg',
         }
     );
+
+    if (readings.length === 0) {
+        return;
+    }
+
     const locales = getUserLocales();
     if (hasTable) {
         let rowIndex = 0;

@@ -185,6 +185,12 @@ header {
 
 /* -- data -- */
 
+#info-no-readings {
+    color: #777;
+    text-align: center;
+    font-size: 14pt;
+}
+
 #data-section {
     padding: 8px;
     width: 100%;

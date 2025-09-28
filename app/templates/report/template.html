@@ -95,18 +95,22 @@
                 </div>
             </header>
 
-            <section id="data-section">
-                {% if data_format == 'table' or data_format == 'table-and-graph' %}
-                    <section id="tables-section">
-                    </section>
-                {% endif %}
+            {% if not readings %}
+                <p id="info-no-readings">No readings in the given timeframe.</p>
+            {% else %}
+                <section id="data-section">
+                    {% if data_format == 'table' or data_format == 'table-and-graph' %}
+                        <section id="tables-section">
+                        </section>
+                    {% endif %}
 
-                {% if data_format == 'graph' or data_format == 'table-and-graph' %}
-                    <section id="graph-section">
-                        <div id="graph"></div>
-                    </section>
-                {% endif %}
-            </section>
+                    {% if data_format == 'graph' or data_format == 'table-and-graph' %}
+                        <section id="graph-section">
+                            <div id="graph"></div>
+                        </section>
+                    {% endif %}
+                </section>
+            {% endif %}
 
             {% if notes %}
                 <section id="notes-section">
