@@ -8,7 +8,7 @@ from time import sleep
 import click
 
 from app.dbapi import (
-    create_sensor, get_sensors, get_sensor_by_id, sensor_name_exists,
+    create_sensor, get_sensors, get_sensor_ids, get_sensor_by_id, sensor_name_exists,
     delete_sensor_by_id, sensor_id_exists, reset_sensor_key_by_id,
     create_reading, create_readings,
     create_user, get_admin, update_user_password_by_id,
@@ -18,23 +18,6 @@ from app.models.readings import Sensor
 
 
 def register_commands(app: Flask):
-    @app.cli.command('seed-sensors')
-    @click.option(
-        '--count',
-        type=int,
-        default=4,
-        show_default=True,
-        help='How many sensors to insert'
-    )
-    def seed_sensors(count):
-        """Seed the database with `count` example sensors."""
-
-        for number in range(1, count+1):
-            create_sensor(f'Sensor {number}')
-
-        click.echo(f'seeded {count} sensors.')
-
-
     @app.cli.command('seed-readings')
     @click.option(
         '--count',
@@ -214,6 +197,26 @@ def register_commands(app: Flask):
         new_key = reset_sensor_key_by_id(id)
         click.echo(f'reset key of sensor with id={id}.')
         click.echo(f'new key: {new_key}')
+
+    @sensor.command('seed')
+    @click.option(
+        '--count',
+        type=int,
+        default=4,
+        show_default=True,
+        help='How many sensors to add'
+    )
+    def seed_sensors(count):
+        """Seed the database with the given amount of sensors."""
+
+        current_sensors_count = len(get_sensor_ids())
+        for number in range(
+            current_sensors_count+1, current_sensors_count+count+1
+        ):
+            click.echo(f'creating "Sensor {number}"')
+            create_sensor(f'Sensor {number}')
+
+        click.echo(f'seeded {count} sensors.')
 
     # -- admin --
 
