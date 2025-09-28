@@ -23,6 +23,7 @@ def register_commands(app: Flask):
 
     @app.cli.group()
     def reading():
+        """Commands related to sensor readings."""
         pass
 
     @reading.command('seed')
@@ -108,6 +109,7 @@ def register_commands(app: Flask):
 
     @app.cli.group()
     def user():
+        """Commands related to users."""
         pass
 
     @user.command('seed')
@@ -157,11 +159,13 @@ def register_commands(app: Flask):
 
     @app.cli.group()
     def sensor():
+        """Commands related to sensors."""
         pass
 
     @sensor.command('create')
     @click.argument('name')
     def cli_create_sensor(name: str) -> None:
+        """Create a sensor with the given name."""
         name_length = len(name)
         if (
             name_length < Sensor.MIN_NAME_LENGTH
@@ -184,6 +188,7 @@ def register_commands(app: Flask):
 
     @sensor.command('list')
     def cli_list_sensors() -> None:
+        """List all sensors (id, name, date of creation). Does not include keys."""
         sensors = get_sensors()
         click.echo(f'{len(sensors)} sensors in total.')
         # TODO: pretty table?
@@ -195,6 +200,7 @@ def register_commands(app: Flask):
     @sensor.command('delete')
     @click.argument('id')
     def cli_delete_sensor(id: int) -> None:
+        """Delete the sensor with the given ID."""
         if not sensor_id_exists(id):
             raise click.ClickException('no sensor with the given ID.')
 
@@ -204,6 +210,7 @@ def register_commands(app: Flask):
     @sensor.command('show')
     @click.argument('id')
     def cli_show_sensor_info(id: int) -> None:
+        """Show the info (including key) for the sensor with the given ID."""
         if not sensor_id_exists(id):
             raise click.ClickException('no sensor with the given ID.')
 
@@ -216,6 +223,7 @@ def register_commands(app: Flask):
     @sensor.command('reset-key')
     @click.argument('id')
     def cli_reset_sensor_key(id: int) -> None:
+        """Reset the key of the sensor with the given ID."""
         if not sensor_id_exists(id):
             raise click.ClickException('no sensor with the given ID.')
 
@@ -257,10 +265,12 @@ def register_commands(app: Flask):
 
     @app.cli.group()
     def admin():
+        """Commands related to the admin account."""
         pass
 
     @admin.command('reset-password')
     def cli_reset_admin_password() -> None:
+        """Reset the password of the admin account."""
         admin = get_admin()
         if not admin:
             raise click.ClickException("the admin account hasn't been created.")
