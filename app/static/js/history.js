@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // TODO: cache 2-3 most recently fetched days?
         controls.currentDate.addEventListener('change', () => {
-            const currentDay = graphCard.getCurrentDay();
             if (!controls.currentDate.checkValidity()) {
                 graphCard.setReadings([]);
                 graphCard.setInfoTextHTML('No readings');
@@ -66,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 controls.nextDayButton.disabled = true;
             } else {
                 graphCard.getCardElement().classList.remove('today');
+                controls.nextDayButton.disabled = false;
             }
 
             Api.fetchSensorReadingsByDays([sensor.id], [newDate])
