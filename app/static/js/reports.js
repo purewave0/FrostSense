@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sensorsSelect.append(option);
             }
             sensorsSelect.disabled = false;
+            updateReadingsCount();
         });
 
     const formatSelect = document.getElementById('format');
@@ -202,32 +203,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const readingsCountElement = document.getElementById('readings-count');
 
+    function updateReadingsCount() {
+        if (!form.checkValidity()) {
+            readingsCountElement.textContent = '…';
+            return;
+        }
+
+        // TODO: loading
+        generateReportButton.disabled = true;
+        readingsCountElement.classList.add('loading');
+
+        readingsCount = Api.fetchSensorReadingsInTimeRange(
+            Number(sensorsSelect.value),
+            getRangeStart().toISOString(),
+            getRangeEnd().toISOString(),
+        ).then(
+            response => response.json()
+        ).then(count => {
+            readingsCount = count;
+            readingsCountElement.textContent = count;
+            readingsCountElement.classList.remove('loading');
+        }).finally(() => {
+            generateReportButton.disabled = false;
+        });
+    }
+
     let readingsCount = null;
     for (const filterInput of filterInputs) {
-        filterInput.addEventListener('change', () => {
-            if (!form.checkValidity()) {
-                readingsCountElement.textContent = '…';
-                return;
-            }
-
-            // TODO: loading
-            generateReportButton.disabled = true;
-            readingsCountElement.classList.add('loading');
-
-            readingsCount = Api.fetchSensorReadingsInTimeRange(
-                Number(sensorsSelect.value),
-                getRangeStart().toISOString(),
-                getRangeEnd().toISOString(),
-            ).then(
-                response => response.json()
-            ).then(count => {
-                readingsCount = count;
-                readingsCountElement.textContent = count;
-                readingsCountElement.classList.remove('loading');
-            }).finally(() => {
-                generateReportButton.disabled = false;
-            });
-        });
+        filterInput.addEventListener('change', updateReadingsCount);
     }
 
     const reportPreview = document.getElementById('preview');
