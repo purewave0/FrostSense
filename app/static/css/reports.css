@@ -191,3 +191,21 @@ input[type="radio"] {
     font-size: 9pt;
     padding-left: 8px;
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    body {
+        --report-width: 200px;
+    }
+
+    #preview {
+        margin: 0 auto;
+        font-size: 10pt;
+    }
+
+    #form-columns {
+        flex-direction: column-reverse;
+        row-gap: 16px;
+    }
+}
