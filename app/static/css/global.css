@@ -282,8 +282,6 @@ button.with-loader:disabled {
 }
 
 #header-user {
-    height: 48px;
-    width: 48px;
     position: relative;
 }
 
