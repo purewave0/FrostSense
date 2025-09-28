@@ -110,17 +110,48 @@ def register_commands(app: Flask):
     def user():
         pass
 
-        Display name: "Felix Sullivan"; Username: "felix"; password: "default".
-        """
-        create_user(
-            'Felix Sullivan',
-            'felix',
-            'defaultp',
-            False,
-            User.Permission.MANAGE_REPORTS | User.Permission.EDIT_SENSORS
-        )
+    @user.command('seed')
+    @click.option(
+        '--count',
+        type=int,
+        default=4,
+        show_default=True,
+        help='How many users to add'
+    )
+    def seed_users(count):
+        """Seed the database with the given amount of users.
 
-        click.echo('created 1 default user. {Felix Sullivan|felix|default}')
+        All users will have the most basic permission level (0) and the temporary
+        password "defaultp".
+        """
+        seeded_count = 0
+        current_users_count = len(get_user_ids())
+        for number in range(
+            current_users_count+1, current_users_count+count+1
+        ):
+            random_string = str(uuid4())[:8]
+            username = f'user{random_string}'
+            click.echo(
+                f'creating "User {number}" (username: {username}; password: defaultp)'
+            )
+            try:
+                create_user(
+                    f'User {number}',
+                    username,
+                    'defaultp',
+                    True,
+                    User.Permission(0)
+                )
+            except Exception:
+                click.echo(
+                    f"couldn't create \"User {number}\"; username already exists?"
+                    + ' skipping...',
+                    err=True
+                )
+            else:
+                seeded_count += 1
+
+        click.echo(f'seeded {seeded_count} users.')
 
     # -- sensors --
 
