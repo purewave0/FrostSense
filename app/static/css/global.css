@@ -154,6 +154,11 @@ button.with-loader:disabled {
     font-size: 11pt;
 }
 
+.modal__footer button.primary {
+    background-color: var(--color-dark-background);
+    color: white;
+}
+
 /* -- forms -- */
 
 .form-section-title {

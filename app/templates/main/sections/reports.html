@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block css %}
+    <link rel="stylesheet" href="/static/css/lib/micromodal.css">
     <link rel="stylesheet" href="/static/css/reports.css">
 {% endblock %}
 
 {% block js %}
+    <script src="/static/js/lib/micromodal.min.js"></script>
     <script src="/static/js/reports.js"></script>
 {% endblock %}
 
@@ -107,4 +109,46 @@
             <span class="loader"></span>
         </button>
     </form>
+
+    <div class="modal micromodal-slide" id="modal-empty-report" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1"
+            onmousedown="event.target.classList.contains('modal__overlay')
+                && MicroModal.close('modal-empty-report')">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-empty-report-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-empty-report-title">
+                        Empty report
+                    </h2>
+                    <button class="modal__close" aria-label="Close" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-empty-report-content">
+                    <p>
+                        There are no readings in the given timeframe;
+                        the report will be empty.
+                    </p>
+                    <p>
+                         Are you sure you want to generate it?
+                    </p>
+                </main>
+
+                <footer class="modal__footer">
+                    <button
+                        class="modal__btn"
+                        data-micromodal-close=""
+                        aria-label="Close this modal"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        id="modal-empty-report-confirm"
+                        class="modal__btn primary"
+                        type="button"
+                    >
+                        <span class="button-text">Generate</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

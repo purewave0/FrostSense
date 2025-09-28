@@ -234,8 +234,6 @@ def api_generate_report():
         sensor_id, None, range_start, range_end
     )
 
-    # TODO: verify readings count?
-
     code = generate_report_code()
     utc_now = dt.datetime.now(dt.timezone.utc)
 

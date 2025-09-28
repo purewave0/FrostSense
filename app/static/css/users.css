@@ -145,11 +145,6 @@ div.dt-container .dt-paging .dt-paging-button:active {
     flex: 1;
 }
 
-.modal__footer button.primary {
-    background-color: var(--color-dark-background);
-    color: white;
-}
-
 #modal-create-permissions,
 #modal-edit-permissions {
     display: flex;

@@ -37,8 +37,3 @@
     flex-direction: column;
     row-gap: 8px;
 }
-
-.modal__btn.primary {
-    background-color: var(--color-dark-background);
-    color: white;
-}

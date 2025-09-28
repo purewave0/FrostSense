@@ -162,20 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rangeDateInputs.end,
     ];
 
-    const form = document.getElementById('report-form');
-    const generateReportButton = document.getElementById('generate');
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        if (!readingsCount) {
-            // TODO: move this to an element, or allow empty reports (with a warning)?
-            alert(
-                'No readings within this time period. Please try changing the time'
-                + ' range.'
-            );
-            return;
-        }
-
+    async function generateAndOpenReport() {
         showButtonLoader(generateReportButton);
         const response = await Api.createReport(
             Number(sensorsSelect.value),
@@ -199,7 +186,18 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(`/reports/${reportCode}?should_print=1`, '_blank').focus();
             hideButtonLoader(generateReportButton);
         }, 700);
+    }
+
+    const emptyReportModal = {
+        'confirmButton': document.getElementById('modal-empty-report-confirm'),
+    };
+    emptyReportModal.confirmButton.addEventListener('click', async () => {
+        generateAndOpenReport();
+        MicroModal.close('modal-empty-report');
     });
+    function openEmptyReportModal() {
+        MicroModal.show('modal-empty-report');
+    }
 
     const readingsCountElement = document.getElementById('readings-count');
 
@@ -232,6 +230,20 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const filterInput of filterInputs) {
         filterInput.addEventListener('change', updateReadingsCount);
     }
+
+    const form = document.getElementById('report-form');
+    const generateReportButton = document.getElementById('generate');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (!readingsCount) {
+            // confirm with the user if they really want to generate an empty report
+            openEmptyReportModal();
+            return;
+        }
+
+        generateAndOpenReport();
+    });
 
     const reportPreview = document.getElementById('preview');
     // reflect data format changes in the preview
