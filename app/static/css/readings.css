@@ -68,3 +68,16 @@ body.loading-gauge-cards #gauge-cards {
 body:not(.loading-gauge-cards) #skeleton-gauge-cards {
     display: none;
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    #gauge-cards,
+    #skeleton-gauge-cards {
+        justify-content: center;
+    }
+
+    .gauge {
+        height: 160px;
+    }
+}
