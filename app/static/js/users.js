@@ -250,9 +250,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const permissionsCell = row.cells[1];
             permissionsCell.title = formatPermissionsValue(userData.permissions);
         },
-        order: [
-            [5, 'desc'],
-        ],
+        order: {
+            'name': 'updated_on',
+            'dir': 'desc',
+        },
         pageLength: 15,
         lengthChange: false,
         layout: {
