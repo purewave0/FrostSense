@@ -29,6 +29,7 @@
 
 #sample-header-logo,
 #sample-header-qr {
+    flex-shrink: 0;
     width: 72px;
     height: 72px;
     margin: 4px;
@@ -118,4 +119,46 @@
 #fetch:disabled {
     opacity: 0.8;
     cursor: not-allowed;
+}
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    /* simulate a clipped version of the header */
+    #sample-header {
+        margin: 0 auto;
+        border-right: none;
+        max-width: 335px;
+        box-shadow: rgba(0, 0, 0, 0.35) -50px 0px 36px -28px inset;
+    }
+
+    #sample-header-logo {
+        width: 64px;
+        height: 64px;
+    }
+
+    #sample-header-qr {
+        display: none;
+    }
+
+    #sample-header-center {
+        border-right: none;
+    }
+
+    .info-column:nth-of-type(3) {
+        display: none;
+    }
+
+    #sample-code-line {
+        font-size: 7pt;
+    }
+
+    .placeholder-line {
+        height: 10px;
+        width: 112px;
+    }
+
+    .info-column:nth-of-type(2) .placeholder-line {
+        width: 90px;
+    }
 }
