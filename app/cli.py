@@ -4,6 +4,7 @@ import datetime as dt
 from flask import Flask
 from random import randrange
 from time import sleep
+from uuid import uuid4
 
 import click
 
@@ -11,7 +12,7 @@ from app.dbapi import (
     create_sensor, get_sensors, get_sensor_ids, get_sensor_by_id, sensor_name_exists,
     delete_sensor_by_id, sensor_id_exists, reset_sensor_key_by_id,
     create_reading, create_readings,
-    create_user, get_admin, update_user_password_by_id,
+    create_user, get_user_ids, get_admin, update_user_password_by_id,
 )
 from app.models.users import User
 from app.models.readings import Sensor
@@ -45,7 +46,6 @@ def register_commands(app: Flask):
         default=False,
         show_default=True,
         help='Send readings continuously, one by one, instead of all at once'
-        # TODO: configurable interval for --continuous
     )
     def seed_readings(count, interval, continuous):
         """Seed the database sensors with the given amount of random readings.
@@ -234,14 +234,24 @@ def register_commands(app: Flask):
     def seed_sensors(count):
         """Seed the database with the given amount of sensors."""
 
+        seeded_count = 0
         current_sensors_count = len(get_sensor_ids())
         for number in range(
             current_sensors_count+1, current_sensors_count+count+1
         ):
             click.echo(f'creating "Sensor {number}"')
-            create_sensor(f'Sensor {number}')
+            try:
+                create_sensor(f'Sensor {number}')
+            except Exception:
+                click.echo(
+                    f"couldn't create \"Sensor {number}\"; name already exists?"
+                    + ' skipping...',
+                    err=True
+                )
+            else:
+                seeded_count += 1
 
-        click.echo(f'seeded {count} sensors.')
+        click.echo(f'seeded {seeded_count} sensors.')
 
     # -- admin --
 
