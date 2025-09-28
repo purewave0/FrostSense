@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const reading of readings) {
             const shouldCreateTable = rowIndex % ReadingsReport.ROWS_PER_TABLE === 0;
             if (shouldCreateTable) {
-                const table = document.createElement('table');
+                const table = document.createElement('div');
                 table.className = 'table';
                 tables.push(table);
             }
@@ -66,16 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isFirstDay = previousDate === null;
                 if (!isFirstDay) {
                     // add an empty row to work as a spacer
-                    const spacerRow = document.createElement('tr');
-                    spacerRow.className = 'table-spacer';
+                    const spacerRow = document.createElement('div');
+                    spacerRow.className = 'table-row spacer';
                     currentTable.append(spacerRow);
                     // count it as a row so we don't misalign the tables
                     ++rowIndex;
                 }
-                const dayRow = document.createElement('tr');
-                dayRow.className = 'table-day';
-                dayRow.innerHTML = '<td class="day-value" colspan="2"></td>';
-                dayRow.querySelector('.day-value').textContent =
+                const dayRow = document.createElement('div');
+                dayRow.className = 'table-row';
+                dayRow.innerHTML = '<div class="table-cell day"></div>';
+                dayRow.querySelector('.table-cell.day').textContent =
                     formatDateToCompactDate(
                         currentDate, // no adjustment needed
                         locales
@@ -86,10 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 ++rowIndex;
             }
 
-            const row = document.createElement('tr');
+            const row = document.createElement('div');
+            row.className = 'table-row';
             row.innerHTML = `
-                <td class="datetime"></td>
-                <td class="temperature"></td>
+                <div class="table-cell datetime"></div>
+                <div class="table-cell temperature"></div>
             `;
             let formattedTime = formatDateToCompactTime(currentDate, locales);
             previousDate = currentDate;

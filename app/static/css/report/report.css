@@ -203,21 +203,39 @@ header {
 .table {
     height: fit-content;
     font-size: 6pt;
-    border-collapse: collapse;
 }
 
-.table td {
+.table-row {
+    display: flex;
+    flex-direction: row;
+    height: 12px;
+}
+
+.table-row > .table-cell {
     border: 1px solid gray;
+    border-bottom-width: 0; /* collapse borders */
+    flex: 1;
+    padding: 1px 1px 1px 0;
 }
 
-.table-day .day-value {
+.table-row > .table-cell:nth-of-type(2) {
+    border-left-width: 0; /* collapse borders */
+}
+
+.table-row:last-of-type > .table-cell {
+    border-bottom-width: 1px;
+}
+
+.table-row > .table-cell.day {
     text-align: center;
-    background-color: black;
     color: white;
+    background-color: black;
 }
 
-.table-spacer {
-    height: 12.416px; /* exact height of a row */
+.table-row.spacer {
+    /* the row above will be missing its bottom border; add it here */
+    border-top: 1px solid gray;
+    box-sizing: border-box;
 }
 
 .table .datetime {
