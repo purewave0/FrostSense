@@ -128,6 +128,7 @@
             const hasGraph = {{
                 (data_format == 'graph' or data_format == 'table-and-graph') | tojson
             }};
+            const hasNotes = {{ (true if notes else false) | tojson }};
             const readings = {{ readings | tojson }};
             const code = {{ code | tojson }};
             const temperatureUnit = {{ temperature_unit | tojson }};

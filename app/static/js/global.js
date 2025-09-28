@@ -319,7 +319,13 @@ function hideButtonLoader(button) {
 const UPDATE_INTERVAL = 2_000;  // TODO: proper value. 2s is just for testing
 
 const ReadingsReport = {
-    /** How many rows one table has. Any more, and the next readings go into a new
-     *  table. */
-    ROWS_PER_TABLE: 80,
+    /**
+     * How many rows one table has (with/without notes). Any more, and the next
+     * readings go into a new
+     * table.
+     */
+    rowsPerTable: {
+        withNotes: 83,
+        withoutNotes: 87,
+    },
 }
