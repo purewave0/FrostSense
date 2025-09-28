@@ -99,19 +99,6 @@ def register_commands(app: Flask):
         )
 
 
-    @app.cli.command('seed-admin')
-    def seed_admin():
-        """Seed the database with an admin.
-
-        Display name: "Administrator"; Username: "admin"; password: "default".
-        """
-        create_user(
-            'Administrator', 'admin', 'defaultp', False, User.Permission.ADMIN
-        )
-
-        click.echo('created 1 default user. {Administrator|admin|default}')
-
-
     @app.cli.command('seed-user')
     def seed_user():
         """Seed the database with a default user.
