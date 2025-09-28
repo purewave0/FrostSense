@@ -78,6 +78,12 @@ body:not(.loading-gauge-cards) #skeleton-gauge-cards {
     }
 
     .gauge {
-        height: 160px;
+        height: 165px;
+    }
+
+    .gauge-card.skeleton {
+        width: 100%;
+        max-width: 332px;
+        height: 208px;
     }
 }
