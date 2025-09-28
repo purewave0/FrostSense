@@ -135,3 +135,36 @@ body.is-admin #display-name-wrapper svg {
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    #preferences-header {
+        column-gap: 8px;
+    }
+
+    #names h1,
+    #names h2 {
+        font-size: 11pt;
+        margin: 0;
+        max-width: 104px;
+    }
+
+    #names {
+        margin-left: 8px;
+    }
+
+    #displayed-display-name {
+        max-width: 115px;
+    }
+
+    #preferences-form .avatar {
+        width: 64px;
+        height: 64px;
+    }
+
+    #preferences-form .columns {
+        flex-direction: column;
+        row-gap: 8px;
+    }
+}
