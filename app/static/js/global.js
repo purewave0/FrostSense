@@ -260,6 +260,14 @@ function getStartOfToday() {
     return date;
 }
 
+/**
+ * Return whether the current user is on a mobile device (phone).
+ */
+function isMobileUser() {
+    const mediaQuery = window.matchMedia("screen and (max-width: 768px)");
+    return mediaQuery.matches;
+}
+
 const ToastType = {
     'SUCCESS': {
         'backgroundColor': 'var(--color-success)',

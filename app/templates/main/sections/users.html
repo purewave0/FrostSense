@@ -23,7 +23,7 @@
 {% block content %}
     <div id="content-wrapper">
         <div id="table-loader" class="loader"></div>
-        <table id="users-table" class="display">
+        <table id="users-table" class="display compact">
             <thead>
                 <tr>
                     <th>id</th>
@@ -57,7 +57,7 @@
                 </header>
                 <main class="modal__content" id="modal-create-content">
                     <form id="modal-create-form">
-                        <div class="columns">
+                        <div id="modal-create-names-columns" class="columns">
                             <div class="form-field" title="What others see.">
                                 <label for="modal-create-display-name">Display Name</label>
                                 <input

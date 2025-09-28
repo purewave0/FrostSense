@@ -26,8 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const bodyStyle = window.getComputedStyle(document.body);
     const graphLineColour = bodyStyle.getPropertyValue('--color-graph-line');
 
-    const mediaQuery = window.matchMedia("screen and (max-width: 768px)");
-    const isMobile = mediaQuery.matches;
+    const isMobile = isMobileUser();
     const MOBILE_GRAPH_WIDTH = 270;
     const MOBILE_GRAPH_HEIGHT = 300;
 

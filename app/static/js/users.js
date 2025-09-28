@@ -71,8 +71,10 @@ function animateRowUpdate(rowElement, millisDuration) {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+    const isMobile = isMobileUser();
+
     const UPDATED_ROW_COLOUR_DURATION = 1_500;
-    const DATETIME_COLUMN_WIDTH = '190px';
+    const datetimeColumnWidth = (isMobile) ? '120px' : '190px';
     const locales = getUserLocales();
 
     let selectedUser = null;
@@ -82,6 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const createButton = document.getElementById('top-action-create');
         createButton.disabled = false;
     }
+
 
     const table = new DataTable('#users-table', {
         columns: [
@@ -131,6 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 data: 'permissions',
                 searchable: false,
                 orderable: false,
+                visible: !isMobile,
                 type: 'string',  /* don't treat it as a number */
                 className: 'dt-head-center',
                 width: '160px',
@@ -145,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name: 'updated_on',
                 data: 'updated_on',
                 searchable: false,
-                width: DATETIME_COLUMN_WIDTH,
+                width: datetimeColumnWidth,
                 render: (data, type) => {
                     if (type === 'display') {
                         return formatDateToCompactDatetime(new Date(data), locales);
@@ -157,7 +161,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name: 'created_on',
                 data: 'created_on',
                 searchable: false,
-                width: DATETIME_COLUMN_WIDTH,
+                visible: !isMobile,
+                width: datetimeColumnWidth,
                 render: (data, type) => {
                     if (type === 'display') {
                         return formatDateToCompactDatetime(new Date(data), locales);
@@ -242,6 +247,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         ],
         rowCallback: (row, userData) => {
+            if (isMobile) {
+                return;
+            }
+
             const nameCell = row.cells[0];
             nameCell.title =
                 `Display name: ${userData.display_name}`

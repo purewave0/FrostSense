@@ -223,3 +223,33 @@ div.dt-container .dt-paging .dt-paging-button:active {
     background-color: var(--color-negative);
     color: white;
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    table.dataTable th {
+        font-size: 10pt;
+    }
+
+    table.dataTable td {
+        font-size: 9pt;
+    }
+
+    #users-table .display-name-wrapper {
+        column-gap: 8px;
+    }
+
+    .actions-cell {
+        column-gap: 4px;
+    }
+
+    /* always show actions */
+    #users-table tr:not(:hover) .actions-cell {
+        opacity: 1;
+    }
+
+    #modal-create-names-columns {
+        flex-direction: column;
+        row-gap: 8px;
+    }
+}
