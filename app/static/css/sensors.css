@@ -106,3 +106,17 @@ body:not(.loading-sensors) #skeleton-sensors {
     background-color: var(--color-dark-background);
     border: 1px solid var(--color-border);
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    #sensors,
+    #skeleton-sensors {
+        justify-content: center;
+    }
+
+    .sensor:not(:hover) .sensor-edit-button {
+        /* no hovering on mobile, so (when applicable) always show the Edit button */
+        opacity: 1;
+    }
+}
