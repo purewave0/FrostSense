@@ -1,3 +1,30 @@
+// collapsible sidebar for mobile
+const mobileSidebarButton = document.getElementById('mobile-sidebar-button');
+if (mobileSidebarButton) {
+    const sidebar = document.getElementById('sidebar');
+
+    function sidebarOutsideClickHandler(event) {
+        if (!sidebar.contains(event.target)) {
+            mobileSidebarButton.dispatchEvent(new Event('click'));
+        }
+    }
+
+    mobileSidebarButton.addEventListener('click', (event) => {
+        if (document.body.classList.contains('mobile-sidebar-open')) {
+            document.body.classList.remove('mobile-sidebar-open');
+            removeEventListener('click', sidebarOutsideClickHandler);
+            return;
+        }
+
+        document.body.classList.add('mobile-sidebar-open');
+        addEventListener('click', sidebarOutsideClickHandler);
+
+        // prevent this click from insta-closing the sidebar
+        event.stopPropagation();
+    });
+
+}
+
 // highlight current page link
 const sidebarLinks = document.querySelectorAll('.link-section a');
 if (sidebarLinks) {

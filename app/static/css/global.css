@@ -269,6 +269,14 @@ button.with-loader:disabled {
     margin-left: var(--sidebar-width);
 }
 
+#mobile-sidebar-overlay {
+    display: none;
+}
+
+#mobile-sidebar-button {
+    display: none;
+}
+
 #header {
     margin: 16px 32px 0 32px;
     display: flex;
@@ -394,7 +402,41 @@ button.with-loader:disabled {
 @media screen and (max-width: 768px) {
     /* TODO: handle sidebar */
     #sidebar {
-        display: none;
+        transition: left 0.2s ease-out;
+        left: calc(-1 * var(--sidebar-width));
+        z-index: 5;
+    }
+
+    #mobile-sidebar-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 4;
+        transition: opacity 0.2s ease;
+    }
+
+    #mobile-sidebar-button {
+        cursor: pointer;
+        display: block;
+        background-color: transparent;
+        border: none;
+    }
+
+    #mobile-sidebar-button svg {
+        fill: black;
+    }
+
+    body.mobile-sidebar-open #sidebar {
+        left: 0;
+    }
+
+    body:not(.mobile-sidebar-open) #mobile-sidebar-overlay {
+        opacity: 0;
+        pointer-events: none;
     }
 
     #section-content {
