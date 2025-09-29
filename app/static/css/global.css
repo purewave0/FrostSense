@@ -279,6 +279,7 @@ button.with-loader:disabled {
 #page-title {
     font-size: 14pt;
     margin: 0;
+    align-content: center;
 }
 
 #header-user {
