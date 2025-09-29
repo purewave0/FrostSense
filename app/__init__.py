@@ -56,6 +56,8 @@ def create_app(config_class=Config):
             )
 
             app.logger.info('done.')
+            app.logger.info('    username: admin')
+            app.logger.info(f'    temporary password: {temporary_password}')
 
             try:
                 with open('ADMIN-ACCOUNT.txt', 'w') as file:
@@ -68,15 +70,12 @@ def create_app(config_class=Config):
                         )
                     )
             except OSError as error:
-                app.logger.error(f'error: {error}')
-                app.logger.info(
-                    "couldn't write the credentials to a file. here they are then:"
+                app.logger.error(
+                    f"couldn't write the credentials to a file. error: {error}"
                 )
-                app.logger.info('    username: admin')
-                app.logger.info(f'    temporary password: {temporary_password}')
             else:
                 app.logger.info(
-                    'credentials written to the `ADMIN-ACCOUNT.txt` file located'
+                    'credentials also written to the `ADMIN-ACCOUNT.txt` file located'
                     + ' at the project root.'
                 )
 
