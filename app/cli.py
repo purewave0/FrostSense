@@ -54,7 +54,8 @@ def register_commands(app: Flask):
         Starting from `interval` * `count` seconds before now, readings will have
         `interval` seconds between each other.
 
-        If --continuous, new readings will be added repeatedly until stopped.
+        If --continuous, new readings will be added repeatedly every `interval` seconds
+        until stopped.
         """
         all_sensors = get_sensors()
         start_time = dt.datetime.utcnow() - dt.timedelta(seconds=interval*count)
@@ -78,8 +79,8 @@ def register_commands(app: Flask):
                     )
                     create_reading(sensor['id'], temperatures[index])
                     temperatures[index] = get_random_temperature(temperatures[index])
-                click.echo('waiting 2s...\n')
-                sleep(2)
+                click.echo(f'waiting {interval}s...\n')
+                sleep(interval)
             return
 
         for sensor in all_sensors:
