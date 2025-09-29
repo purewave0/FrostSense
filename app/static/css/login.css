@@ -142,3 +142,48 @@ body:not(.incorrect-login) #login-error {
     font-size: inherit;
     width: 100%;
 }
+
+/* -- responsive design -- */
+
+@media screen and (max-width: 768px) {
+    body {
+        background-color: var(--color-foreground);
+    }
+
+    #content {
+        flex-direction: column;
+    }
+
+    #banner-left,
+    #login-right {
+        width: auto;
+        position: initial;
+        padding: 16px;
+    }
+
+    #banner-left {
+        text-align: center;
+    }
+
+    #title {
+        margin-top: 8px;
+        font-size: 28pt;
+    }
+
+    #subtitle {
+        font-size: 14pt;
+        line-height: 1.5;
+    }
+
+    #login-right {
+        font-size: 12pt;
+    }
+
+    #login-form {
+        row-gap: 16px;
+    }
+
+    #login-error {
+        font-size: 10pt;
+    }
+}
