@@ -67,7 +67,7 @@ def register_commands(app: Flask):
                 result = MAX
             elif result < MIN:
                 result = MIN
-            return result
+            return round(result, 1)
 
         if continuous:
             temperatures = [get_random_temperature(0) for _ in all_sensors]
