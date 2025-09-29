@@ -12,6 +12,8 @@
 
 {% block title %} Reports {% endblock %}
 
+{% block body_classes %} loading-sensors {% endblock %}
+
 {% block content %}
     <form id="report-form">
         <div id="form-columns" class="columns">
@@ -20,11 +22,13 @@
                     <h3 class="form-section-title">Data</h3>
 
                     <div class="form-row columns">
-                        <div class="form-field">
+                        <div id="sensor-field" class="form-field">
                             <label for="sensor">Sensor</label>
-                            <select id="sensor" required disabled>
+                            <!-- autocomplete="off" so it starts disabled on F5 -->
+                            <select id="sensor" required disabled autocomplete="off">
                                 <option value="" disabled selected hidden>-- Pick one --</option>
                             </select>
+                            <div id="sensor-loader" class="loader"></div>
                         </div>
 
                         <div class="form-field">

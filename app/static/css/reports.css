@@ -50,8 +50,30 @@ input[type="radio"] {
     margin: 0;
 }
 
+#sensor-field {
+    position: relative;
+}
+
 #sensor {
     width: 128px;
+    transition:
+        opacity 0.2s ease,
+        color 0.2s ease;
+}
+
+#sensor:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+#sensor-loader {
+    top: auto;
+    bottom: 3px;
+    border-color: var(--color-dark-background);
+}
+
+body:not(.loading-sensors) #sensor-loader {
+    display: none;
 }
 
 #timeframe-types {

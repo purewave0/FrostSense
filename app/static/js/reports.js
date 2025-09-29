@@ -12,7 +12,6 @@ function getEndOfDay(date) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const sensorsSelect = document.getElementById('sensor');
-    // TODO: loading
     Api.fetchSensors()
         .then((response) => response.json())
         .then((sensors) => {
@@ -23,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sensorsSelect.append(option);
             }
             sensorsSelect.disabled = false;
+            document.body.classList.remove('loading-sensors');
             updateReadingsCount();
         });
 
