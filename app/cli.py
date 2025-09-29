@@ -1,4 +1,4 @@
-"""Useful CLI commands for populating the database."""
+"""Useful CLI commands for technical tasks (managing sensors, seeding data)."""
 
 import datetime as dt
 from flask import Flask
@@ -22,11 +22,11 @@ def register_commands(app: Flask):
     # -- readings --
 
     @app.cli.group()
-    def reading():
+    def readings():
         """Commands related to sensor readings."""
         pass
 
-    @reading.command('seed')
+    @readings.command('seed')
     @click.option(
         '--count',
         type=int,
@@ -108,11 +108,11 @@ def register_commands(app: Flask):
     # -- users --
 
     @app.cli.group()
-    def user():
+    def users():
         """Commands related to users."""
         pass
 
-    @user.command('seed')
+    @users.command('seed')
     @click.option(
         '--count',
         type=int,
@@ -158,11 +158,11 @@ def register_commands(app: Flask):
     # -- sensors --
 
     @app.cli.group()
-    def sensor():
+    def sensors():
         """Commands related to sensors."""
         pass
 
-    @sensor.command('create')
+    @sensors.command('create')
     @click.argument('name')
     def cli_create_sensor(name: str) -> None:
         """Create a sensor with the given name."""
@@ -186,7 +186,7 @@ def register_commands(app: Flask):
         """Return the given datetime in a human-friendly format."""
         return datetime.strftime("%Y-%m-%d %H:%M")
 
-    @sensor.command('list')
+    @sensors.command('list')
     def cli_list_sensors() -> None:
         """List all sensors (id, name, date of creation). Does not include keys."""
         sensors = get_sensors()
@@ -197,7 +197,7 @@ def register_commands(app: Flask):
             created_on = _format_datetime(sensor['created_on'])
             click.echo(f'{sensor["id"]} | {sensor["name"]} | {created_on}')
 
-    @sensor.command('delete')
+    @sensors.command('delete')
     @click.argument('id')
     def cli_delete_sensor(id: int) -> None:
         """Delete the sensor with the given ID."""
@@ -207,7 +207,7 @@ def register_commands(app: Flask):
         delete_sensor_by_id(id)
         click.echo(f'deleted sensor with id={id}.')
 
-    @sensor.command('show')
+    @sensors.command('show')
     @click.argument('id')
     def cli_show_sensor_info(id: int) -> None:
         """Show the info (including key) for the sensor with the given ID."""
@@ -220,7 +220,7 @@ def register_commands(app: Flask):
         click.echo(f'key: {sensor.key}')
         click.echo(f'created_on: {sensor.created_on}')
 
-    @sensor.command('reset-key')
+    @sensors.command('reset-key')
     @click.argument('id')
     def cli_reset_sensor_key(id: int) -> None:
         """Reset the key of the sensor with the given ID."""
@@ -231,7 +231,7 @@ def register_commands(app: Flask):
         click.echo(f'reset key of sensor with id={id}.')
         click.echo(f'new key: {new_key}')
 
-    @sensor.command('seed')
+    @sensors.command('seed')
     @click.option(
         '--count',
         type=int,
