@@ -37,7 +37,7 @@ def register_commands(app: Flask):
     @click.option(
         '--interval',
         type=int,
-        default=60,
+        default=2,
         show_default=True,
         help='Seconds of interval between the readings'
     )
