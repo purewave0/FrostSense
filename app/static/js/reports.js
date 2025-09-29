@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             singleDateInput.required = !isRange;
 
             for (const point in rangeDateInputs) {
-                // TODO: fix the difference in width when enabled/disabled
                 const input = rangeDateInputs[point];
                 input.disabled = !isRange;
                 input.required = isRange;

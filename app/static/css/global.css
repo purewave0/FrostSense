@@ -400,7 +400,6 @@ button.with-loader:disabled {
 /* -- responsive design -- */
 
 @media screen and (max-width: 768px) {
-    /* TODO: handle sidebar */
     #sidebar {
         transition: left 0.2s ease-out;
         left: calc(-1 * var(--sidebar-width));

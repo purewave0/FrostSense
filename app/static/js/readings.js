@@ -34,8 +34,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.body.classList.remove('loading-gauge-cards');
 
-    // TODO: tiny 'fetching readings' notification
-    // TODO: handle errors
     setInterval(() => {
         Api.fetchLastSensorReadings()
             .then((response) => {

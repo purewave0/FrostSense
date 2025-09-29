@@ -96,7 +96,6 @@ def sensor_id_exists(sensor_id: int) -> bool:
 
 def sensor_name_exists(name: str) -> bool:
     """Return whether a sensor with the given name exists."""
-    # TODO: case-insensitiveness
     result = db.session.execute(
         db.select(
             db.exists().where(Sensor.name == name)

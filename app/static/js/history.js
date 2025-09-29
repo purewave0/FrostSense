@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         controls.currentDate.valueAsDate = getStartOfToday();
         controls.currentDate.max = formatDateForDateInput(getStartOfToday());
 
-        // TODO: cache 2-3 most recently fetched days?
         controls.currentDate.addEventListener('change', () => {
             if (!controls.currentDate.checkValidity()) {
                 graphCard.setReadings([]);

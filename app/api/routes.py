@@ -209,7 +209,6 @@ def api_generate_report():
     try:
         sensor_id = int(request.json['sensor_id'])
         range_start = _parse_iso_datetime(request.json['range_start'])
-        # TODO: instead of range_end, specify just 'days'?
         range_end = _parse_iso_datetime(request.json['range_end'])
         data_format = DataFormat(request.json['data_format'])
         notes = request.json['notes']
