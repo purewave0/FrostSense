@@ -19,14 +19,14 @@ from app.models.readings import Sensor
 
 
 def register_commands(app: Flask):
-    # -- readings --
+    # -- seeding --
 
     @app.cli.group()
-    def readings():
-        """Commands related to sensor readings."""
+    def seed():
+        """Commands related to seeding sample data."""
         pass
 
-    @readings.command('seed')
+    @seed.command('readings')
     @click.option(
         '--count',
         type=int,
@@ -105,14 +105,7 @@ def register_commands(app: Flask):
             f'total: {total_seeded} readings.'
         )
 
-    # -- users --
-
-    @app.cli.group()
-    def users():
-        """Commands related to users."""
-        pass
-
-    @users.command('seed')
+    @seed.command('users')
     @click.option(
         '--count',
         type=int,
@@ -154,6 +147,38 @@ def register_commands(app: Flask):
                 seeded_count += 1
 
         click.echo(f'seeded {seeded_count} users.')
+
+
+    @seed.command('sensors')
+    @click.option(
+        '--count',
+        type=int,
+        default=4,
+        show_default=True,
+        help='How many sensors to add'
+    )
+    def cli_seed_sensors(count):
+        """Seed the database with the given amount of sensors."""
+
+        seeded_count = 0
+        current_sensors_count = len(get_sensor_ids())
+        for number in range(
+            current_sensors_count+1, current_sensors_count+count+1
+        ):
+            click.echo(f'creating "Sensor {number}"')
+            try:
+                create_sensor(f'Sensor {number}')
+            except Exception:
+                click.echo(
+                    f"couldn't create \"Sensor {number}\"; name already exists?"
+                    + ' skipping...',
+                    err=True
+                )
+            else:
+                seeded_count += 1
+
+        click.echo(f'seeded {seeded_count} sensors.')
+
 
     # -- sensors --
 
@@ -231,35 +256,6 @@ def register_commands(app: Flask):
         click.echo(f'reset key of sensor with id={id}.')
         click.echo(f'new key: {new_key}')
 
-    @sensors.command('seed')
-    @click.option(
-        '--count',
-        type=int,
-        default=4,
-        show_default=True,
-        help='How many sensors to add'
-    )
-    def cli_seed_sensors(count):
-        """Seed the database with the given amount of sensors."""
-
-        seeded_count = 0
-        current_sensors_count = len(get_sensor_ids())
-        for number in range(
-            current_sensors_count+1, current_sensors_count+count+1
-        ):
-            click.echo(f'creating "Sensor {number}"')
-            try:
-                create_sensor(f'Sensor {number}')
-            except Exception:
-                click.echo(
-                    f"couldn't create \"Sensor {number}\"; name already exists?"
-                    + ' skipping...',
-                    err=True
-                )
-            else:
-                seeded_count += 1
-
-        click.echo(f'seeded {seeded_count} sensors.')
 
     # -- admin --
 
