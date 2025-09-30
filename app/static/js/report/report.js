@@ -173,9 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 valueRange: [minimumGraphValue, maximumGraphValue],
                 axes: {
                     y: {
-                        valueFormatter(temperature) {
-                            return formatTemperature(temperature)
-                        },
                         axisLabelFormatter(temperature) {
                             // temperature already in the proper unit
                             return `${temperature} ${unitString}`;
