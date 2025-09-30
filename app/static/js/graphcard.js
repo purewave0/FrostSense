@@ -1,3 +1,8 @@
+/**
+ * Card to display sensor readings by day in a graph.
+ *
+ * Contains a temperature graph, sensor name, readings count, and a day picker.
+ */
 class GraphCard {
     #card = null;
     #data = [];
