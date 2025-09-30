@@ -95,13 +95,6 @@ function roundTemperature(temperature) {
 }
 
 
-/**
- * Format `temperature` as "<temperature> °C", with N decimal digits (default 1)
- */
-function formatTemperature(temperature, decimalDigits = 1) {
-    return `${temperature.toFixed(decimalDigits)} °C`;
-}
-
 const TemperatureUnits = {
     CELSIUS: 'celsius',
     FAHRENHEIT: 'fahrenheit'
@@ -172,16 +165,6 @@ function formattedTemperatureHTML(celsius, unit, decimalDigits = 1) {
             ${temperatureValue(celsius, unit).toFixed(decimalDigits)}
         </span> ${TemperatureUnitStrings[unit]}
     `;
-}
-
-
-/**
- * Format the given Date as YYYY-MM-DDTHH:mm, useful for setting min/max values for
- * datetime-local input elements.
- */
-function formatDateForDatetimeInput(date) {
-    // [YYYY-MM-DDTHH:mm]:ss.sssZ
-    return date.toISOString().slice(0, 16);
 }
 
 
