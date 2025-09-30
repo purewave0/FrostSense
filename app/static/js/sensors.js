@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const sensorCards = [];
+    const sensorCards = {};
 
     const todayCountsResponse = await Api.fetchTodayReadingsCounts();
     const todayCounts = await todayCountsResponse.json();
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             sensor, todayCounts[sensor.id], locales
         );
         fragment.append(sensorCard);
-        sensorCards.push(sensorCard);
+        sensorCards[sensor.id] = sensorCard;
 
         const editButton = sensorCard.querySelector('.sensor-edit-button');
         editButton.addEventListener('click', (event) => {
@@ -92,6 +92,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     sensorsDestination.append(fragment);
     document.body.classList.remove('loading-sensors');
+
+    setInterval(() => {
+        Api.fetchTodayReadingsCounts()
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error();
+            }).then((todayCounts) => {
+                for (const sensor of sensors) {
+                    const sensorCard = sensorCards[sensor.id]
+                    const readingsTodayValue =
+                        sensorCard.querySelector('.readings-today');
+                    readingsTodayValue.textContent = todayCounts[sensor.id];
+                }
+            }).catch(() => {
+                showToast(ToastType.ERROR, "Failed to get today's readings");
+            });
+    }, UPDATE_INTERVAL);
 
     // -- edit modal --
 
