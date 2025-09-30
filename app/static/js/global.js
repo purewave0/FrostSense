@@ -95,14 +95,14 @@ function roundTemperature(temperature) {
 }
 
 
-const TemperatureUnits = {
+const TemperatureUnit = {
     CELSIUS: 'celsius',
     FAHRENHEIT: 'fahrenheit'
 };
 
-const TemperatureUnitStrings = {
-    [TemperatureUnits.CELSIUS]: '°C',
-    [TemperatureUnits.FAHRENHEIT]: '°F',
+const TemperatureUnitString = {
+    [TemperatureUnit.CELSIUS]: '°C',
+    [TemperatureUnit.FAHRENHEIT]: '°F',
 };
 
 /**
@@ -114,19 +114,19 @@ function celsiusToFahrenheit(celsius) {
 
 /**
  * Return the given Celsius value converted (if necessary) to the given unit.
- * This is a convenience function, so that you don't have to do conversions yourself
- * whenever you need to provide or display a temperature value.
+ * This is a convenience function for when you need to provide or display a temperature
+ * value.
  *
  * @param {number} celsius The original temperature in Celsius.
- * @param {string} unit The unit to use, according to `TemperatureUnits`.
+ * @param {string} unit The unit to use, according to `TemperatureUnit`.
  *
  * @returns {number} The converted value.
  */
 function temperatureValue(celsius, unit) {
     switch (unit) {
-        case TemperatureUnits.CELSIUS:
+        case TemperatureUnit.CELSIUS:
             return roundTemperature(celsius);
-        case TemperatureUnits.FAHRENHEIT:
+        case TemperatureUnit.FAHRENHEIT:
             return roundTemperature(celsiusToFahrenheit(celsius));
     }
 }
@@ -137,16 +137,16 @@ function temperatureValue(celsius, unit) {
  * formatted accordingly.
  *
  * @param {number} celsius The original temperature in Celsius.
- * @param {string} unit The unit to use, according to `TemperatureUnits`.
+ * @param {string} unit The unit to use, according to `TemperatureUnit`.
  * @param {number} decimalDigits The number of decimal digits (default 1).
  *
  * @returns {string} The formatted value.
  */
 function formattedTemperature(celsius, unit, decimalDigits = 1) {
     switch (unit) {
-        case TemperatureUnits.CELSIUS:
+        case TemperatureUnit.CELSIUS:
             return `${celsius.toFixed(decimalDigits)} °C`;
-        case TemperatureUnits.FAHRENHEIT:
+        case TemperatureUnit.FAHRENHEIT:
             return `${celsiusToFahrenheit(celsius).toFixed(decimalDigits)} °F`;
     }
 }
@@ -156,14 +156,14 @@ function formattedTemperature(celsius, unit, decimalDigits = 1) {
  * being in a <span class="temperature"> tag.
  *
  * @param {number} celsius The original temperature, in Celsius, to format.
- * @param {string} unit The unit, according to `TemperatureUnits`.
+ * @param {string} unit The unit, according to `TemperatureUnit`.
  * @param {number} decimalDigits The number of decimal digits (default 1).
  */
 function formattedTemperatureHTML(celsius, unit, decimalDigits = 1) {
     return `
         <span class="temperature">
             ${temperatureValue(celsius, unit).toFixed(decimalDigits)}
-        </span> ${TemperatureUnitStrings[unit]}
+        </span> ${TemperatureUnitString[unit]}
     `;
 }
 
@@ -271,7 +271,7 @@ function getStartOfToday() {
 }
 
 /**
- * Return whether the current user is on a mobile device (phone).
+ * Return whether the current user is on a phone.
  */
 function isMobileUser() {
     const mediaQuery = window.matchMedia("screen and (max-width: 768px)");

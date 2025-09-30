@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const minimumGraphValue = temperatureValue(minimumGraphValueRaw, temperatureUnit);
         const maximumGraphValue = temperatureValue(maximumGraphValueRaw, temperatureUnit);
-        const unitString = TemperatureUnitStrings[temperatureUnit];
+        const unitString = TemperatureUnitString[temperatureUnit];
 
         const graph = new Dygraph(
             graphElement,

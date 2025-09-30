@@ -47,7 +47,7 @@ class GraphCard {
             'nextDayButton': this.#card.querySelector('.button-next'),
         };
 
-        const unitString = TemperatureUnitStrings[temperatureUnit];
+        const unitString = TemperatureUnitString[temperatureUnit];
 
         this.#graph = new Dygraph(
             this.#card.querySelector('.graph'),
