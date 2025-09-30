@@ -1,3 +1,7 @@
+/**
+ * LocalStorage cache for the user's preferences: display name, username, homepage,
+ * temperature unit, and the last time the preferences were updated.
+ */
 class PreferencesCache {
     static #PREFIX = 'preferences';
     static #KEYS = {
@@ -56,6 +60,9 @@ class PreferencesCache {
 };
 
 
+/**
+ * Updater for the local preferences cache.
+ */
 const PreferencesCacheUpdater = {
     async updateIfNeeded() {
         const response = await Api.fetchPreferencesLastUpdateTime();

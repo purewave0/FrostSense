@@ -1,3 +1,7 @@
+/**
+ * LocalStorage cache for the system settings: default temperature unit, value limits
+ * for gauges and graphs, and the last time the settings were updated.
+ */
 class SystemSettingsCache {
     static #PREFIX = 'system_settings';
     static #KEYS = {
@@ -116,6 +120,9 @@ class SystemSettingsCache {
 };
 
 
+/**
+ * Updater for the local system settings cache.
+ */
 const SystemSettingsCacheUpdater = {
     async updateIfNeeded() {
         const response = await Api.fetchSystemSettingsUpdateTimestamp();
