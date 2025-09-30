@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: "Arimo", sans-serif;
     font-size: 8pt;
     --border-color: #aaaaaa;
     --color-graph-line: #ff174d;
@@ -121,7 +121,7 @@ header {
 }
 
 #range-end-value {
-    margin-left: 8px; /* align it with the start of the range */
+    margin-left: 4px; /* align it with the start of the range */
 }
 
 #code-value {
