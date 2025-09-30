@@ -1,3 +1,8 @@
+/**
+ * Card to display a sensor's latest reading in a gauge.
+ *
+ * Contains a temperature gauge, sensor name and reading timestamp.
+ */
 class GaugeCard {
     #card = null;
     #gauge = null;
