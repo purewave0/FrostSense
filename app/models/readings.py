@@ -8,6 +8,7 @@ from app.models.util import utcnow
 
 
 class Sensor(db.Model):
+    """A sensor that can receive readings."""
     __tablename__ = 'Sensor'
 
     MIN_NAME_LENGTH = 1
@@ -19,8 +20,11 @@ class Sensor(db.Model):
     name: Mapped[str] = mapped_column(
         db.String(MAX_NAME_LENGTH), unique=True,
     )
+    """The sensor's unique name."""
     key: Mapped[str] = mapped_column(db.String(_KEY_LENGTH), unique=True)
+    """The secret key used to authenticate readings from this sensor."""
     created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
+    """When the sensor was created."""
 
     def __init__(self, name):
         self.name = name
@@ -36,12 +40,16 @@ class Sensor(db.Model):
 
 
 class Reading(db.Model):
+    """A sensor's temperature reading."""
     __tablename__ = 'Reading'
 
     id: Mapped[int] = mapped_column(primary_key=True)
     sensor_id: Mapped[int] = mapped_column(db.ForeignKey('Sensor.id'))
+    """The ID of the sensor this reading belongs to."""
     temperature: Mapped[float] = mapped_column()
+    """The temperature in Celsius."""
     created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
+    """When the reading was stored."""
 
     def __init__(
         self,

@@ -13,6 +13,7 @@ from app.models.util import utcnow
 
 
 class User(UserMixin, db.Model):
+    """A user account."""
     __tablename__ = 'User'
 
     # subclassing str for easy JSON serialisation
@@ -58,22 +59,34 @@ class User(UserMixin, db.Model):
     display_name: Mapped[str] = mapped_column(
         db.String(MAX_NAME_LENGTH), index=True
     )
+    """The name seen by others. Non-unique."""
     username: Mapped[str] = mapped_column(
         db.String(MAX_NAME_LENGTH), unique=True, index=True
     )
+    """The unique name used for logging in. No whitespaces allowed."""
     avatar_colour: Mapped[str] = mapped_column(db.String(7))
+    """The background colour for the user's avatar in HEX (#xxxxxx)."""
     password_hash: Mapped[str] = mapped_column(db.String(256))
+    """The hashed password."""
     is_password_temporary: Mapped[bool] = mapped_column()
+    """Whether the user will be required to set a new password on login."""
     password_changed_on: Mapped[datetime | None] = mapped_column()
+    """When the password was last changed or reset."""
     permissions: Mapped[int] = mapped_column()
+    """The user's permissions according to `User.Permission`. 0 means no permissions
+    beyond viewing sensors and readings."""
     created_on: Mapped[datetime] = mapped_column(server_default=utcnow())
+    """When the user was created."""
     updated_on: Mapped[datetime] = mapped_column(
         server_default=utcnow(), onupdate=utcnow()
     )
+    """When the user was last updated."""
     homepage: Mapped[WebPage] = mapped_column(default=WebPage.READINGS)
+    """The user's preferred homepage."""
     temperature_unit: Mapped[TemperatureUnit] = mapped_column(
         default=TemperatureUnit.CELSIUS
     )
+    """The user's preferred temperature unit."""
 
     def __init__(
         self,
@@ -100,9 +113,11 @@ class User(UserMixin, db.Model):
         return f'<User "{self.display_name}" ({self.username})>'
 
     def check_password(self, password: str):
+        """Return whether the given password matches the hashed one."""
         return check_password_hash(self.password_hash, password)
 
     def has_permission(self, permission_value: Permission) -> bool:
+        """Return whether the user's permissions contains the given permission(s)."""
         return User.Permission(self.permissions).has_permission(permission_value)
 
     @staticmethod
@@ -128,6 +143,7 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def generate_password_hash(password: str) -> str:
+        """Return a secure hash of the given password."""
         return generate_password_hash(password)
 
     @staticmethod
