@@ -70,19 +70,6 @@ def get_sensor_ids() -> tuple[int]:
     return tuple(result.scalars())
 
 
-def get_sensor_name_by_id(sensor_id: int) -> str:
-    """Return the name of the sensor with the given ID."""
-    result = db.session.execute(
-        db.select(
-            Sensor.name
-        ).where(
-            Sensor.id == sensor_id
-        )
-    ).scalar_one()
-
-    return result
-
-
 def sensor_id_exists(sensor_id: int) -> bool:
     """Return whether a sensor with the given ID exists."""
     result = db.session.execute(
