@@ -103,15 +103,14 @@ def api_sensor_readings(sensor_id):
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
-    if not sensor_id_exists(sensor_id):
-        return jsonify({'error': 'unknown_sensor'}), 404
-
     try:
         given_key = str(request.headers['Authorization'])
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'authorization_missing'}), 401
 
     sensor_key = get_sensor_key_by_id(sensor_id)
+    if not sensor_key:
+        return jsonify({'error': 'unknown_sensor'}), 404
     if sensor_key != given_key:
         return jsonify({'error': 'incorrect_key'}), 401
 
