@@ -159,8 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        const correspondingSensorCard = sensorCards
-            .find(card => Number(card.dataset.id) === selectedSensor.id);
+        const correspondingSensorCard = sensorCards[selectedSensor.id];
         correspondingSensorCard.dataset.name = name;
         const nameElement = correspondingSensorCard.querySelector('.sensor-name');
         nameElement.textContent = name;
