@@ -10,6 +10,11 @@ class utcnow(expression.FunctionElement):
     inherit_cache = True
 
 @compiles(utcnow, 'mariadb')
-def pg_utcnow(element, compiler, **kw):
-    """Return the current time in UTC."""
+def mariadb_utcnow(element, compiler, **kw):
+    """Return the current time in UTC for MariaDB."""
     return "UTC_TIMESTAMP"
+
+@compiles(utcnow, 'sqlite')
+def sqlite_utcnow(element, compiler, **kw):
+    """Return the current time in UTC for SQLite."""
+    return "CURRENT_TIMESTAMP"
