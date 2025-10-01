@@ -62,9 +62,13 @@ def get_sensors() -> tuple[dict[str, Any], ...]:
 
 
 def get_sensor_ids() -> tuple[int]:
-    """Return all sensor IDs."""
+    """Return all sensor IDs in order of creation."""
     result = db.session.execute(
-        db.select(Sensor.id)
+        db.select(
+            Sensor.id
+        ).order_by(
+            Sensor.created_on.asc()
+        )
     )
 
     return tuple(result.scalars())
