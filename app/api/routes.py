@@ -5,8 +5,8 @@ from flask_login import current_user, login_user, login_required, logout_user
 
 from app.api import bp
 from app.dbapi import (
-    get_sensors, get_sensor_ids, get_sensor_name, sensor_name_exists, sensor_id_exists,
-    get_sensor_key_by_id,
+    get_sensors, get_sensor_ids, get_sensor_name_by_id, sensor_name_exists,
+    sensor_id_exists, get_sensor_key_by_id,
     update_sensor_by_id,
     get_sensors_last_readings,
     get_sensors_readings_counts_since_today,
@@ -228,7 +228,7 @@ def api_generate_report():
     if not sensor_id_exists(sensor_id):
         return jsonify({'error': 'unknown_sensor'}), 404
 
-    sensor_name = get_sensor_name(sensor_id)
+    sensor_name = get_sensor_name_by_id(sensor_id)
     readings = get_sensor_readings_in_time_range(
         sensor_id, None, range_start, range_end
     )

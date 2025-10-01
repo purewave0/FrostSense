@@ -70,7 +70,7 @@ def get_sensor_ids() -> tuple[int]:
     return tuple(result.scalars())
 
 
-def get_sensor_name(sensor_id: int) -> str:
+def get_sensor_name_by_id(sensor_id: int) -> str:
     """Return the name of the sensor with the given ID."""
     result = db.session.execute(
         db.select(
