@@ -35,7 +35,7 @@ body.no-sensors #sensors {
 .sensor-name {
     font-size: 11pt;
     margin: 0;
-    max-width: 170px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     text-wrap: nowrap;
@@ -80,8 +80,8 @@ body.no-sensors #sensors {
 .sensor.skeleton {
     box-sizing: border-box;
     /* dimensions of a normal, filled sensor card */
-    width: 221.15px;
-    height: 95px;
+    width: 198.03px;
+    height: 90.67px;
     background-color: var(--color-skeleton-start);
     animation: skeleton-loading 1s linear infinite alternate;
     box-shadow: none;
