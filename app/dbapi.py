@@ -105,7 +105,7 @@ def sensor_name_exists(name: str) -> bool:
     return result
 
 
-def get_sensor_by_id(sensor_id: int) -> Sensor:
+def get_sensor_by_id(sensor_id: int) -> Sensor | None:
     """Return the sensor with the given ID."""
     result = db.session.execute(
         db.select(
@@ -113,7 +113,7 @@ def get_sensor_by_id(sensor_id: int) -> Sensor:
         ).where(
             Sensor.id == sensor_id
         )
-    ).scalar_one()
+    ).scalar_one_or_none()
 
     return result
 

@@ -237,10 +237,10 @@ def register_commands(app: Flask):
     @click.argument('id')
     def cli_show_sensor_info(id: int) -> None:
         """Show the info (including key) for the sensor with the given ID."""
-        if not sensor_id_exists(id):
+        sensor = get_sensor_by_id(id)
+        if not sensor:
             raise click.ClickException('no sensor with the given ID.')
 
-        sensor = get_sensor_by_id(id)
         click.echo(f'id: {id}')
         click.echo(f'name: {sensor.name}')
         click.echo(f'key: {sensor.key}')
