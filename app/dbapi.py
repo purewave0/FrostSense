@@ -295,7 +295,7 @@ def get_sensor_readings_count_in_time_range(
     return result
 
 
-def get_sensor_last_reading(
+def get_sensor_last_reading_by_id(
     sensor_id: int
 ) -> dict[str, Any] | None:
     """Get the last reading from the given sensor. Useful for gauges.
@@ -330,12 +330,12 @@ def get_sensors_last_readings(
         sensor_ids: The IDs of the Sensors to fetch the last readings from.
     """
     return {
-        sensor_id: get_sensor_last_reading(sensor_id)
+        sensor_id: get_sensor_last_reading_by_id(sensor_id)
         for sensor_id in sensor_ids
     }
 
 
-def get_sensor_latest_readings(
+def get_sensor_latest_readings_by_id(
     sensor_id: int, limit: int
 ) -> tuple[dict[str, Any], ...]:
     """Get the last N readings from the given sensor. Useful for populating a graph.
@@ -373,7 +373,7 @@ def get_sensors_latest_readings(
         limit: The max number of readings to fetch from each sensor.
     """
     return {
-        sensor_id: get_sensor_latest_readings(sensor_id, limit)
+        sensor_id: get_sensor_latest_readings_by_id(sensor_id, limit)
         for sensor_id in sensor_ids
     }
 
