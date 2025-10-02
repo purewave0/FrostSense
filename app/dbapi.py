@@ -362,21 +362,6 @@ def get_sensor_latest_readings_by_id(
     return _rows_to_dicts(result)[::-1]
 
 
-def get_sensors_latest_readings(
-    sensor_ids: Iterable[int], limit: int
-) -> dict[int, tuple]:
-    """Get the last N readings from each given sensor. Useful for populating graphs.
-
-    Args:
-        sensor_ids: The IDs of the Sensors to fetch the readings from.
-        limit: The max number of readings to fetch from each sensor.
-    """
-    return {
-        sensor_id: get_sensor_latest_readings_by_id(sensor_id, limit)
-        for sensor_id in sensor_ids
-    }
-
-
 def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[int, int]:
     """Get the amount of readings sent today for each sensor.
 
