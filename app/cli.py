@@ -89,7 +89,6 @@ def register_commands(app: Flask):
             for times in range(count):
                 readings.append(
                     {
-                        'sensor_id': sensor['id'],
                         'temperature': previous_temperature,
                         'created_on': start_time + dt.timedelta(seconds=interval*times),
                     }

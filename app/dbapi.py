@@ -188,7 +188,7 @@ def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
     Args:
         sensor_id: The ID of the Sensor the readings belong to.
         readings: The readings. Each reading is a dict with the following keys:
-            {id: int, temperature: float, created_on: datetime}
+            {temperature: float, created_on: datetime}
     """
     for reading in readings:
         db.session.add(
