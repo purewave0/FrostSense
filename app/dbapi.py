@@ -183,7 +183,7 @@ def create_reading(sensor_id: int, temperature: float) -> dict:
 
 
 def create_readings(sensor_id: int, readings: Iterable[dict]) -> None:
-    """Insert multiple readings from the given sensor.
+    """Retroactively insert multiple readings from the given sensor.
 
     Args:
         sensor_id: The ID of the Sensor the readings belong to.
@@ -342,8 +342,7 @@ def get_sensor_latest_readings_by_id(
 
     Args:
         sensor_id: The ID of the Sensor to fetch the readings from.
-        offset: The reading ID to start fetching after.
-        limit: The max number of readings to fetch from the sensor.
+        limit: The max number of readings to fetch from the sensor, from the end.
     """
     result = db.session.execute(
         db.select(
