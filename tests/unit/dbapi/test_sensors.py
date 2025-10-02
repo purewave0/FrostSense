@@ -53,13 +53,14 @@ def test_delete_sensor_by_id_persistence(app):
 # retrieve
 
 def test_get_sensors_order_and_result(app):
-    added_sensors: list[Sensor] = []
-    names = ['Test sensor 1', 'Test sensor 2', 'Test sensor 3']
     with app.app_context():
-        for name in names:
-            sensor = Sensor(name)
+        added_sensors = [
+            Sensor('Test sensor 1'),
+            Sensor('Test sensor 2'),
+            Sensor('Test sensor 3'),
+        ]
+        for sensor in added_sensors:
             db.session.add(sensor)
-            added_sensors.append(sensor)
         db.session.commit()
 
         returned_sensors = get_sensors()
