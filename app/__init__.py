@@ -43,45 +43,46 @@ def create_app(config_class=Config):
         create_system_settings_timestamp_if_needed()
         create_missing_system_settings()
 
-        admin_exists = get_admin() is not None
-        if not admin_exists:
-            app.logger.info('creating missing admin user…')
-            temporary_password = User.generate_temporary_password()
-            create_user(
-                'Administrator',
-                'admin',
-                temporary_password,
-                True,
-                User.Permission.ADMIN
-            )
+        if app.config['AUTO_CREATE_ADMIN']:
+            admin_exists = get_admin() is not None
+            if not admin_exists:
+                app.logger.info('creating missing admin user…')
+                temporary_password = User.generate_temporary_password()
+                create_user(
+                    'Administrator',
+                    'admin',
+                    temporary_password,
+                    True,
+                    User.Permission.ADMIN
+                )
 
-            app.logger.info('done.')
-            app.logger.info('    username: admin')
-            app.logger.info(f'    temporary password: {temporary_password}')
+                app.logger.info('done.')
+                app.logger.info('    username: admin')
+                app.logger.info(f'    temporary password: {temporary_password}')
 
-            try:
-                with open('ADMIN-ACCOUNT.txt', 'w') as file:
-                    file.writelines(
-                        (
-                            '# this file was generated automatically.\n',
-                            '\n',
-                            'username: admin\n',
-                            f'temporary password: {temporary_password}\n'
+                try:
+                    with open('ADMIN-ACCOUNT.txt', 'w') as file:
+                        file.writelines(
+                            (
+                                '# this file was generated automatically.\n',
+                                '\n',
+                                'username: admin\n',
+                                f'temporary password: {temporary_password}\n'
+                            )
                         )
+                except OSError as error:
+                    app.logger.error(
+                        f"couldn't write the credentials to a file. error: {error}"
                     )
-            except OSError as error:
-                app.logger.error(
-                    f"couldn't write the credentials to a file. error: {error}"
-                )
-            else:
-                app.logger.info(
-                    'credentials also written to the `ADMIN-ACCOUNT.txt` file located'
-                    + ' at the project root.'
-                )
+                else:
+                    app.logger.info(
+                        'credentials also written to the `ADMIN-ACCOUNT.txt` file located'
+                        + ' at the project root.'
+                    )
 
-            app.logger.info(
-                'once signed in, you will be prompted to create a new password.'
-            )
+                app.logger.info(
+                    'once signed in, you will be prompted to create a new password.'
+                )
 
         @app.context_processor
         def inject_permission():
