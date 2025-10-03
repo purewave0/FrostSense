@@ -335,33 +335,6 @@ def get_sensors_last_readings(
     }
 
 
-def get_sensor_latest_readings_by_id(
-    sensor_id: int, limit: int
-) -> tuple[dict[str, Any], ...]:
-    """Get the last N readings from the given sensor. Useful for populating a graph.
-
-    Args:
-        sensor_id: The ID of the Sensor to fetch the readings from.
-        limit: The max number of readings to fetch from the sensor, from the end.
-    """
-    result = db.session.execute(
-        db.select(
-            Reading.id,
-            Reading.temperature,
-            Reading.created_on,
-        ).where(
-            Reading.sensor_id == sensor_id
-        ).order_by(
-            Reading.created_on.desc()
-        ).limit(
-            limit
-        )
-    )
-
-    # reversing so that oldest comes first, newest comes last
-    return _rows_to_dicts(result)[::-1]
-
-
 def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[int, int]:
     """Get the amount of readings sent today for each sensor.
 
