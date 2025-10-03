@@ -40,8 +40,9 @@ def create_app(config_class=Config):
         from app.models.system_settings import SystemSetting, SystemSettingsTimestamp
         db.create_all()
 
-        create_system_settings_timestamp_if_needed()
-        create_missing_system_settings()
+        if app.config['AUTO_CREATE_SYSTEM_SETTINGS']:
+            create_system_settings_timestamp_if_needed()
+            create_missing_system_settings()
 
         if app.config['AUTO_CREATE_ADMIN']:
             admin_exists = get_admin() is not None

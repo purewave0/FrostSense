@@ -9,9 +9,11 @@ class Config:
         or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     AUTO_CREATE_ADMIN = True
+    AUTO_CREATE_SYSTEM_SETTINGS = True
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     AUTO_CREATE_ADMIN = False
+    AUTO_CREATE_SYSTEM_SETTINGS = False
