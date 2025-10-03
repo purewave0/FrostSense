@@ -48,17 +48,8 @@ def test_delete_sensor_by_id_persistence(app, sensor):
 
 # get
 
-def test_get_sensors_order_and_result(app):
+def test_get_sensors_order_and_result(app, sensors):
     with app.app_context():
-        sensors = [
-            Sensor('Test sensor 1'),
-            Sensor('Test sensor 2'),
-            Sensor('Test sensor 3'),
-        ]
-        for sensor in sensors:
-            db.session.add(sensor)
-        db.session.commit()
-
         returned_sensors = get_sensors()
         assert len(returned_sensors) == len(sensors)
 
@@ -81,16 +72,8 @@ def test_get_sensor_by_id_found_and_not_found(app, sensor):
 
 # get attribute
 
-def test_get_sensor_ids_order_and_result(app):
-    sensors: list[Sensor] = []
-    names = ('Test sensor 1', 'Test sensor 2', 'Test sensor 3')
+def test_get_sensor_ids_order_and_result(app, sensors):
     with app.app_context():
-        for name in names:
-            sensor = Sensor(name)
-            db.session.add(sensor)
-            sensors.append(sensor)
-        db.session.commit()
-
         returned_sensor_ids = get_sensor_ids()
         assert len(returned_sensor_ids) == len(sensors)
 
