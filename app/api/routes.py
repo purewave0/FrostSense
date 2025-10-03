@@ -8,8 +8,8 @@ from app.dbapi import (
     get_sensors, get_sensor_ids, get_sensor_by_id, sensor_name_exists,
     sensor_id_exists, get_sensor_key_by_id,
     update_sensor_by_id,
-    get_sensors_last_readings,
-    get_sensors_readings_counts_since_today,
+    get_sensors_last_readings_by_ids,
+    get_sensors_readings_counts_since_today_by_ids,
     get_sensor_readings_in_time_range,
     get_sensors_readings_in_time_ranges, get_sensor_readings_count_in_time_range,
     create_reading,
@@ -46,7 +46,7 @@ def api_sensors():
 def api_last_readings():
     sensor_ids = get_sensor_ids()
 
-    last_readings = get_sensors_last_readings(sensor_ids)
+    last_readings = get_sensors_last_readings_by_ids(sensor_ids)
     return jsonify(last_readings)
 
 
@@ -154,7 +154,7 @@ def api_sensor_readings_count(sensor_id):
 def api_sensors_today_readings_count():
     sensor_ids = get_sensor_ids()
     return jsonify(
-        get_sensors_readings_counts_since_today(sensor_ids)
+        get_sensors_readings_counts_since_today_by_ids(sensor_ids)
     )
 
 

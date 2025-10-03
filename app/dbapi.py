@@ -321,7 +321,7 @@ def get_sensor_last_reading_by_id(
     return result._asdict()
 
 
-def get_sensors_last_readings(
+def get_sensors_last_readings_by_ids(
     sensor_ids: Iterable[int]
 ) -> dict[int, dict[str, Any] | None]:
     """Get the last reading from each given sensor. Useful for gauges.
@@ -335,7 +335,9 @@ def get_sensors_last_readings(
     }
 
 
-def get_sensors_readings_counts_since_today(sensor_ids: Iterable[int]) -> dict[int, int]:
+def get_sensors_readings_counts_since_today_by_ids(
+    sensor_ids: Iterable[int]
+) -> dict[int, int]:
     """Get the amount of readings sent today for each sensor.
 
     "Today" means since midnight (00:00:00) in the server's time.
