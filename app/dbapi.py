@@ -526,6 +526,7 @@ def update_user_by_id(
             permissions=permissions.value,
             homepage=homepage,
             temperature_unit=temperature_unit,
+            updated_on=datetime.utcnow()
         )
     )
     db.session.commit()
@@ -546,7 +547,8 @@ def update_user_permissions_by_id(
         ).where(
             User.id == user_id
         ).values(
-            permissions=permissions.value
+            permissions=permissions.value,
+            updated_on=datetime.utcnow()
         )
     )
     db.session.commit()
@@ -565,6 +567,7 @@ def update_user_password_by_id(
         is_temporary: Whether the user must change this password after using it to log
             in (usually, after a password reset).
     """
+    now = datetime.utcnow()
     db.session.execute(
         db.update(
             User
@@ -573,7 +576,8 @@ def update_user_password_by_id(
         ).values(
             password_hash=User.generate_password_hash(password),
             is_password_temporary=is_temporary,
-            password_changed_on=datetime.utcnow()
+            password_changed_on=now,
+            updated_on=now
         )
     )
     db.session.commit()
