@@ -602,8 +602,12 @@ def api_system_settings():
     if (
         minimum_gauge_value < default_system_settings_base['minimum_gauge_value']['min']
         or minimum_gauge_value > default_system_settings_base['minimum_gauge_value']['max']
+        or maximum_gauge_value < default_system_settings_base['maximum_gauge_value']['min']
+        or maximum_gauge_value > default_system_settings_base['maximum_gauge_value']['max']
         or minimum_graph_value < default_system_settings_base['minimum_graph_value']['min']
         or minimum_graph_value > default_system_settings_base['minimum_graph_value']['max']
+        or maximum_graph_value < default_system_settings_base['maximum_graph_value']['min']
+        or maximum_graph_value > default_system_settings_base['maximum_graph_value']['max']
     ):
         return jsonify({'error': 'value_limits'}), 400
 
