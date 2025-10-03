@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 from app import create_app
@@ -5,6 +7,9 @@ from config import TestingConfig
 from app.extensions import db
 from app.models.readings import Sensor
 from app.models.users import User
+from app.models.system_settings import (
+    SystemSetting, SystemSettingsTimestamp, default_system_settings_base
+)
 
 
 @pytest.fixture()
@@ -115,3 +120,29 @@ def admin(app):
         db.session.add(created_admin)
         db.session.commit()
         yield created_admin
+
+
+@pytest.fixture()
+def system_settings_timestamp(app):
+    """Create and return a system setting timestamp with 'updated_on' set to now."""
+    with app.app_context():
+        created_timestamp = SystemSettingsTimestamp(updated_on=datetime.utcnow())
+        db.session.add(created_timestamp)
+        db.session.commit()
+        yield created_timestamp
+
+
+@pytest.fixture()
+def default_system_settings(app):
+    """Create and return the default system settings."""
+    with app.app_context():
+        created_system_settings = []
+        for key in default_system_settings_base:
+            setting = SystemSetting(
+                key=key,
+                value=default_system_settings_base[key]['value']
+            )
+            created_system_settings.append(setting)
+            db.session.add(setting)
+        db.session.commit()
+        yield created_system_settings
