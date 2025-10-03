@@ -8,7 +8,7 @@ from app.extensions import db
 from app.models.readings import Sensor, Reading
 from app.models.users import User
 from app.models.system_settings import (
-    SystemSetting, SystemSettingsTimestamp, defaultSystemSettings
+    SystemSetting, SystemSettingsTimestamp, default_system_settings_base
 )
 
 
@@ -676,9 +676,9 @@ def create_missing_system_settings() -> None:
 
     to_be_created = {}
 
-    for key in defaultSystemSettings:
+    for key in default_system_settings_base:
         if key not in all_stored_keys:
-            to_be_created[key] = defaultSystemSettings[key]['value']
+            to_be_created[key] = default_system_settings_base[key]['value']
 
     for key in to_be_created:
         default_value = to_be_created[key]

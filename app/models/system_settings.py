@@ -7,7 +7,7 @@ from app.extensions import db
 from app.models.util import utcnow
 
 
-defaultSystemSettings: dict[str, dict[str, Any]] = {
+default_system_settings_base: dict[str, dict[str, Any]] = {
     'default_temperature_unit': {
         'value': 'celsius'
     },

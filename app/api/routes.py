@@ -30,7 +30,7 @@ from app.api.report import (
 )
 from app.models.readings import Sensor
 from app.models.users import User
-from app.models.system_settings import defaultSystemSettings
+from app.models.system_settings import default_system_settings_base
 from app.util import permission_required, login_and_permanent_password_required
 
 
@@ -600,10 +600,10 @@ def api_system_settings():
         return jsonify({'error': 'field_error'}), 400
 
     if (
-        minimum_gauge_value < defaultSystemSettings['minimum_gauge_value']['min']
-        or minimum_gauge_value > defaultSystemSettings['minimum_gauge_value']['max']
-        or minimum_graph_value < defaultSystemSettings['minimum_graph_value']['min']
-        or minimum_graph_value > defaultSystemSettings['minimum_graph_value']['max']
+        minimum_gauge_value < default_system_settings_base['minimum_gauge_value']['min']
+        or minimum_gauge_value > default_system_settings_base['minimum_gauge_value']['max']
+        or minimum_graph_value < default_system_settings_base['minimum_graph_value']['min']
+        or minimum_graph_value > default_system_settings_base['minimum_graph_value']['max']
     ):
         return jsonify({'error': 'value_limits'}), 400
 
