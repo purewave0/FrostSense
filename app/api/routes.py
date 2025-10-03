@@ -16,7 +16,7 @@ from app.dbapi import (
     get_users, get_user_by_id, get_user_by_username,
     user_id_exists,
     create_user, update_user_by_id, delete_user_by_id,
-    update_user_password_by_id, get_user_last_password_change_time,
+    update_user_password_by_id, get_user_last_password_change_time_by_id,
     get_user_last_update_time,
     get_system_settings,
     update_system_settings, get_system_settings_update_timestamp
@@ -341,7 +341,7 @@ def api_change_password():
 @bp.route('/me/last-password-change-time')
 @login_and_permanent_password_required
 def api_password_changed_on():
-    password_changed_on = get_user_last_password_change_time(current_user.id)
+    password_changed_on = get_user_last_password_change_time_by_id(current_user.id)
     return jsonify(password_changed_on)
 
 

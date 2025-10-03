@@ -579,7 +579,7 @@ def update_user_password_by_id(
     db.session.commit()
 
 
-def get_user_last_password_change_time(user_id: int) -> datetime:
+def get_user_last_password_change_time_by_id(user_id: int) -> datetime:
     """Return when the password of the User of id `user_id` was last changed."""
     result = db.session.execute(
         db.select(
