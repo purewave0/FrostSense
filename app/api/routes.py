@@ -98,6 +98,8 @@ def api_readings_by_days():
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
 @login_and_permanent_password_required
 def api_sensor_readings(sensor_id):
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         temperature = float(request.json['temperature'])
     except (ValueError, TypeError, KeyError):
@@ -162,6 +164,8 @@ def api_sensors_today_readings_count():
 @login_and_permanent_password_required
 @permission_required(User.Permission.EDIT_SENSORS)
 def api_update_sensor(sensor_id):
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         name = str(request.json['name']).strip()
     except (ValueError, TypeError, KeyError):
@@ -205,6 +209,8 @@ def _parse_ints(raw_ints: str, ignore_duplicates: bool = False) -> list[int]:
 @login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_REPORTS)
 def api_generate_report():
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         sensor_id = int(request.json['sensor_id'])
         range_start = _parse_iso_datetime(request.json['range_start'])
@@ -259,6 +265,8 @@ def api_generate_report():
 
 @bp.route('/login', methods=['POST'])
 def api_login():
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         username = str(request.json['username'])
         password = str(request.json['password'])
@@ -291,6 +299,8 @@ def api_login():
 @bp.route('/me/permanent-password', methods=['POST'])
 @login_required
 def api_create_permanent_password():
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         password = str(request.json['password'])
     except KeyError:
@@ -317,6 +327,8 @@ def api_create_permanent_password():
 @bp.route('/me/password', methods=['PUT'])
 @login_and_permanent_password_required
 def api_change_password():
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         current_password = str(request.json['current_password'])
         new_password = str(request.json['password'])
@@ -359,6 +371,8 @@ def api_own_preferences():
             'temperature_unit': user.temperature_unit,
         })
 
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         display_name = str(request.json['display_name']).strip()
         username = str(request.json['username']).strip()
@@ -429,6 +443,8 @@ def api_users():
         users = get_users()
         return jsonify(users)
 
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         display_name = str(request.json['display_name']).strip()
         username = str(request.json['username']).strip()
@@ -495,9 +511,12 @@ def api_users():
 @login_and_permanent_password_required
 @permission_required(User.Permission.MANAGE_USERS)
 def api_users_summary():
+    raw_updated_after = request.args.get('updated-after')
+    if not raw_updated_after:
+        return jsonify({'error': 'field_error'}), 400
     try:
-        updated_after = _parse_iso_datetime(request.args.get('updated-after'))
-    except (ValueError, TypeError, KeyError):
+        updated_after = _parse_iso_datetime(raw_updated_after)
+    except (ValueError, TypeError):
         return jsonify({'error': 'invalid_datetime'}), 400
 
     updated_users = []
@@ -509,7 +528,7 @@ def api_users_summary():
             updated_users.append(user)
 
     return jsonify(
-        {'updated_users': updated_users, 'all_user_ids': user_ids }
+        {'updated_users': updated_users, 'all_user_ids': user_ids}
     )
 
 
@@ -521,6 +540,8 @@ def api_update_user(user_id: int):
         delete_user_by_id(user_id)
         return '', 204
 
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         display_name = str(request.json['display_name']).strip()
         raw_permissions = int(request.json['permissions'])
@@ -588,6 +609,8 @@ def api_system_settings():
     if not current_user.has_permission(User.Permission.MANAGE_SYSTEM_SETTINGS):
         return abort(403)
 
+    if request.json is None:
+        return jsonify({'error': 'field_error'}), 400
     try:
         default_temperature_unit = User.TemperatureUnit(
             request.json['default_temperature_unit']
