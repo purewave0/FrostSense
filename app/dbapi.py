@@ -49,12 +49,14 @@ def delete_sensor_by_id(sensor_id: int) -> None:
 
 
 def get_sensors() -> tuple[dict[str, Any], ...]:
-    """Return all sensors."""
+    """Return all sensors in order of creation."""
     result = db.session.execute(
         db.select(
             Sensor.id,
             Sensor.name,
             Sensor.created_on,
+        ).order_by(
+            Sensor.created_on.asc()
         )
     )
 
