@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from datetime import datetime
 
 from app.extensions import db
@@ -21,7 +22,7 @@ from app.models.users import User
 
 # get
 
-def test_get_users_order_and_result(app, users):
+def test_get_users_order_and_result(app, users: Sequence[User]):
     with app.app_context():
         returned_users = get_users()
         print(users)
@@ -33,7 +34,7 @@ def test_get_users_order_and_result(app, users):
             assert returned_user['display_name'] == expected_user.display_name
             assert returned_user['username'] == expected_user.username
 
-def test_get_user_by_id_found_and_not_found(app, user):
+def test_get_user_by_id_found_and_not_found(app, user: User):
     with app.app_context():
         returned_user = get_user_by_id(user.id)
 
@@ -42,7 +43,7 @@ def test_get_user_by_id_found_and_not_found(app, user):
 
         assert get_user_by_id(12345) is None
 
-def test_get_user_by_username_found_and_not_found(app, user):
+def test_get_user_by_username_found_and_not_found(app, user: User):
     with app.app_context():
         returned_user = get_user_by_username(user.username)
 
@@ -61,7 +62,7 @@ def test_get_admin_result(app, admin):
 
 # get attributes
 
-def test_get_user_ids_order_and_result(app, users):
+def test_get_user_ids_order_and_result(app, users: Sequence[User]):
     with app.app_context():
         returned_user_ids = get_user_ids()
         assert len(returned_user_ids) == len(users)
@@ -73,14 +74,14 @@ def test_get_user_ids_order_and_result(app, users):
         ):
             assert returned_user_id == expected_user_id
 
-def test_get_user_last_password_change_time_by_id_result(app, user):
+def test_get_user_last_password_change_time_by_id_result(app, user: User):
     with app.app_context():
         timestamp = datetime(2025, 8, 1, 12, 34, 56)
         user.password_changed_on = timestamp
         returned_timestamp = get_user_last_password_change_time_by_id(user.id)
         assert returned_timestamp == timestamp
 
-def test_get_user_last_update_time_result(app, user):
+def test_get_user_last_update_time_result(app, user: User):
     with app.app_context():
         timestamp = datetime(2025, 8, 1, 12, 34, 56)
         user.updated_on = timestamp
@@ -90,7 +91,7 @@ def test_get_user_last_update_time_result(app, user):
 
 # exists
 
-def test_user_id_exists_found_and_not_found(app, user):
+def test_user_id_exists_found_and_not_found(app, user: User):
     with app.app_context():
         assert user_id_exists(user.id)
         assert not user_id_exists(1234)
@@ -124,7 +125,7 @@ def test_create_user_result_and_persistence_and_password(app):
 
 # update
 
-def test_update_user_by_id_persistence_and_timestamp(app, user):
+def test_update_user_by_id_persistence_and_timestamp(app, user: User):
     with app.app_context():
         old_update_timestamp = user.updated_on
 
@@ -152,7 +153,7 @@ def test_update_user_by_id_persistence_and_timestamp(app, user):
         assert stored_user.updated_on > old_update_timestamp
 
 
-def test_update_user_permissions_by_id_persistence_and_timestamp(app, user):
+def test_update_user_permissions_by_id_persistence_and_timestamp(app, user: User):
     with app.app_context():
         old_update_timestamp = user.updated_on
 
@@ -169,7 +170,7 @@ def test_update_user_permissions_by_id_persistence_and_timestamp(app, user):
         assert updated_user.updated_on > old_update_timestamp
 
 def test_update_user_password_by_id_temporary_and_permanent_persistence_and_timestamps(
-    app, user
+    app, user: User
 ):
     with app.app_context():
         for password, is_temporary in (
@@ -206,7 +207,7 @@ def test_update_user_password_by_id_temporary_and_permanent_persistence_and_time
 
 # delete
 
-def test_delete_user_by_id_persistence(app, user):
+def test_delete_user_by_id_persistence(app, user: User):
     with app.app_context():
         delete_user_by_id(user.id)
 

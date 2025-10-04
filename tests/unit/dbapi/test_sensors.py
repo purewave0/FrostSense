@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 from app.extensions import db
 from app.dbapi import (
     create_sensor,
@@ -32,7 +34,7 @@ def test_create_sensor_result_and_persistence(app):
 
 # delete
 
-def test_delete_sensor_by_id_persistence(app, sensor):
+def test_delete_sensor_by_id_persistence(app, sensor: Sensor):
     with app.app_context():
         delete_sensor_by_id(sensor.id)
 
@@ -48,7 +50,7 @@ def test_delete_sensor_by_id_persistence(app, sensor):
 
 # get
 
-def test_get_sensors_order_and_result(app, sensors):
+def test_get_sensors_order_and_result(app, sensors: Sequence[Sensor]):
     with app.app_context():
         returned_sensors = get_sensors()
         assert len(returned_sensors) == len(sensors)
@@ -60,7 +62,7 @@ def test_get_sensors_order_and_result(app, sensors):
             assert returned_sensor['name'] == sensor.name
             assert returned_sensor['created_on'] == sensor.created_on
 
-def test_get_sensor_by_id_found_and_not_found(app, sensor):
+def test_get_sensor_by_id_found_and_not_found(app, sensor: Sensor):
     with app.app_context():
         found = get_sensor_by_id(sensor.id)
         assert found is not None
@@ -72,7 +74,7 @@ def test_get_sensor_by_id_found_and_not_found(app, sensor):
 
 # get attribute
 
-def test_get_sensor_ids_order_and_result(app, sensors):
+def test_get_sensor_ids_order_and_result(app, sensors: Sequence[Sensor]):
     with app.app_context():
         returned_sensor_ids = get_sensor_ids()
         assert len(returned_sensor_ids) == len(sensors)
@@ -82,7 +84,7 @@ def test_get_sensor_ids_order_and_result(app, sensors):
         ):
             assert returned_sensor_id == sensor.id
 
-def test_get_sensor_key_by_id_found_and_not_found(app, sensor):
+def test_get_sensor_key_by_id_found_and_not_found(app, sensor: Sensor):
     with app.app_context():
         found = get_sensor_key_by_id(sensor.id)
         assert found == sensor.key
@@ -92,13 +94,13 @@ def test_get_sensor_key_by_id_found_and_not_found(app, sensor):
 
 # exists
 
-def test_sensor_id_exists_found_and_not_found(app, sensor):
+def test_sensor_id_exists_found_and_not_found(app, sensor: Sensor):
     with app.app_context():
         assert sensor_id_exists(sensor.id)
 
         assert not sensor_id_exists(12345)
 
-def test_sensor_name_exists_found_and_not_found(app, sensor):
+def test_sensor_name_exists_found_and_not_found(app, sensor: Sensor):
     with app.app_context():
         assert sensor_name_exists(sensor.name)
 
@@ -107,7 +109,7 @@ def test_sensor_name_exists_found_and_not_found(app, sensor):
 
 # update
 
-def test_reset_sensor_key_by_id_result_and_difference(app, sensor):
+def test_reset_sensor_key_by_id_result_and_difference(app, sensor: Sensor):
     with app.app_context():
         old_key = sensor.key
 
@@ -123,7 +125,7 @@ def test_reset_sensor_key_by_id_result_and_difference(app, sensor):
 
         assert old_key != updated_sensor.key
 
-def test_update_sensor_by_id_persistence(app, sensor):
+def test_update_sensor_by_id_persistence(app, sensor: Sensor):
     with app.app_context():
         update_sensor_by_id(sensor.id, 'Updated test sensor')
 

@@ -16,7 +16,7 @@ from app.models.readings import Sensor, Reading
 
 # create
 
-def test_create_reading_result_and_persistence(app, sensor):
+def test_create_reading_result_and_persistence(app, sensor: Sensor):
     with app.app_context():
         reading = create_reading(sensor.id, 10.0)
         assert reading['id'] is not None
@@ -35,7 +35,7 @@ def test_create_reading_result_and_persistence(app, sensor):
         assert stored_reading.sensor_id == sensor.id
         assert stored_reading.temperature == 10.0
 
-def test_create_readings_persistence(app, sensor):
+def test_create_readings_persistence(app, sensor: Sensor):
     readings = (
         {'temperature': -40.0, 'created_on': datetime(2025, 10, 1, 12, 34, 56)},
         {'temperature': 0.0,   'created_on': datetime(2025, 10, 1, 12, 35, 57)},
@@ -61,7 +61,7 @@ def test_create_readings_persistence(app, sensor):
 
 # get
 
-def test_get_sensor_readings_in_time_range_order_and_result(app, sensor):
+def test_get_sensor_readings_in_time_range_order_and_result(app, sensor: Sensor):
     readings = (
         Reading(sensor.id, -30, datetime(2025, 10, 1, 10, 36, 0)),
         Reading(sensor.id, -20, datetime(2025, 10, 1, 10, 37, 0)),
@@ -95,7 +95,7 @@ def test_get_sensor_readings_in_time_range_order_and_result(app, sensor):
             assert returned_reading['temperature'] == expected_reading.temperature
             assert returned_reading['created_on'] == expected_reading.created_on
 
-def test_get_sensor_readings_count_in_time_range_result(app, sensor):
+def test_get_sensor_readings_count_in_time_range_result(app, sensor: Sensor):
     readings = (
         Reading(sensor.id, -30, datetime(2025, 10, 1, 10, 36, 0)),
         Reading(sensor.id, -20, datetime(2025, 10, 1, 10, 37, 0)),
@@ -119,7 +119,9 @@ def test_get_sensor_readings_count_in_time_range_result(app, sensor):
         )
         assert returned_count == len(expected_readings)
 
-def test_get_sensors_readings_in_time_range_result_items_order_and_result(app, sensors):
+def test_get_sensors_readings_in_time_range_result_items_order_and_result(
+    app, sensors: Sequence[Sensor]
+):
     sensors_readings: dict[int, tuple[Reading, ...]] = {}
 
     with app.app_context():
@@ -174,7 +176,7 @@ def test_get_sensors_readings_in_time_range_result_items_order_and_result(app, s
                 assert returned_reading['created_on'] == expected_reading.created_on
 
 def test_get_sensor_last_reading_by_id_found_and_empty_result_and_not_found(
-    app, sensor
+    app, sensor: Sensor
 ):
     with app.app_context():
         readings = (
@@ -205,7 +207,7 @@ def test_get_sensor_last_reading_by_id_found_and_empty_result_and_not_found(
         assert get_sensor_last_reading_by_id(12345) is None
 
 def test_get_sensors_last_readings_by_ids_found_and_empty_result_and_not_found(
-    app, sensors
+    app, sensors: Sequence[Sensor]
 ):
     sensors_readings: dict[int, tuple[Reading, ...]] = {}
 

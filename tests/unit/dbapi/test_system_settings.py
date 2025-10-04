@@ -1,3 +1,6 @@
+from collections.abc import Sequence
+from datetime import datetime
+
 from app.extensions import db
 from app.dbapi import (
     create_system_settings_timestamp_if_needed,
@@ -47,14 +50,18 @@ def test_create_missing_system_settings_persistence(app):
 
 # get
 
-def test_get_system_settings_result(app, default_system_settings):
+def test_get_system_settings_result(
+    app, default_system_settings: Sequence[SystemSetting]
+):
     with app.app_context():
         returned_settings = get_system_settings()
         assert len(returned_settings) == len(default_system_settings)
         for setting in default_system_settings:
             assert returned_settings[setting.key] == str(setting.value)
 
-def test_get_system_settings_update_timestamp_result(app, system_settings_timestamp):
+def test_get_system_settings_update_timestamp_result(
+    app, system_settings_timestamp: SystemSettingsTimestamp
+):
     with app.app_context():
         returned_timestamp = get_system_settings_update_timestamp()
 
@@ -63,7 +70,9 @@ def test_get_system_settings_update_timestamp_result(app, system_settings_timest
 
 # update
 
-def test_update_system_settings_timestamp_difference(app, system_settings_timestamp):
+def test_update_system_settings_timestamp_difference(
+    app, system_settings_timestamp: SystemSettingsTimestamp
+):
     with app.app_context():
         old_timestamp = system_settings_timestamp.updated_on
         _update_system_settings_timestamp()
@@ -78,7 +87,9 @@ def test_update_system_settings_timestamp_difference(app, system_settings_timest
         ).scalar_one()
         assert stored_system_settings_timestamp.updated_on > old_timestamp
 
-def test_update_system_settings_persistence(app, default_system_settings):
+def test_update_system_settings_persistence(
+    app, default_system_settings: Sequence[SystemSetting]
+):
     with app.app_context():
         update = {
             'default_temperature_unit': 'celsius',
