@@ -12,7 +12,6 @@ from app.dbapi import (
     create_system_settings_timestamp_if_needed
 )
 from app.extensions import db
-from app.api.report import REPORTS_DIRECTORY
 from config import Config
 
 
@@ -115,6 +114,6 @@ def create_app(config_class=Config):
     register_commands(app)
 
     # -- dirs --
-    makedirs(REPORTS_DIRECTORY, exist_ok=True)
+    makedirs(app.config['REPORTS_DIRECTORY'], exist_ok=True)
 
     return app

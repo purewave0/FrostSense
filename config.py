@@ -10,6 +10,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     AUTO_CREATE_ADMIN = True
     AUTO_CREATE_SYSTEM_SETTINGS = True
+    REPORTS_DIRECTORY = os.path.join(basedir, 'app', 'generated_reports')
 
 
 class TestingConfig(Config):

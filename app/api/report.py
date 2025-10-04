@@ -8,10 +8,9 @@ from typing import Any
 
 from app.models.users import User
 
-from flask import render_template
+from flask import render_template, current_app
 
 
-REPORTS_DIRECTORY = path.join('app', 'generated_reports')
 # a-z + 0-9 = 36 characters
 _REPORT_CODE_CHARSET = ascii_lowercase + digits
 # 36^10 = approx. 3.6 quadrillion possible codes
@@ -73,13 +72,19 @@ def generate_report_code() -> str:
 
 def store_report_file(code: str, content: str):
     """Store the given report content in `REPORTS_DIRECTORY/{code}.html`."""
-    with open(path.join(REPORTS_DIRECTORY, f'{code}.html'), 'w') as report:
+    with open(
+        path.join(current_app.config['REPORTS_DIRECTORY'], f'{code}.html'),
+        'w'
+    ) as report:
         report.write(content)
 
 
 def get_report_file(code: str) -> str:
     """Return the report with the given code."""
-    with open(path.join(REPORTS_DIRECTORY, f'{code}.html'), 'r') as report:
+    with open(
+        path.join(current_app.config['REPORTS_DIRECTORY'], f'{code}.html'),
+        'r'
+    ) as report:
         return report.read()
 
 
