@@ -146,3 +146,44 @@ def default_system_settings(app):
             db.session.add(setting)
         db.session.commit()
         yield created_system_settings
+
+
+# auth
+
+@pytest.fixture
+def logged_in_no_permissions_client(app, client):
+    """Return a logged-in client with no permissions."""
+    with app.app_context():
+        created_user = User(
+            'User',
+            'user',
+            'password1',
+            False,
+            User.Permission(0),
+            User.WebPage.READINGS,
+            User.TemperatureUnit.CELSIUS,
+        )
+        db.session.add(created_user)
+        db.session.commit()
+        with client.session_transaction() as session:
+            session['_user_id'] = created_user.get_id()
+        return client
+
+@pytest.fixture
+def logged_in_admin_client(app, client):
+    """Return a logged-in client with all permissions."""
+    with app.app_context():
+        created_admin = User(
+            'Administrator',
+            'admin',
+            'password1',
+            False,
+            User.Permission.ADMIN,
+            User.WebPage.READINGS,
+            User.TemperatureUnit.CELSIUS,
+        )
+        db.session.add(created_admin)
+        db.session.commit()
+        with client.session_transaction() as session:
+            session['_user_id'] = created_admin.get_id()
+        return client
