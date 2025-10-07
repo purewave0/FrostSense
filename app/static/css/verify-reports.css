@@ -22,17 +22,17 @@
     border: 2px solid var(--color-sample-header-border);
 }
 
-/* TODO */
-#sample-header-logo {
-    background-color: darkblue;
-}
-
 #sample-header-logo,
 #sample-header-qr {
     flex-shrink: 0;
     width: 72px;
     height: 72px;
     margin: 4px;
+}
+
+#sample-header-logo img {
+    width: 100%;
+    height: 100%;
 }
 
 #sample-header-center {
