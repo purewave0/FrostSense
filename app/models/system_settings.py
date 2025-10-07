@@ -11,22 +11,12 @@ default_system_settings_base: dict[str, dict[str, Any]] = {
     'default_temperature_unit': {
         'value': 'celsius'
     },
-    'minimum_gauge_value': {
+    'minimum_temperature_value': {
         'value': -30,
         'min': -50,
         'max': 5,
     },
-    'maximum_gauge_value': {
-        'value': 40,
-        'min': 10,
-        'max': 60,
-    },
-    'minimum_graph_value': {
-        'value': -30,
-        'min': -50,
-        'max': 5,
-    },
-    'maximum_graph_value': {
+    'maximum_temperature_value': {
         'value': 40,
         'min': 10,
         'max': 60,
@@ -57,4 +47,4 @@ class SystemSettingsTimestamp(db.Model):
     updated_on: Mapped[datetime] = mapped_column(
         server_default=utcnow()
     )
-    """When the last settings were last updated."""
+    """When the settings were last updated."""
