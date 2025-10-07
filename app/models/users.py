@@ -65,7 +65,7 @@ class User(UserMixin, db.Model):
     )
     """The unique name used for logging in. No whitespaces allowed."""
     avatar_colour: Mapped[str] = mapped_column(db.String(7))
-    """The background colour for the user's avatar in HEX (#xxxxxx)."""
+    """The background colour for the user's avatar in hex (#xxxxxx)."""
     password_hash: Mapped[str] = mapped_column(db.String(256))
     """The hashed password."""
     is_password_temporary: Mapped[bool] = mapped_column()
@@ -123,7 +123,7 @@ class User(UserMixin, db.Model):
     @staticmethod
     def _generate_random_avatar_colour() -> str:
         """Return a random, slightly dark colour meant for avatar backgrounds.
-        The colour is returned as a HEX string (#abc123).
+        The colour is returned as a hex string (#abc123).
         """
         def rgb_to_hex(r: int, g: int, b: int) -> int:
             return (r << 16) | (g << 8) | b
