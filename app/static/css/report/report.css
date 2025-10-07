@@ -82,13 +82,12 @@ header {
 #header-logo {
     height: 72px;
     width: 72px;
-    background-color: #2288ee;
-    text-align: center;
     margin: var(--header-spacing);
 }
 
-#header-logo h1 {
-    rotate: -45deg;
+#header-logo img {
+    width: 100%;
+    height: 100%;
 }
 
 #header-center {
