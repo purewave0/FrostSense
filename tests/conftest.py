@@ -151,6 +151,25 @@ def default_system_settings(app):
 # auth
 
 @pytest.fixture
+def logged_in_temporary_password_client(app, client):
+    """Return a logged-in client with a temporary password and no permissions."""
+    with app.app_context():
+        created_user = User(
+            'User',
+            'user',
+            'password1',
+            True,
+            User.Permission(0),
+            User.WebPage.READINGS,
+            User.TemperatureUnit.CELSIUS,
+        )
+        db.session.add(created_user)
+        db.session.commit()
+        with client.session_transaction() as session:
+            session['_user_id'] = created_user.get_id()
+        return client
+
+@pytest.fixture
 def logged_in_no_permissions_client(app, client):
     """Return a logged-in client with no permissions."""
     with app.app_context():
