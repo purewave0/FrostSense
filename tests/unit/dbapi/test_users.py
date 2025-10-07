@@ -25,8 +25,6 @@ from app.models.users import User
 def test_get_users_order_and_result(app, users: Sequence[User]):
     with app.app_context():
         returned_users = get_users()
-        print(users)
-        print(get_users())
 
         assert len(returned_users) == len(users)
         for returned_user, expected_user in zip(returned_users, users):
