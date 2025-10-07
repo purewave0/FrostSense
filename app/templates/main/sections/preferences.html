@@ -110,10 +110,12 @@
                         </option>
                         <option value="history">History</option>
                         <option value="sensors">Sensors</option>
-                        <option value="reports">Reports</option>
-                        <option value="verify-reports">
-                            Verify Reports
-                        </option>
+                        {% if current_user.has_permission(UserPermission.MANAGE_REPORTS) %}
+                            <option value="reports">Reports</option>
+                            <option value="verify-reports">
+                                Verify Reports
+                            </option>
+                        {% endif %}
                     </select>
                 </div>
 
