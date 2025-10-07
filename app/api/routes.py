@@ -251,8 +251,8 @@ def api_generate_report():
         range_end,
         current_user.temperature_unit,
         current_user.display_name,
-        float(system_settings['minimum_graph_value']),
-        float(system_settings['maximum_graph_value']),
+        float(system_settings['minimum_temperature_value']),
+        float(system_settings['maximum_temperature_value']),
         readings,
         data_format,
         notes
@@ -615,31 +615,23 @@ def api_system_settings():
         default_temperature_unit = User.TemperatureUnit(
             request.json['default_temperature_unit']
         )
-        minimum_gauge_value = int(request.json['minimum_gauge_value'])
-        maximum_gauge_value = int(request.json['maximum_gauge_value'])
-        minimum_graph_value = int(request.json['minimum_graph_value'])
-        maximum_graph_value = int(request.json['maximum_graph_value'])
+        minimum_temperature_value = int(request.json['minimum_temperature_value'])
+        maximum_temperature_value = int(request.json['maximum_temperature_value'])
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'field_error'}), 400
 
     if (
-        minimum_gauge_value < default_system_settings_base['minimum_gauge_value']['min']
-        or minimum_gauge_value > default_system_settings_base['minimum_gauge_value']['max']
-        or maximum_gauge_value < default_system_settings_base['maximum_gauge_value']['min']
-        or maximum_gauge_value > default_system_settings_base['maximum_gauge_value']['max']
-        or minimum_graph_value < default_system_settings_base['minimum_graph_value']['min']
-        or minimum_graph_value > default_system_settings_base['minimum_graph_value']['max']
-        or maximum_graph_value < default_system_settings_base['maximum_graph_value']['min']
-        or maximum_graph_value > default_system_settings_base['maximum_graph_value']['max']
+        minimum_temperature_value < default_system_settings_base['minimum_temperature_value']['min']
+        or minimum_temperature_value > default_system_settings_base['minimum_temperature_value']['max']
+        or maximum_temperature_value < default_system_settings_base['maximum_temperature_value']['min']
+        or maximum_temperature_value > default_system_settings_base['maximum_temperature_value']['max']
     ):
         return jsonify({'error': 'value_limits'}), 400
 
     update_system_settings({
         'default_temperature_unit': default_temperature_unit.value,
-        'minimum_gauge_value': str(minimum_gauge_value),
-        'maximum_gauge_value': str(maximum_gauge_value),
-        'minimum_graph_value': str(minimum_graph_value),
-        'maximum_graph_value': str(maximum_graph_value)
+        'minimum_temperature_value': str(minimum_temperature_value),
+        'maximum_temperature_value': str(maximum_temperature_value),
     })
     return '', 204
 
