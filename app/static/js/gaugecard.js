@@ -8,7 +8,9 @@ class GaugeCard {
     #gauge = null;
     #datetimeValue = null;
     #locales = null;
+    /** Invalid temperature due to a hardware issue, e.g. bad contact. */
     static #INVALID_TEMPERATURE = -404;
+    /** The sensor currently has no readings. */
     static #NO_READING = -505;
 
     /**
