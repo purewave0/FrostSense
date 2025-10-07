@@ -14,6 +14,7 @@
     <form id="settings-form">
         <div class="form-section">
             <h3 class="form-section-title">General</h3>
+
             <div class="section-settings">
                 <div class="setting">
                     <label for="default-temperature-unit">
@@ -36,23 +37,18 @@
                         </option>
                     </select>
                 </div>
-            </div>
-        </div>
 
-        <div class="form-section">
-            <h3 class="form-section-title">Readings</h3>
-            <div class="section-settings">
                 <div class="setting">
-                    <label for="minimum-gauge-value">
+                    <label for="minimum-temperature-value">
                         <h4 class="setting-title">
-                            Minimum gauge value (Celsius)
+                            Minimum temperature value (Celsius)
                         </h4>
                         <p class="setting-description">
-                            Minimum value for all gauges.
+                            Minimum value for gauges and graphs.
                         </p>
                     </label>
                     <input
-                        id="minimum-gauge-value"
+                        id="minimum-temperature-value"
                         type="number"
                         autocomplete="off"
                         min="-50"
@@ -63,61 +59,16 @@
                 </div>
 
                 <div class="setting">
-                    <label for="maximum-gauge-value">
+                    <label for="maximum-temperature-value">
                         <h4 class="setting-title">
-                            Maximum gauge value (Celsius)
+                            Maximum temperature value (Celsius)
                         </h4>
                         <p class="setting-description">
-                            Maximum value for all gauges.
+                            Maximum value for gauges and graphs.
                         </p>
                     </label>
                     <input
-                        id="maximum-gauge-value"
-                        type="number"
-                        autocomplete="off"
-                        min="10"
-                        value="40"
-                        max="60"
-                        required
-                    />
-                </div>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h3 class="form-section-title">History</h3>
-            <div class="section-settings">
-                <div class="setting">
-                    <label for="minimum-graph-value">
-                        <h4 class="setting-title">
-                            Minimum graph value (Celsius)
-                        </h4>
-                        <p class="setting-description">
-                            Minimum value for all graphs.
-                        </p>
-                    </label>
-                    <input
-                        id="minimum-graph-value"
-                        type="number"
-                        autocomplete="off"
-                        min="-50"
-                        value="-20"
-                        max="5"
-                        required
-                    />
-                </div>
-
-                <div class="setting">
-                    <label for="maximum-graph-value">
-                        <h4 class="setting-title">
-                            Maximum graph value (Celsius)
-                        </h4>
-                        <p class="setting-description">
-                            Maximum value for all graphs.
-                        </p>
-                    </label>
-                    <input
-                        id="maximum-graph-value"
+                        id="maximum-temperature-value"
                         type="number"
                         autocomplete="off"
                         min="10"

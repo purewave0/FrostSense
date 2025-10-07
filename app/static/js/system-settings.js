@@ -2,18 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsForm = document.getElementById('settings-form');
     const formFields = {
         'defaultTemperatureUnit': document.getElementById('default-temperature-unit'),
-        'minimumGaugeValue': document.getElementById('minimum-gauge-value'),
-        'maximumGaugeValue': document.getElementById('maximum-gauge-value'),
-        'minimumGraphValue': document.getElementById('minimum-graph-value'),
-        'maximumGraphValue': document.getElementById('maximum-graph-value'),
+        'minimumTemperatureValue': document.getElementById('minimum-temperature-value'),
+        'maximumTemperatureValue': document.getElementById('maximum-temperature-value'),
     };
 
     let originalValues = SystemSettingsCache.get();
     formFields.defaultTemperatureUnit.value = originalValues.defaultTemperatureUnit;
-    formFields.minimumGaugeValue.value = originalValues.minimumGaugeValue;
-    formFields.maximumGaugeValue.value = originalValues.maximumGaugeValue;
-    formFields.minimumGraphValue.value = originalValues.minimumGraphValue;
-    formFields.maximumGraphValue.value = originalValues.maximumGraphValue;
+    formFields.minimumTemperatureValue.value = originalValues.minimumTemperatureValue;
+    formFields.maximumTemperatureValue.value = originalValues.maximumTemperatureValue;
 
     let changedFields = {};
 
@@ -73,18 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const defaultTemperatureUnit = formFields.defaultTemperatureUnit.value;
-        const minimumGaugeValue = formFields.minimumGaugeValue.value;
-        const maximumGaugeValue = formFields.maximumGaugeValue.value;
-        const minimumGraphValue = formFields.minimumGraphValue.value;
-        const maximumGraphValue = formFields.maximumGraphValue.value;
+        const minimumTemperatureValue = formFields.minimumTemperatureValue.value;
+        const maximumTemperatureValue = formFields.maximumTemperatureValue.value;
 
         // TODO: loading
         const response = await Api.editSystemSettings(
             defaultTemperatureUnit,
-            minimumGaugeValue,
-            maximumGaugeValue,
-            minimumGraphValue,
-            maximumGraphValue,
+            minimumTemperatureValue,
+            maximumTemperatureValue,
         );
         if (!response.ok) {
             const error = (await response.json()).error;
