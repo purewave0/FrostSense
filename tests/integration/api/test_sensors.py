@@ -1,6 +1,6 @@
 from typing import Any
 
-from tests.integration.api.util import _parsed_datetime
+from tests.util import parsed_datetime
 from app.models.readings import Sensor
 from app.extensions import db
 
@@ -20,7 +20,7 @@ def test_sensors_order_and_result(
         assert returned_sensor['id'] == expected_sensor.id
         assert returned_sensor['name'] == expected_sensor.name
         assert (
-            _parsed_datetime(returned_sensor['created_on'])
+            parsed_datetime(returned_sensor['created_on'])
             == expected_sensor.created_on
         )
 

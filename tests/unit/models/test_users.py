@@ -2,9 +2,8 @@ import re
 
 from app.extensions import db
 from app.models.users import User
+from tests.util import temporary_password_pattern, avatar_hex_colour_pattern
 
-
-avatar_hex_colour_pattern = re.compile(r'#[a-f0-9]{6}')
 
 def test_model(app):
     with app.app_context():
@@ -80,7 +79,6 @@ def test_generate_password_hash_difference(app, user: User):
     assert User.generate_password_hash('password1') != 'password1'
 
 def test_generate_temporary_password_format(app, user: User):
-    temporary_password_pattern = re.compile(r'[a-z0-9]{12}')
     assert temporary_password_pattern.match(
         User.generate_temporary_password()
     )
