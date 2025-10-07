@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sensorReadings = await readingsResponse.json();
 
     const temperatureUnit = PreferencesCache.getTemperatureUnit();
-    const temperatureLimits = SystemSettingsCache.getGaugeLimits();
+    const temperatureLimits = SystemSettingsCache.getTemperatureLimits();
     const minTemperature = temperatureLimits.minimum;
     const maxTemperature = temperatureLimits.maximum;
 

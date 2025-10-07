@@ -152,8 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const bodyStyle = window.getComputedStyle(document.body);
         const graphLineColour = bodyStyle.getPropertyValue('--color-graph-line');
 
-        const minimumGraphValue = temperatureValue(minimumGraphValueRaw, temperatureUnit);
-        const maximumGraphValue = temperatureValue(maximumGraphValueRaw, temperatureUnit);
+        const minimumTemperatureValue =
+            temperatureValue(minimumTemperatureValueRaw, temperatureUnit);
+        const maximumTemperatureValue =
+            temperatureValue(maximumTemperatureValueRaw, temperatureUnit);
         const unitString = TemperatureUnitString[temperatureUnit];
 
         const graph = new Dygraph(
@@ -170,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showLabelsOnHighlight: false,  // no legend on hover
                 // no ID column needed
                 labels: ['Time', 'Temperature'],
-                valueRange: [minimumGraphValue, maximumGraphValue],
+                valueRange: [minimumTemperatureValue, maximumTemperatureValue],
                 axes: {
                     y: {
                         axisLabelFormatter(temperature) {

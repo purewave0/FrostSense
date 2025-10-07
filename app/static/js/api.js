@@ -169,20 +169,16 @@ const Api = {
 
     editSystemSettings(
         defaultTemperatureUnit,
-        minimumGaugeValue,
-        maximumGaugeValue,
-        minimumGraphValue,
-        maximumGraphValue,
+        minimumTemperatureValue,
+        maximumTemperatureValue,
     ) {
         return fetch('/api/system-settings', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 'default_temperature_unit': defaultTemperatureUnit,
-                'minimum_gauge_value': minimumGaugeValue,
-                'maximum_gauge_value': maximumGaugeValue,
-                'minimum_graph_value': minimumGraphValue,
-                'maximum_graph_value': maximumGraphValue,
+                'minimum_temperature_value': minimumTemperatureValue,
+                'maximum_temperature_value': maximumTemperatureValue,
             })
         });
     }

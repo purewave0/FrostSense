@@ -9,10 +9,10 @@ class SystemSettingsCache {
         // in /system-settings.
         defaultTemperatureUnit:
             `${SystemSettingsCache.#PREFIX}.default_temperature_unit`,
-        minimumGaugeValue: `${SystemSettingsCache.#PREFIX}.minimum_gauge_value`,
-        maximumGaugeValue: `${SystemSettingsCache.#PREFIX}.maximum_gauge_value`,
-        minimumGraphValue: `${SystemSettingsCache.#PREFIX}.minimum_graph_value`,
-        maximumGraphValue: `${SystemSettingsCache.#PREFIX}.maximum_graph_value`,
+        minimumTemperatureValue:
+            `${SystemSettingsCache.#PREFIX}.minimum_temperature_value`,
+        maximumTemperatureValue:
+            `${SystemSettingsCache.#PREFIX}.maximum_temperature_value`,
         updateTimestamp: `${SystemSettingsCache.#PREFIX}.update_timestamp`,
     }
 
@@ -20,32 +20,22 @@ class SystemSettingsCache {
      * Store all system settings locally.
      *
      * @param {string} defaultTemperatureUnit The default unit for new accounts.
-     * @param {number} minimumGaugeValue Minimum value for all gauges.
-     * @param {number} maximumGaugeValue Maximum value for all gauges.
-     * @param {number} minimumGraphValue Minimum value for all graphs.
-     * @param {number} maximumGraphValue Maximum value for all graphs.
+     * @param {number} minimumTemperatureValue Minimum value for gauges and graphs.
+     * @param {number} maximumTemperatureValue Maximum value for gauges and graphs.
      */
     static set(
         defaultTemperatureUnit,
-        minimumGaugeValue,
-        maximumGaugeValue,
-        minimumGraphValue,
-        maximumGraphValue
+        minimumTemperatureValue,
+        maximumTemperatureValue,
     ) {
         localStorage.setItem(
             SystemSettingsCache.#KEYS.defaultTemperatureUnit, defaultTemperatureUnit
         );
         localStorage.setItem(
-            SystemSettingsCache.#KEYS.minimumGaugeValue, minimumGaugeValue
+            SystemSettingsCache.#KEYS.minimumTemperatureValue, minimumTemperatureValue
         );
         localStorage.setItem(
-            SystemSettingsCache.#KEYS.maximumGaugeValue, maximumGaugeValue
-        );
-        localStorage.setItem(
-            SystemSettingsCache.#KEYS.minimumGraphValue, minimumGraphValue
-        );
-        localStorage.setItem(
-            SystemSettingsCache.#KEYS.maximumGraphValue, maximumGraphValue
+            SystemSettingsCache.#KEYS.maximumTemperatureValue, maximumTemperatureValue
         );
     }
 
@@ -57,52 +47,28 @@ class SystemSettingsCache {
             'defaultTemperatureUnit': localStorage.getItem(
                 SystemSettingsCache.#KEYS.defaultTemperatureUnit
             ),
-            'minimumGaugeValue': localStorage.getItem(
-                SystemSettingsCache.#KEYS.minimumGaugeValue
+            'minimumTemperatureValue': localStorage.getItem(
+                SystemSettingsCache.#KEYS.minimumTemperatureValue
             ),
-            'maximumGaugeValue': localStorage.getItem(
-                SystemSettingsCache.#KEYS.maximumGaugeValue
-            ),
-            'minimumGraphValue': localStorage.getItem(
-                SystemSettingsCache.#KEYS.minimumGraphValue
-            ),
-            'maximumGraphValue': localStorage.getItem(
-                SystemSettingsCache.#KEYS.maximumGraphValue
+            'maximumTemperatureValue': localStorage.getItem(
+                SystemSettingsCache.#KEYS.maximumTemperatureValue
             ),
         };
     }
 
     /**
-     * Get the min and max values for gauges. This is a convenience function.
+     * Get the min and max values temperature values. This is a convenience function.
      */
-    static getGaugeLimits() {
+    static getTemperatureLimits() {
         return {
             'minimum': Number(
                 localStorage.getItem(
-                    SystemSettingsCache.#KEYS.minimumGaugeValue
+                    SystemSettingsCache.#KEYS.minimumTemperatureValue
                 )
             ),
             'maximum': Number(
                 localStorage.getItem(
-                    SystemSettingsCache.#KEYS.maximumGaugeValue
-                )
-            ),
-        };
-    }
-
-    /**
-     * Get the min and max values for graphs. This is a convenience function.
-     */
-    static getGraphLimits() {
-        return {
-            'minimum': Number(
-                localStorage.getItem(
-                    SystemSettingsCache.#KEYS.minimumGraphValue
-                )
-            ),
-            'maximum': Number(
-                localStorage.getItem(
-                    SystemSettingsCache.#KEYS.maximumGraphValue
+                    SystemSettingsCache.#KEYS.maximumTemperatureValue
                 )
             ),
         };
@@ -137,10 +103,8 @@ const SystemSettingsCacheUpdater = {
             const SystemSettings = await SystemSettingsResponse.json();
             SystemSettingsCache.set(
                 SystemSettings.default_temperature_unit,
-                SystemSettings.minimum_gauge_value,
-                SystemSettings.maximum_gauge_value,
-                SystemSettings.minimum_graph_value,
-                SystemSettings.maximum_graph_value,
+                SystemSettings.minimum_temperature_value,
+                SystemSettings.maximum_temperature_value,
             );
             console.log('[system-settings-cache.js] system settings updated.');
         }
