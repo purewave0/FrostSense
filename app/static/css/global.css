@@ -201,16 +201,16 @@ button.with-loader:disabled {
     flex-shrink: 0;
     background-color: var(--color-dark-background);
     padding: 8px;
-    row-gap: 32px;
+    row-gap: 16px;
 }
 
 #sidebar-logo {
-    font-size: 24pt;
-    text-align: center;
-    background-color: var(--color-graph-line);
-    color: black;
-    align-content: center;
-    height: 70px;
+    height: 100px;
+}
+
+#sidebar-logo img {
+    width: 100%;
+    height: 100%;
 }
 
 #link-sections {
