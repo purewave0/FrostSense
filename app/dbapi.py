@@ -394,6 +394,8 @@ def get_users(
             User.updated_on > updated_after,
         )
 
+    query = query.order_by(User.created_on.asc())
+
     users = db.session.execute(query)
     return _rows_to_dicts(users)
 
