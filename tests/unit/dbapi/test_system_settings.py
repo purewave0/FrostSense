@@ -93,10 +93,8 @@ def test_update_system_settings_persistence(
     with app.app_context():
         update = {
             'default_temperature_unit': 'celsius',
-            'minimum_gauge_value': -30,
-            'maximum_gauge_value':  40,
-            'minimum_graph_value': -30,
-            'maximum_graph_value':  40,
+            'minimum_temperature_value': -30,
+            'maximum_temperature_value':  40,
         }
         update_system_settings(update)
 
