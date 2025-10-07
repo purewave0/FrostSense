@@ -168,6 +168,13 @@ def test_delete_user_persistence(app, logged_in_admin_client, user):
             ).scalar_one_or_none()
         assert deleted_user is None
 
+def test_delete_user_rejects_self_deletion(app, logged_in_admin_client):
+    with logged_in_admin_client, app.app_context():
+        logged_in_admin_client.get('/')  # to load current_user
+        response = logged_in_admin_client.delete(f'/api/users/{current_user.id}')
+        assert response.status_code == 400
+        assert response.json['error'] == 'deleting_yourself'
+
 
 def test_update_user_persistence(app, logged_in_admin_client, user, default_system_settings):
     with logged_in_admin_client:
