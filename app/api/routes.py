@@ -537,6 +537,9 @@ def api_users_summary():
 @permission_required(User.Permission.MANAGE_USERS)
 def api_update_user(user_id: int):
     if request.method == 'DELETE':
+        if user_id == current_user.id:
+            return jsonify({'error': 'deleting_yourself'}), 400
+
         delete_user_by_id(user_id)
         return '', 204
 
