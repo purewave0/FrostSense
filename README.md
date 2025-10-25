@@ -6,10 +6,8 @@ Real-time IoT temperature monitoring solution for cold storage warehouses.
 
 TODO: screenshot
 
-This is a full rewrite of my original FrostSense project.
-
 - Live multi-sensor temperature readings
-- Customisable reports (sensor, format, time frame, notes)
+- Customisable reports (sensor, data format, time frame, notes)
 - Verify reports by their unique code
 - Celsius & Fahrenheit support
 - User management with permissions system
@@ -18,6 +16,8 @@ This is a full rewrite of my original FrostSense project.
 - API with sensor key authentication
 - Fully responsive interface
 - CLI for technical tasks
+
+This is a full rewrite of my old FrostSense project.
 
 
 ## Installation
@@ -31,8 +31,7 @@ Ensure MariaDB is installed and running before starting.
     cd FrostSense
     ```
 
-2. Install the required dependencies:
-
+2. Install dependencies:
     ```sh
     pip install -r requirements.txt
     ```
@@ -71,19 +70,17 @@ a few sensors:
 flask seed sensors  # optional: --count=N to add N sensors (default 4)
 ```
 
-You (and any users with edit permission) can rename a sensor by hovering over it and
+You (and any users with edit permissions) can rename a sensor by hovering over it and
 clicking the Edit icon.
 
 Now, head over to either **Readings** (latest data) or **History** (data by day).
 The sensors are empty, so let's seed some sample readings.
-
 ```sh
 flask seed readings --continuous
 ```
 
 This sends readings every 2 seconds (customise with `--interval=N`). If you want to
 send many readings at once instead, run:
-
 ```sh
 flask seed readings
 ```
@@ -97,7 +94,6 @@ User management is limited to the admin and done on the **Users** page.
 At first the table will be empty; let's add some users.
 
 While you can do so through the **Create** button, try seeding them through the CLI:
-
 ```sh
 flask seed users  # optional: --count=N (default 4)
 ```
@@ -129,7 +125,6 @@ A **device** can be anything that can connect to a temperature sensor and send H
 requests: ESP32 boards, Raspberry Pis, etc.
 
 When preparing a new device, first create a new sensor:
-
 ```sh
 flask sensors create SENSOR_NAME
 # > created sensor with id=SENSOR_ID
@@ -137,7 +132,6 @@ flask sensors create SENSOR_NAME
 
 Use the ID printed by the command (or look for it with `flask sensors list`) to get the
 newly-created sensor's key:
-
 ```sh
 flask sensors show SENSOR_ID
 # > ...
@@ -148,7 +142,6 @@ Store the key on the board/device to include it with every request (see the next
 section).
 
 If a sensor key is ever leaked, you can reset it by running:
-
 ```sh
 flask sensors reset-key SENSOR_ID
 # > ...
@@ -158,7 +151,6 @@ flask sensors reset-key SENSOR_ID
 The device with the old key will no longer be able to send readings.
 
 To delete a sensor, get its ID with `flask sensors list` and simply run:
-
 ```sh
 flask sensors delete SENSOR_ID
 ```
@@ -167,14 +159,13 @@ flask sensors delete SENSOR_ID
 
 To send a reading, the device should send a POST request to `/api/sensors/<SENSOR_ID>`
 with the `Authorization` header set to the sensor key, and the following JSON body:
-
 ```js
 {
-    "temperature": TEMPERATURE, // in Celsius
+    "temperature": TEMPERATURE,  // in Celsius
 }
 ```
 
-All temperatures should be sent in Celsius.
+Temperatures should be sent in Celsius.
 
 On success, HTTP 204 is returned.
 
