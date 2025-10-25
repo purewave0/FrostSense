@@ -1,4 +1,4 @@
-:uk: **English** | [:brazil: Português](README.pt-br.md)(TODO)
+:uk: **English** | [:brazil: Português](README.pt-br.md)
 
 # FrostSense
 
