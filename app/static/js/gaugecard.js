@@ -22,9 +22,16 @@ class GaugeCard {
      * @param {string} temperatureUnit The unit for displaying temperatures.
      * @param {number} minTemperature The lowest value this gauge can show, in Celsius.
      * @param {number} maxTemperature The highest value this gauge can show, in Celsius.
+     * @param {string} colour The colour (hex, rgb, etc.) for the filled segment.
      */
     constructor(
-        element, sensorId, sensorName, temperatureUnit, minTemperature, maxTemperature
+        element,
+        sensorId,
+        sensorName,
+        temperatureUnit,
+        minTemperature,
+        maxTemperature,
+        colour
     ) {
         this.#locales = getUserLocales();
         GaugeCard.#prepareCard(element, sensorId, sensorName);
@@ -35,6 +42,7 @@ class GaugeCard {
             value: temperatureValue(minTemperature, temperatureUnit),
             min: temperatureValue(minTemperature, temperatureUnit),
             max: temperatureValue(maxTemperature, temperatureUnit),
+            levelColors: [colour],
             gaugeWidthScale: 0.75,
             textRenderer: (value) => {
                 if (value === GaugeCard.#INVALID_TEMPERATURE) {

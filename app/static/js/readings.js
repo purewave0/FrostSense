@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const minTemperature = temperatureLimits.minimum;
     const maxTemperature = temperatureLimits.maximum;
 
+    const bodyStyle = window.getComputedStyle(document.body);
+    const filledSectionColour = bodyStyle.getPropertyValue('--color-graph-line');
+
     for (const sensor of sensors) {
         // would've used a DocumentFragment here, but JustGage needs the element
         // in the DOM already
@@ -26,7 +29,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         gaugeCardsDestination.append(card);
 
         const gaugeCard = new GaugeCard(
-            card, sensor.id, sensor.name, temperatureUnit, minTemperature, maxTemperature
+            card,
+            sensor.id,
+            sensor.name,
+            temperatureUnit,
+            minTemperature,
+            maxTemperature,
+            filledSectionColour,
         );
         gaugeCards[sensor.id] = gaugeCard;
         gaugeCard.setReading(sensorReadings[sensor.id]);
