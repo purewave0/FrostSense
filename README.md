@@ -17,8 +17,6 @@ TODO: screenshot
 - Fully responsive interface
 - CLI for technical tasks
 
-This is a full rewrite of my old FrostSense project.
-
 
 ## Installation
 
@@ -50,7 +48,6 @@ Ensure MariaDB is installed and running before starting.
 ## Usage
 
 To run Frostsense, execute:
-
 ```sh
 flask run
 ```
@@ -65,7 +62,6 @@ You'll be prompted to create a password.
 
 Once logged in, head over to the **Sensors** page; you'll see it's empty. Let's create
 a few sensors:
-
 ```sh
 flask seed sensors  # optional: --count=N to add N sensors (default 4)
 ```
@@ -105,7 +101,6 @@ Hover over the Permissions cell in a user's row to see their permissions.
 #### Recovery
 
 If the admin password is ever lost or leaked, reset it with:
-
 ```sh
 flask admin reset-password
 # > ...

@@ -17,8 +17,6 @@ TODO: print
 - Interface totalmente responsiva
 - CLI para tarefas técnicas
 
-Este projeto é uma reescrita completa do FrostSense antigo.
-
 
 ## Instalação
 
