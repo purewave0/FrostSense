@@ -37,7 +37,14 @@ def create_sensor(name: str) -> dict[str, Any]:
 
 
 def delete_sensor_by_id(sensor_id: int) -> None:
-    """Delete the sensor with the given id."""
+    """Delete the sensor with the given id along with all of its readings."""
+    db.session.execute(
+        db.delete(
+            Reading
+        ).where(
+            Reading.sensor_id == sensor_id
+        )
+    )
     db.session.execute(
         db.delete(
             Sensor
