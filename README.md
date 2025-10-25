@@ -167,6 +167,19 @@ Temperatures should be sent in Celsius.
 On success, HTTP 204 is returned.
 
 
+## Testing
+
+First, install the dependencies:
+```sh
+pip3 install -r requirements-dev.txt
+```
+
+Run all tests with:
+```sh
+python3 -m pytest
+```
+
+
 ## Credits
 
 - [Google's Material Symbols](https://fonts.google.com/icons) for the SVG icons

@@ -170,6 +170,19 @@ Temperaturas devem ser enviadas em Celsius.
 HTTP 204 indica sucesso.
 
 
+## Testes
+
+Primeiro, instale as dependências:
+```sh
+pip3 install -r requirements-dev.txt
+```
+
+Execute todos os testes com:
+```sh
+python3 -m pytest
+```
+
+
 ## Créditos
 
 - [Google's Material Symbols](https://fonts.google.com/icons) pelos ícones SVG
