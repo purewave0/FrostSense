@@ -4,7 +4,9 @@
 
 Real-time IoT temperature monitoring solution for cold storage warehouses.
 
-TODO: screenshot
+![FrostSense screenshot, Readings page](screenshots/readings.png)
+![FrostSense screenshot, History page](screenshots/history.png)
+![FrostSense screenshot, Reports page](screenshots/reports.png)
 
 - Live multi-sensor temperature readings
 - Customisable reports (sensor, data format, time frame, notes)

@@ -4,7 +4,9 @@
 
 Solução IoT de monitoramento em tempo real da temperatura de frigoríficos.
 
-TODO: print
+![Print do FrostSense, página Readings](screenshots/readings.png)
+![Print do FrostSense, página History](screenshots/history.png)
+![Print do FrostSense, página Reports](screenshots/reports.png)
 
 - Leituras de temperatura multi-sensor em tempo real
 - Relatórios customizáveis (sensor, formato de dados, período, observações)
