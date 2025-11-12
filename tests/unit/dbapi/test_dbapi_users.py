@@ -32,6 +32,7 @@ def test_get_users_order_and_result(app, users: Sequence[User]):
             assert returned_user['display_name'] == expected_user.display_name
             assert returned_user['username'] == expected_user.username
 
+
 def test_get_user_by_id_found_and_not_found(app, user: User):
     with app.app_context():
         returned_user = get_user_by_id(user.id)
@@ -39,7 +40,10 @@ def test_get_user_by_id_found_and_not_found(app, user: User):
         assert returned_user is not None
         assert returned_user == user
 
+def test_get_user_by_id_not_found(app):
+    with app.app_context():
         assert get_user_by_id(12345) is None
+
 
 def test_get_user_by_username_found_and_not_found(app, user: User):
     with app.app_context():
@@ -48,7 +52,10 @@ def test_get_user_by_username_found_and_not_found(app, user: User):
         assert returned_user is not None
         assert returned_user == user
 
+def test_get_user_by_username_not_found(app):
+    with app.app_context():
         assert get_user_by_username('Unknown sensor') is None
+
 
 def test_get_admin_result(app, admin):
     with app.app_context():
@@ -89,9 +96,12 @@ def test_get_user_last_update_time_result(app, user: User):
 
 # exists
 
-def test_user_id_exists_found_and_not_found(app, user: User):
+def test_user_id_exists_found(app, user: User):
     with app.app_context():
         assert user_id_exists(user.id)
+
+def test_user_id_exists_not_found(app):
+    with app.app_context():
         assert not user_id_exists(1234)
 
 
@@ -167,40 +177,45 @@ def test_update_user_permissions_by_id_persistence_and_timestamp(app, user: User
         assert updated_user.permissions == User.Permission.ASSIGNABLE_PERMISSIONS.value
         assert updated_user.updated_on > old_update_timestamp
 
-def test_update_user_password_by_id_temporary_and_permanent_persistence_and_timestamps(
+def test_update_user_password_by_id_temporary_persistence_and_timestamp(
     app, user: User
 ):
     with app.app_context():
-        for password, is_temporary in (
-            ('temporarypassword1', True), ('permanentpassword1', False)
-        ):
-            old_user = db.session.execute(
-                db.select(
-                    User
-                ).where(
-                    User.id == user.id
-                )
-            ).scalar_one()
-            old_update_timestamp = old_user.updated_on
-            old_password_change_timestamp = old_user.password_changed_on
+        old_update_timestamp = user.updated_on
 
-            update_user_password_by_id(user.id, password, is_temporary)
+        update_user_password_by_id(user.id, 'temporarypassword1', True)
 
-            updated_user = db.session.execute(
-                db.select(
-                    User
-                ).where(
-                    User.id == user.id
-                )
-            ).scalar_one()
-            assert updated_user.check_password(password)
-            assert updated_user.updated_on > old_update_timestamp
-            assert updated_user.is_password_temporary == is_temporary
-            is_second_password_change = password == 'permanentpassword1'
-            if is_second_password_change:
-                # the password was changed before. does the password change timestamp
-                # correctly reflect that?
-                assert updated_user.password_changed_on > old_password_change_timestamp
+        updated_user = db.session.execute(
+            db.select(
+                User
+            ).where(
+                User.id == user.id
+            )
+        ).scalar_one()
+        assert updated_user.check_password('temporarypassword1')
+        assert updated_user.is_password_temporary
+        assert updated_user.updated_on > old_update_timestamp
+        assert updated_user.password_changed_on > old_update_timestamp
+
+def test_update_user_password_by_id_permanent_persistence_and_timestamp(
+    app, user: User
+):
+    with app.app_context():
+        old_update_timestamp = user.updated_on
+
+        update_user_password_by_id(user.id, 'permanentpassword1', False)
+
+        updated_user = db.session.execute(
+            db.select(
+                User
+            ).where(
+                User.id == user.id
+            )
+        ).scalar_one()
+        assert updated_user.check_password('permanentpassword1')
+        assert not updated_user.is_password_temporary
+        assert updated_user.updated_on > old_update_timestamp
+        assert updated_user.password_changed_on > old_update_timestamp
 
 
 # delete
