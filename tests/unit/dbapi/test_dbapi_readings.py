@@ -95,6 +95,7 @@ def test_get_sensor_readings_in_time_range_order_and_result(app, sensor: Sensor)
             assert returned_reading['temperature'] == expected_reading.temperature
             assert returned_reading['created_on'] == expected_reading.created_on
 
+
 def test_get_sensor_readings_count_in_time_range_result(app, sensor: Sensor):
     readings = (
         Reading(sensor.id, -30, datetime(2025, 10, 1, 10, 36, 0)),
@@ -118,6 +119,7 @@ def test_get_sensor_readings_count_in_time_range_result(app, sensor: Sensor):
             datetime(2025, 10, 1, 10, 41, 0),
         )
         assert returned_count == len(expected_readings)
+
 
 def test_get_sensors_readings_in_time_range_result_items_order_and_result(
     app, sensors: Sequence[Sensor]
@@ -175,9 +177,8 @@ def test_get_sensors_readings_in_time_range_result_items_order_and_result(
                 assert returned_reading['temperature'] == expected_reading.temperature
                 assert returned_reading['created_on'] == expected_reading.created_on
 
-def test_get_sensor_last_reading_by_id_found_and_empty_result_and_not_found(
-    app, sensor: Sensor
-):
+
+def test_get_sensor_last_reading_by_id_found(app, sensor: Sensor):
     with app.app_context():
         readings = (
             Reading(sensor.id, 10.0, datetime(2025, 10, 1, 1)),
@@ -198,17 +199,20 @@ def test_get_sensor_last_reading_by_id_found_and_empty_result_and_not_found(
         assert returned_last_reading['temperature'] == expected_last_reading.temperature
         assert returned_last_reading['created_on'] == expected_last_reading.created_on
 
+def test_get_sensor_last_reading_by_id_empty_result(app):
+    with app.app_context():
         empty_sensor = Sensor('Empty sensor')
         db.session.add(empty_sensor)
         db.session.commit()
 
         assert get_sensor_last_reading_by_id(empty_sensor.id) is None
 
+def test_get_sensor_last_reading_by_id_not_found(app):
+    with app.app_context():
         assert get_sensor_last_reading_by_id(12345) is None
 
-def test_get_sensors_last_readings_by_ids_found_and_empty_result_and_not_found(
-    app, sensors: Sequence[Sensor]
-):
+
+def test_get_sensors_last_readings_by_ids_found(app, sensors: Sequence[Sensor]):
     sensors_readings: dict[int, tuple[Reading, ...]] = {}
 
     with app.app_context():
@@ -243,6 +247,8 @@ def test_get_sensors_last_readings_by_ids_found_and_empty_result_and_not_found(
             assert returned_last_reading['temperature'] == expected_last_reading.temperature
             assert returned_last_reading['created_on'] == expected_last_reading.created_on
 
+def test_get_sensors_last_readings_by_ids_empty_result(app):
+    with app.app_context():
         empty_sensors = (
             Sensor('Empty sensor 1'),
             Sensor('Empty sensor 2'),
@@ -258,6 +264,8 @@ def test_get_sensors_last_readings_by_ids_found_and_empty_result_and_not_found(
         for sensor_id in returned_empty_sensors_last_readings:
             assert returned_empty_sensors_last_readings[sensor_id] is None
 
+def test_get_sensors_last_readings_by_ids_not_found(app):
+    with app.app_context():
         unknown_sensor_ids = (1234, 2345, 3456)
         returned_unknown_sensors_last_readings = get_sensors_last_readings_by_ids(
             unknown_sensor_ids
