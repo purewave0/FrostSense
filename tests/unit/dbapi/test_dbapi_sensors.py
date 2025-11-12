@@ -62,13 +62,15 @@ def test_get_sensors_order_and_result(app, sensors: Sequence[Sensor]):
             assert returned_sensor['name'] == sensor.name
             assert returned_sensor['created_on'] == sensor.created_on
 
-def test_get_sensor_by_id_found_and_not_found(app, sensor: Sensor):
+def test_get_sensor_by_id_found(app, sensor: Sensor):
     with app.app_context():
         found = get_sensor_by_id(sensor.id)
         assert found is not None
         assert found.id == sensor.id
         assert found.name == 'Test sensor'
 
+def test_get_sensor_by_id_not_found(app):
+    with app.app_context():
         assert get_sensor_by_id(12345) is None
 
 
@@ -94,16 +96,21 @@ def test_get_sensor_key_by_id_found_and_not_found(app, sensor: Sensor):
 
 # exists
 
-def test_sensor_id_exists_found_and_not_found(app, sensor: Sensor):
+def test_sensor_id_exists_found(app, sensor: Sensor):
     with app.app_context():
         assert sensor_id_exists(sensor.id)
 
+def test_sensor_id_exists_not_found(app):
+    with app.app_context():
         assert not sensor_id_exists(12345)
 
-def test_sensor_name_exists_found_and_not_found(app, sensor: Sensor):
+
+def test_sensor_name_exists_found(app, sensor: Sensor):
     with app.app_context():
         assert sensor_name_exists(sensor.name)
 
+def test_sensor_name_exists_not_found(app):
+    with app.app_context():
         assert not sensor_name_exists('Unknown sensor')
 
 
