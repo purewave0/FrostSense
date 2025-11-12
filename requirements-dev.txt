@@ -1,2 +1,8 @@
--r requirements.txt
+Flask
+SQLAlchemy
+Flask-SQLAlchemy
+flask-login
+
+python-dotenv
+
 pytest
