@@ -301,7 +301,7 @@ button.with-loader:disabled {
 }
 
 #profile-dropdown {
-    z-index: 1;
+    z-index: 20;
     position: absolute;
     margin-top: 8px;
     top: var(--header-avatar-size);
@@ -403,7 +403,7 @@ button.with-loader:disabled {
     #sidebar {
         transition: left 0.2s ease-out;
         left: calc(-1 * var(--sidebar-width));
-        z-index: 5;
+        z-index: 30;
     }
 
     #mobile-sidebar-overlay {
@@ -414,7 +414,7 @@ button.with-loader:disabled {
         bottom: 0;
         left: 0;
         background-color: rgba(0, 0, 0, 0.7);
-        z-index: 4;
+        z-index: 29;
         transition: opacity 0.2s ease;
     }
 
