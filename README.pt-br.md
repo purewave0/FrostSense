@@ -187,9 +187,3 @@ python3 -m pytest
 
 - [Google's Material Symbols](https://fonts.google.com/icons) pelos ícones SVG
 - [Google Fonts](https://fonts.google.com/) pela fonte Roboto
-- [MicroModal](https://micromodal.vercel.app/)
-- [Toastify](https://apvarun.github.io/toastify-js/)
-- [imaskjs](https://imask.js.org/)
-- [JustGage](https://toorshia.github.io/justgage/)
-- [dygraphs](https://dygraphs.com/)
-- [easyqrcode](https://www.easyproject.cn/easyqrcodejs/)
