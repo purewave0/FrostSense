@@ -10,6 +10,7 @@ from app.models.users import User
 from app.models.system_settings import (
     SystemSetting, SystemSettingsTimestamp, default_system_settings_base
 )
+from app.models.integrations import IntegrationProvider, TemperatureAlert, Webhook
 
 
 @pytest.fixture()
@@ -206,3 +207,63 @@ def logged_in_admin_client(app, client):
         with client.session_transaction() as session:
             session['_user_id'] = created_admin.get_id()
         return client
+
+
+# integrations
+
+@pytest.fixture
+def webhook(app):
+    """Return a Discord webhook."""
+    with app.app_context():
+        created_webhook = Webhook(
+            IntegrationProvider.DISCORD,
+            'https://example.com'
+        )
+        db.session.add(created_webhook)
+        db.session.commit()
+        yield created_webhook
+
+@pytest.fixture
+def webhooks(app):
+    """Return 5 webhooks."""
+    webhooks = []
+    with app.app_context():
+        for i in range(5):
+            created_webhook = Webhook(
+                IntegrationProvider.DISCORD,
+                f'https://example.com/{i}'
+            )
+            db.session.add(created_webhook)
+            webhooks.append(created_webhook)
+        db.session.commit()
+
+        yield webhooks
+
+
+@pytest.fixture
+def temperature_alert(app):
+    """Return a Discord temperature alert."""
+    with app.app_context():
+        created_alert = TemperatureAlert(
+            -40.5,
+            40.5
+        )
+        db.session.add(created_alert)
+        db.session.commit()
+        yield created_alert
+
+@pytest.fixture
+def temperature_alerts(app):
+    """Return 5 temperature alerts."""
+    alerts = []
+    with app.app_context():
+        for i in range(0):
+            created_alert = TemperatureAlert(
+                -40.5 - i,
+                40.5 + i
+            )
+            db.session.add(created_alert)
+            alerts.append(created_alert)
+        db.session.commit()
+
+        yield alerts
