@@ -10,6 +10,7 @@ from app.models.users import User
 from app.models.system_settings import (
     SystemSetting, SystemSettingsTimestamp, default_system_settings_base
 )
+from app.models.integrations import IntegrationProvider, TemperatureAlert, Webhook
 
 
 def _rows_to_dicts(rows):
@@ -736,3 +737,123 @@ def get_system_settings() -> dict[str, str]:
     ).all()
 
     return {key: value for (key, value) in result}
+
+
+# -- integrations --
+
+def create_webhook(provider: IntegrationProvider, url: str) -> dict[str, Any]:
+    """Create a new webhook where alerts will be sent."""
+    webhook = Webhook(provider, url)
+    db.session.add(webhook)
+    db.session.commit()
+
+    return {
+        'id': webhook.id,
+        'provider': webhook.provider,
+        'url': webhook.url
+    }
+
+
+def delete_webhook_by_id(id: int) -> None:
+    """Delete the webhook with the given ID."""
+    db.session.execute(
+        db.delete(
+            Webhook
+        ).where(
+            Webhook.id == id
+        )
+    )
+
+    db.session.commit()
+
+
+def get_webhooks() -> Sequence[Webhook]:
+    """Return all webhooks."""
+    webhooks = db.session.execute(
+        db.select(Webhook)
+    ).scalars().all()
+
+    return webhooks
+
+
+def webhook_url_exists(url: str) -> bool:
+    """Return whether a webhook with the given URL exists."""
+    result = db.session.execute(
+        db.select(
+            db.exists().where(Webhook.url == url)
+        )
+    ).scalar_one()
+
+    return result
+
+
+def webhook_id_exists(id: int) -> bool:
+    """Return whether a webhook with the given ID exists."""
+    result = db.session.execute(
+        db.select(
+            db.exists().where(Webhook.id == id)
+        )
+    ).scalar_one()
+
+    return result
+
+
+def create_temperature_alert(
+    min_threshold: float | None,
+    max_threshold: float | None
+) -> dict[str, Any]:
+    """Create a new temperature alert. At least one of min_threshold and
+    max_threshold must be provided.
+    """
+    alert = TemperatureAlert(min_threshold, max_threshold)
+    db.session.add(alert)
+    db.session.commit()
+
+    return {
+        'id': alert.id,
+        'is_active': alert.is_active,
+        'min_threshold': alert.min_threshold,
+        'max_threshold': alert.max_threshold,
+        'created_on': alert.created_on
+    }
+
+
+def delete_temperature_alert_by_id(id: int) -> None:
+    """Delete the temperature alert with the given ID."""
+    db.session.execute(
+        db.delete(
+            TemperatureAlert
+        ).where(
+            TemperatureAlert.id == id
+        )
+    )
+
+    db.session.commit()
+
+
+def temperature_alert_id_exists(id: int) -> bool:
+    """Return whether an alert with the given ID exists."""
+    result = db.session.execute(
+        db.select(
+            db.exists().where(TemperatureAlert.id == id)
+        )
+    ).scalar_one()
+
+    return result
+
+
+def get_temperature_alerts() -> tuple[dict[str, Any], ...]:
+    """Return all temperature alerts in order of creation."""
+    result = db.session.execute(
+        db.select(
+            TemperatureAlert.id,
+            TemperatureAlert.is_active,
+            TemperatureAlert.min_threshold,
+            TemperatureAlert.max_threshold,
+            TemperatureAlert.created_on,
+        ).order_by(
+            TemperatureAlert.created_on
+        )
+    )
+
+    return _rows_to_dicts(result)
