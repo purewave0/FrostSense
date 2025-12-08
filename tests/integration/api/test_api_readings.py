@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from app.models.readings import Reading
+from app.models.integrations import TemperatureAlert
 from app.extensions import db
 from tests.util import parsed_datetime
 
@@ -100,3 +101,30 @@ def test_send_sensor_reading_unknown_sensor(sensor, logged_in_admin_client):
 
 
 # TODO: test_api_sensors_today_readings_count
+
+
+# -- integrations --
+
+def test_send_sensor_readings_temperature_outside_threshold_triggers_temperature_alert(
+    app, sensor, client, mocker
+):
+    with app.app_context():
+        MIN_THRESHOLD = -20
+        alert = TemperatureAlert(MIN_THRESHOLD, None)
+        db.session.add(alert)
+        db.session.commit()
+
+        # need to mock the function as imported by the module, not the function in its
+        # original location
+        mock_send_alert = mocker.patch(
+            'app.api.routes.send_temperature_alert'
+        )
+        response = client.post(
+            f'/api/sensors/{sensor.id}/readings',
+            json={'temperature': -30},
+            headers={'Authorization': sensor.key}
+        )
+        assert response.status_code == 201
+        mock_send_alert.assert_called_once_with(
+            sensor.id, sensor.name, -30, 'min', MIN_THRESHOLD
+        )
