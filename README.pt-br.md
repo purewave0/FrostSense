@@ -184,7 +184,6 @@ python3 -m pytest
 
 ## TODO
 
-- Integração com webhooks para alertas
 - Documentação da API com Swagger
 - Internacionalização do frontend
 

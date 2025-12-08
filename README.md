@@ -181,7 +181,6 @@ python3 -m pytest
 
 ## TODO
 
-- Webhook integration for alerts
 - API documentation with Swagger
 - Frontend internationalisation
 
