@@ -5,9 +5,8 @@ from flask_login import current_user, login_user, login_required, logout_user
 
 from app.api import bp
 from app.dbapi import (
-    get_sensors, get_sensor_ids, get_sensor_by_id, sensor_name_exists,
-    sensor_id_exists, get_sensor_key_by_id,
-    update_sensor_by_id,
+    get_sensors, get_sensor_ids, get_sensor_by_id, get_temperature_alerts,
+    sensor_name_exists, sensor_id_exists, update_sensor_by_id,
     get_sensors_last_readings_by_ids,
     get_sensors_readings_counts_since_today_by_ids,
     get_sensor_readings_in_time_range,
@@ -21,6 +20,7 @@ from app.dbapi import (
     get_system_settings,
     update_system_settings, get_system_settings_update_timestamp
 )
+from app.api.integrations import send_temperature_alert
 from app.api.report import (
     DataFormat,
     generate_report_code,
@@ -110,13 +110,36 @@ def api_sensor_readings(sensor_id):
     except (ValueError, TypeError, KeyError):
         return jsonify({'error': 'authorization_missing'}), 401
 
-    sensor_key = get_sensor_key_by_id(sensor_id)
-    if not sensor_key:
+    sensor = get_sensor_by_id(sensor_id)
+    if not sensor:
         return jsonify({'error': 'unknown_sensor'}), 404
-    if sensor_key != given_key:
+    if sensor.key != given_key:
         return jsonify({'error': 'incorrect_key'}), 401
 
     reading = create_reading(sensor_id, temperature)
+
+    alerts = get_temperature_alerts()
+    if alerts:
+        triggered_threshold = None
+        for alert in alerts:
+            if temperature < alert['min_threshold']:
+                triggered_threshold = {
+                    'type': 'min',
+                    'temperature': alert['min_threshold']
+                }
+            elif temperature > alert['max_threshold']:
+                triggered_threshold = {
+                    'type': 'max',
+                    'temperature': alert['max_threshold']
+                }
+        if triggered_threshold:
+            send_temperature_alert(
+                sensor_id,
+                sensor.name,
+                temperature,
+                triggered_threshold['type'],
+                triggered_threshold['temperature']
+            )
 
     return jsonify({
         'id': reading['id'],
