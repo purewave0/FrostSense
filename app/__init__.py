@@ -37,6 +37,7 @@ def create_app(config_class=Config):
         from app.models.readings import Sensor, Reading
         from app.models.users import User
         from app.models.system_settings import SystemSetting, SystemSettingsTimestamp
+        from app.models.integrations import TemperatureAlert
         db.create_all()
 
         if app.config['AUTO_CREATE_SYSTEM_SETTINGS']:
