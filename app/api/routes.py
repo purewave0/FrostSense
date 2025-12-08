@@ -96,7 +96,6 @@ def api_readings_by_days():
 
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
-@login_and_permanent_password_required
 def api_sensor_readings(sensor_id):
     if request.json is None:
         return jsonify({'error': 'field_error'}), 400

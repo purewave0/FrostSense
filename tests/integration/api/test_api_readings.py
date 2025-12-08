@@ -53,8 +53,8 @@ def test_get_sensors_last_readings_empty(sensors, logged_in_admin_client):
 # TODO: test_get_sensors_readings_by_day(app, sensors):
 
 
-def test_send_sensor_reading(app, sensor, logged_in_admin_client):
-    response = logged_in_admin_client.post(
+def test_send_sensor_reading(app, sensor, client):
+    response = client.post(
         f'/api/sensors/{sensor.id}/readings',
         json={'temperature': -12.34},
         headers={'Authorization': sensor.key}
