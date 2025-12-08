@@ -3,5 +3,6 @@ mariadb
 SQLAlchemy
 Flask-SQLAlchemy
 flask-login
+requests
 
 python-dotenv
