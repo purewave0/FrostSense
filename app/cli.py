@@ -9,11 +9,12 @@ from uuid import uuid4
 import click
 
 from app.dbapi import (
-    create_sensor, get_sensors, get_sensor_ids, get_sensor_by_id, sensor_name_exists,
+    create_sensor, create_temperature_alert, create_webhook, delete_temperature_alert_by_id, delete_webhook_by_id, get_sensors, get_sensor_ids, get_sensor_by_id, get_temperature_alerts, get_webhooks, sensor_name_exists,
     delete_sensor_by_id, sensor_id_exists, reset_sensor_key_by_id,
     create_reading, create_readings,
-    create_user, get_user_ids, get_admin, update_user_password_by_id,
+    create_user, get_user_ids, get_admin, temperature_alert_id_exists, update_user_password_by_id, webhook_id_exists, webhook_url_exists,
 )
+from app.models.integrations import IntegrationProvider
 from app.models.users import User
 from app.models.readings import Sensor
 
@@ -276,3 +277,100 @@ def register_commands(app: Flask):
         click.echo('reset the admin password.')
         click.echo(f'username: {admin.username}')
         click.echo(f'new temporary password: {temporary_password}')
+
+
+    # -- integrations
+
+    @app.cli.group()
+    def webhooks():
+        """Commands for managing webhooks."""
+        pass
+
+    @webhooks.command('list')
+    def cli_list_webhooks() -> None:
+        """List all webhooks (id, provider, URL)."""
+        webhooks = get_webhooks()
+        click.echo(f'{len(webhooks)} webhooks in total.')
+        click.echo('id | provider | URL')
+        for webhook in webhooks:
+            click.echo(f'{webhook.id} | {webhook.provider} | {webhook.url}')
+
+    @webhooks.command('create')
+    @click.argument('provider')
+    @click.argument('url')
+    def cli_create_webhook(provider: str, url: str) -> None:
+        """Create a webhook from the given provider with the given URL."""
+        try:
+            provider_ = IntegrationProvider(provider)
+        except ValueError:
+            raise click.UsageError(
+                'the provider must be a member of IntegrationProvider.'
+            )
+
+        if webhook_url_exists(url):
+            raise click.ClickException('a webhook with that URL already exists.')
+
+        webhook = create_webhook(provider_, url)
+        click.echo(f'created webhook with id={webhook["id"]}.')
+
+    @webhooks.command('delete')
+    @click.argument('id')
+    def cli_delete_webhook(id: int) -> None:
+        """Delete the webhook with the given ID."""
+        if not webhook_id_exists(id):
+            raise click.ClickException('no sensor with the given ID.')
+
+        delete_webhook_by_id(id)
+        click.echo(f'deleted webhook with id={id}.')
+
+
+    @app.cli.group()
+    def alerts():
+        """Commands for managing temperature alerts."""
+        pass
+
+    @alerts.command('list')
+    def cli_list_alerts() -> None:
+        """List all temperature alerts (id, is active, min. threshold, max. threshold,
+        creation date).
+        """
+        alerts = get_temperature_alerts()
+        click.echo(f'{len(alerts)} temperature alerts in total.')
+        click.echo('id | is_active | min_threshold | max_threshold | created_on')
+        for alert in alerts:
+            click.echo(
+                f"{alert['id']} | {alert['is_active']} | {alert['min_threshold']} °C"
+                + f" | {alert['max_threshold']} °C | {alert['created_on']}"
+            )
+
+    @alerts.command('create')
+    @click.option('--min')
+    @click.option('--max')
+    def cli_create_alert(min: float | None, max: float | None) -> None:
+        """Create a temperature alert with the given thresholds.
+
+        At least one of --min or --max must be provided. When both are provided,
+        --max must be greater than --min.
+        """
+        if min is None and max is None:
+            raise click.UsageError('must provide at least one of --min or --max')
+        elif (
+            min is not None and max is not None
+            and not (max > min)
+        ):
+            raise click.UsageError('--max must be greater than --min')
+
+        # TODO: detect alerts with duplicate thresholds
+
+        alert = create_temperature_alert(min, max)
+        click.echo(f'created temperature alert with id={alert["id"]}.')
+
+    @alerts.command('delete')
+    @click.argument('id')
+    def cli_delete_alert(id: int) -> None:
+        """Delete the temperature alert with the given ID."""
+        if not temperature_alert_id_exists(id):
+            raise click.ClickException('no alert with the given ID.')
+
+        delete_temperature_alert_by_id(id)
+        click.echo(f'deleted temperature alert with id={id}.')
